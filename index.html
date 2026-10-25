@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Studio - Free Custom QR Code Generator</title>
+    <meta name="description" content="Generate custom, high-resolution QR codes for URL, Wi-Fi, WhatsApp, vCard & Text with custom patterns, colors, and logos. 100% free, private, and client-side." />
+    <meta property="og:title" content="QR Studio - Free Custom QR Code Generator" />
+    <meta property="og:description" content="Generate custom, high-resolution QR codes for URL, Wi-Fi, WhatsApp, vCard & Text with custom patterns, colors, and logos. 100% free, private, and client-side." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect width='5' height='5' x='3' y='3' rx='1'/><rect width='5' height='5' x='16' y='3' rx='1'/><rect width='5' height='5' x='3' y='16' rx='1'/><path d='M21 16h-3a2 2 0 0 0-2 2v3'/><path d='M21 21v.01'/><path d='M12 7v3a2 2 0 0 1-2 2H7'/><path d='M3 12h.01'/><path d='M12 3h.01'/><path d='M12 16v.01'/><path d='M16 12h1'/><path d='M21 12v.01'/><path d='M12 21v-1'/></svg>" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col">
+    <!-- Top Navigation Bar (Strict 3-zone contract) -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <!-- Zone 1: Brand Wordmark -->
+        <a href="/" class="flex items-center gap-2.5 shrink-0 group">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-xs">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-lg font-bold tracking-tight text-slate-900 leading-none">
+              QR Studio
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 mt-0.5" data-en="Phase 1 · 100% Free Browser Tool" data-bn="ফেজ ১ · ফ্রি কিউআর জেনারেটর">
+              Phase 1 · 100% Free Browser Tool
+            </span>
+          </div>
+        </a>
+
+        <!-- Zone 2: Navigation Links -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+          <a href="#studio" class="hover:text-slate-900 transition-colors whitespace-nowrap shrink-0" data-en="Generator" data-bn="জেনারেটর">Generator</a>
+          <a href="#customizer" class="hover:text-slate-900 transition-colors whitespace-nowrap shrink-0" data-en="Custom Styles" data-bn="ডিজাইন ও লোগো">Custom Styles</a>
+          <button type="button" id="btn-deploy-header" class="hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 cursor-pointer text-left" data-en="Deployment Guide" data-bn="ডিপ্লয় গাইড">Deployment Guide</button>
+          <a href="#features-info" class="hover:text-slate-900 transition-colors whitespace-nowrap shrink-0" data-en="Privacy Guarantee" data-bn="প্রাইভেসি নিশ্চয়তা">Privacy Guarantee</a>
+        </nav>
+
+        <!-- Zone 3: Actions -->
+        <div class="flex items-center gap-2.5 shrink-0">
+          <button
+            type="button"
+            id="btn-lang-toggle"
+            class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors whitespace-nowrap cursor-pointer"
+            title="Switch Language / ভাষা পরিবর্তন করুন"
+          >
+            <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <span>বাংলা</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-reset"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors whitespace-nowrap cursor-pointer"
+            title="Reset to default settings"
+          >
+            <svg class="w-3.5 h-3.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+            <span data-en="Reset" data-bn="রিসেট">Reset</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-open-deploy"
+            class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors shadow-xs whitespace-nowrap cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span data-en="Deploy Free" data-bn="ফ্রি ডিপ্লয়">Deploy Free</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main id="studio" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 no-print">
+      <!-- Top Introduction Banner -->
+      <div class="mb-8">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-en="Generate Custom High-Resolution QR Codes" data-bn="কাস্টম হাই-রেজোলিউশন কিউআর কোড তৈরি করুন">
+          Generate Custom High-Resolution QR Codes
+        </h1>
+        <p class="text-sm text-slate-500 mt-1" data-en="Fast, privacy-focused browser tool. URL, Text, Wi-Fi, WhatsApp & vCard generation with logo embedding, custom patterns, and high-res vector export." data-bn="দ্রুত ও সুরক্ষিত ব্রাউজার টুল। URL, Text, Wi-Fi, WhatsApp ও vCard কিউআর তৈরি, নিজস্ব লোগো, রঙ ও ভেক্টর এক্সপোর্ট।">
+          Fast, privacy-focused browser tool. URL, Text, Wi-Fi, WhatsApp & vCard generation with logo embedding, custom patterns, and high-res vector export.
+        </p>
+      </div>
+
+      <!-- Studio Two-Column Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- LEFT COLUMN: Types, Forms & Customizer (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- 1. Type Selector -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-700 tracking-wide uppercase" data-en="Select QR Type" data-bn="কিউআর এর ধরন নির্বাচন করুন">
+                Select QR Type
+              </label>
+              <span class="text-xs text-slate-400" data-en="5 Free Types Included" data-bn="৫টি সম্পূর্ণ ফ্রি টাইপ">
+                5 Free Types Included
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 bg-slate-100 rounded-xl border border-slate-200">
+              <button
+                type="button"
+                data-type-tab="url"
+                class="type-btn flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200/80"
+              >
+                <svg class="w-4 h-4 mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <span data-en="Website URL" data-bn="ওয়েব লিঙ্ক">Website URL</span>
+              </button>
+
+              <button
+                type="button"
+                data-type-tab="text"
+                class="type-btn flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+              >
+                <svg class="w-4 h-4 mb-1 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+                <span data-en="Plain Text" data-bn="টেক্সট">Plain Text</span>
+              </button>
+
+              <button
+                type="button"
+                data-type-tab="wifi"
+                class="type-btn flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+              >
+                <svg class="w-4 h-4 mb-1 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
+                <span data-en="Wi-Fi" data-bn="ওয়াই-ফাই">Wi-Fi</span>
+              </button>
+
+              <button
+                type="button"
+                data-type-tab="whatsapp"
+                class="type-btn flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+              >
+                <svg class="w-4 h-4 mb-1 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                <span data-en="WhatsApp" data-bn="হোয়াটসঅ্যাপ">WhatsApp</span>
+              </button>
+
+              <button
+                type="button"
+                data-type-tab="vcard"
+                class="type-btn flex flex-col items-center justify-center py-2.5 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+              >
+                <svg class="w-4 h-4 mb-1 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 2v2"/><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><circle cx="9" cy="11" r="2"/><path d="M15 18a3 3 0 0 0-6 0"/><path d="M18 18h4"/><path d="M20 16v4"/></svg>
+                <span data-en="vCard" data-bn="কন্টাক্ট কার্ড">vCard</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Form Inputs Section -->
+          <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-2xs">
+            <!-- URL FORM -->
+            <div id="form-url" class="space-y-4">
+              <div class="flex items-center justify-between">
+                <label class="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <span data-en="Target Website URL" data-bn="টার্গেট ওয়েবসাইট লিঙ্ক বা ইউআরএল">Target Website URL</span>
+                </label>
+              </div>
+
+              <div>
+                <input
+                  type="url"
+                  id="input-url"
+                  value="https://example.com"
+                  placeholder="https://yourbrand.com or yourlink.io"
+                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors font-mono"
+                />
+                <p class="mt-1.5 text-xs text-slate-500" data-en="Tip: Protocol https:// is attached automatically if omitted." data-bn="পরামর্শ: https:// না লিখলেও স্বয়ংক্রিয়ভাবে যুক্ত হবে।">
+                  Tip: Protocol https:// is attached automatically if omitted.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                <span class="text-xs text-slate-400 font-medium mr-1" data-en="Quick samples:" data-bn="নমুনা:">Quick samples:</span>
+                <button type="button" data-sample-url="https://google.com" class="px-2 py-1 text-xs text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors cursor-pointer">google.com</button>
+                <button type="button" data-sample-url="https://github.com" class="px-2 py-1 text-xs text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors cursor-pointer">github.com</button>
+                <button type="button" data-sample-url="https://linkedin.com" class="px-2 py-1 text-xs text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors cursor-pointer">linkedin.com</button>
+              </div>
+            </div>
+
+            <!-- TEXT FORM -->
+            <div id="form-text" class="space-y-3 hidden">
+              <div class="flex items-center justify-between">
+                <label class="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+                  <span data-en="Plain Text / Notes" data-bn="সাধারণ টেক্সট বা বার্তা">Plain Text / Notes</span>
+                </label>
+                <span id="text-char-count" class="text-xs text-slate-400 font-mono">23 chars</span>
+              </div>
+
+              <textarea
+                id="input-text"
+                rows="4"
+                placeholder="Enter any note, serial number or text here..."
+                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
+              >Hello from QR Studio!</textarea>
+
+              <p class="text-xs text-slate-500" data-en="Works offline. Scanning phones display this text immediately on screen." data-bn="ইন্টারনেট ছাড়াই কাজ করে। স্ক্যান করলেই স্ক্রিনে টেক্সট প্রদর্শিত হবে।">
+                Works offline. Scanning phones display this text immediately on screen.
+              </p>
+            </div>
+
+            <!-- WI-FI FORM -->
+            <div id="form-wifi" class="space-y-4 hidden">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
+                <h3 class="text-sm font-semibold text-slate-900" data-en="Wi-Fi Network Configuration" data-bn="ওয়াই-ফাই নেটওয়ার্ক তথ্য">
+                  Wi-Fi Network Configuration
+                </h3>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Network Name (SSID)" data-bn="নেটওয়ার্কের নাম (SSID)">Network Name (SSID)</label>
+                  <input
+                    type="text"
+                    id="wifi-ssid"
+                    value="Home_WiFi_5G"
+                    placeholder="Home_WiFi_5G"
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Security Protocol" data-bn="নিরাপত্তা ধরন">Security Protocol</label>
+                  <select
+                    id="wifi-enc"
+                    class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors cursor-pointer"
+                  >
+                    <option value="WPA">WPA / WPA2 / WPA3 (Standard)</option>
+                    <option value="WEP">WEP (Legacy)</option>
+                    <option value="nopass">No Password (Open Network)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Wi-Fi Password" data-bn="ওয়াই-ফাই পাসওয়ার্ড">Wi-Fi Password</label>
+                <div class="relative">
+                  <input
+                    type="password"
+                    id="wifi-password"
+                    placeholder="••••••••••••"
+                    class="w-full px-3.5 py-2 pr-10 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors font-mono"
+                  />
+                  <button
+                    type="button"
+                    id="btn-toggle-pass"
+                    class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    title="Toggle password view"
+                  >
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 pt-1">
+                <input id="wifi-hidden" type="checkbox" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer" />
+                <label for="wifi-hidden" class="text-xs text-slate-700 cursor-pointer" data-en="Hidden Network (SSID is not broadcasted)" data-bn="লুকানো নেটওয়ার্ক (হিডেন SSID)">
+                  Hidden Network (SSID is not broadcasted)
+                </label>
+              </div>
+
+              <div class="p-2.5 bg-blue-50/70 rounded-lg border border-blue-100 text-xs text-blue-900">
+                <span data-en="Phones point camera at this QR code and prompt 'Join Wi-Fi network' without any manual password typing." data-bn="ক্যামেরা দিয়ে স্ক্যান করে 'Join Network' ট্যাপ করলেই সাথে সাথে ওয়াই-ফাই কানেক্ট হবে।">
+                  Phones point camera at this QR code and prompt 'Join Wi-Fi network' without any manual password typing.
+                </span>
+              </div>
+            </div>
+
+            <!-- WHATSAPP FORM -->
+            <div id="form-whatsapp" class="space-y-4 hidden">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                <h3 class="text-sm font-semibold text-slate-900" data-en="WhatsApp Direct Chat" data-bn="সরাসরি হোয়াটসঅ্যাপ চ্যাট">
+                  WhatsApp Direct Chat
+                </h3>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-1">
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Country Code" data-bn="কান্ট্রি কোড">Country Code</label>
+                  <select id="wa-code" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors cursor-pointer">
+                    <option value="+880">🇧🇩 Bangladesh (+880)</option>
+                    <option value="+91">🇮🇳 India (+91)</option>
+                    <option value="+1">🇺🇸 USA / Canada (+1)</option>
+                    <option value="+44">🇬🇧 UK (+44)</option>
+                    <option value="+971">🇦🇪 UAE (+971)</option>
+                    <option value="+966">🇸🇦 Saudi (+966)</option>
+                    <option value="+60">🇲🇾 Malaysia (+60)</option>
+                    <option value="+65">🇸🇬 Singapore (+65)</option>
+                  </select>
+                </div>
+
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Phone Number" data-bn="ফোন নম্বর">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="wa-phone"
+                    placeholder="1712345678"
+                    class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Pre-filled Message (Optional)" data-bn="পূর্বনির্ধারিত বার্তা (ঐচ্ছিক)">Pre-filled Message (Optional)</label>
+                <textarea
+                  id="wa-msg"
+                  rows="2"
+                  placeholder="Hello, I saw your QR code and would like more details!"
+                  class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
+                ></textarea>
+              </div>
+
+              <div class="p-2.5 bg-emerald-50/70 rounded-lg border border-emerald-100 text-xs text-emerald-900" data-en="When scanned, opens WhatsApp chat directly with your message pre-typed and ready to send!" data-bn="স্ক্যান করলেই সরাসরি হোয়াটসঅ্যাপ চ্যাট ওপেন হবে এবং বার্তাটি রেডি থাকবে।">
+                When scanned, opens WhatsApp chat directly with your message pre-typed and ready to send!
+              </div>
+            </div>
+
+            <!-- VCARD FORM -->
+            <div id="form-vcard" class="space-y-4 hidden">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 2v2"/><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><circle cx="9" cy="11" r="2"/><path d="M15 18a3 3 0 0 0-6 0"/><path d="M18 18h4"/><path d="M20 16v4"/></svg>
+                <h3 class="text-sm font-semibold text-slate-900" data-en="Digital Business Card (vCard 3.0)" data-bn="ডিজিটাল ভিজিটিং কার্ড (vCard 3.0)">
+                  Digital Business Card (vCard 3.0)
+                </h3>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="First Name *" data-bn="নামের প্রথম অংশ *">First Name *</label>
+                  <input type="text" id="vcard-firstName" value="Sandip" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Last Name" data-bn="পদবি / শেষ অংশ">Last Name</label>
+                  <input type="text" id="vcard-lastName" value="Hembram" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Phone Number *" data-bn="ফোন নম্বর *">Phone Number *</label>
+                  <input type="tel" id="vcard-phone" value="+8801700000000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Email Address" data-bn="ইমেইল">Email Address</label>
+                  <input type="email" id="vcard-email" value="hello@example.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Company / Org" data-bn="প্রতিষ্ঠান">Company / Org</label>
+                  <input type="text" id="vcard-organization" value="QR Studio" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Job Title" data-bn="পদবি">Job Title</label>
+                  <input type="text" id="vcard-title" value="Senior Engineer" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1" data-en="Website / Portfolio" data-bn="ওয়েবসাইট লিঙ্ক">Website / Portfolio</label>
+                <input type="text" id="vcard-website" value="https://example.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+              </div>
+
+              <div class="p-2.5 bg-indigo-50/70 rounded-lg border border-indigo-100 text-xs text-indigo-900" data-en="Scanning on iOS or Android prompts 'Create New Contact' with all information filled automatically." data-bn="আইফোন বা অ্যান্ড্রয়েডে স্ক্যান করলেই এক ট্যাপে কন্টাক্ট সেভ করার অপশন আসবে।">
+                Scanning on iOS or Android prompts 'Create New Contact' with all information filled automatically.
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Design & Customization Panel -->
+          <div id="customizer" class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+            <!-- Customizer Subtabs -->
+            <div class="flex border-b border-slate-200 bg-slate-50/70 p-1.5 gap-1">
+              <button
+                type="button"
+                data-design-tab="presets"
+                class="design-subtab flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-all cursor-pointer bg-white text-slate-900 shadow-xs border border-slate-200/80"
+              >
+                <svg class="w-3.5 h-3.5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                <span data-en="Presets" data-bn="প্রিসেট থিম">Presets</span>
+              </button>
+
+              <button
+                type="button"
+                data-design-tab="patterns"
+                class="design-subtab flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900"
+              >
+                <svg class="w-3.5 h-3.5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                <span data-en="Patterns" data-bn="প্যাটার্ন">Patterns</span>
+              </button>
+
+              <button
+                type="button"
+                data-design-tab="colors"
+                class="design-subtab flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900"
+              >
+                <svg class="w-3.5 h-3.5 text-pink-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg>
+                <span data-en="Colors" data-bn="রঙ">Colors</span>
+              </button>
+
+              <button
+                type="button"
+                data-design-tab="logo"
+                class="design-subtab flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900"
+              >
+                <svg class="w-3.5 h-3.5 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                <span data-en="Logo" data-bn="নিজের লোগো">Logo</span>
+              </button>
+            </div>
+
+            <div class="p-5">
+              <!-- TAB: PRESETS -->
+              <div id="design-sec-presets" class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-700" data-en="Curated Designer Presets" data-bn="ডিজাইনার প্রিসেট থিম">Curated Designer Presets</span>
+                  <span class="text-xs text-slate-400" data-en="1-Click Apply" data-bn="এক ক্লিকে পরিবর্তন">1-Click Apply</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  <button type="button" data-preset-id="classic-dark" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-slate-900 mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Modern Carbon</div>
+                    <div class="text-[11px] text-slate-400">Solid slate</div>
+                  </button>
+
+                  <button type="button" data-preset-id="royal-indigo" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-indigo-600 mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Royal Indigo</div>
+                    <div class="text-[11px] text-slate-400">Gradient blue</div>
+                  </button>
+
+                  <button type="button" data-preset-id="emerald-growth" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-emerald-600 mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Emerald Lush</div>
+                    <div class="text-[11px] text-slate-400">Clean green</div>
+                  </button>
+
+                  <button type="button" data-preset-id="sunset-coral" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-orange-600 mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Sunset Coral</div>
+                    <div class="text-[11px] text-slate-400">Warm sunset</div>
+                  </button>
+
+                  <button type="button" data-preset-id="midnight-teal" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-teal-600 mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Midnight Teal</div>
+                    <div class="text-[11px] text-slate-400">Radial teal</div>
+                  </button>
+
+                  <button type="button" data-preset-id="minimalist-mono" class="text-left p-3 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div class="w-4 h-4 rounded-full bg-black mb-2 border border-black/10"></div>
+                    <div class="text-xs font-bold text-slate-900">Monochrome</div>
+                    <div class="text-[11px] text-slate-400">Standard black</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- TAB: PATTERNS -->
+              <div id="design-sec-patterns" class="space-y-4 hidden">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-2" data-en="BODY DOT PATTERN" data-bn="কিউআর ডট প্যাটার্ন">BODY DOT PATTERN</label>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <button type="button" data-pattern="rounded" class="p-2.5 rounded-lg border border-indigo-600 bg-indigo-50/50 text-indigo-900 font-semibold text-left cursor-pointer text-xs">Rounded</button>
+                    <button type="button" data-pattern="dots" class="p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-left cursor-pointer text-xs">Dots</button>
+                    <button type="button" data-pattern="extra-rounded" class="p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-left cursor-pointer text-xs">Extra Rounded</button>
+                    <button type="button" data-pattern="classy-rounded" class="p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-left cursor-pointer text-xs">Classy Round</button>
+                    <button type="button" data-pattern="classy" class="p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-left cursor-pointer text-xs">Classy</button>
+                    <button type="button" data-pattern="square" class="p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-left cursor-pointer text-xs">Square</button>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-100">
+                  <label class="block text-xs font-semibold text-slate-700 mb-2" data-en="CORNER SQUARE SHAPE" data-bn="কোণার ফ্রেম আকৃতি">CORNER SQUARE SHAPE</label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <button type="button" data-corner-square="extra-rounded" class="py-2 px-3 rounded-lg border border-indigo-600 bg-indigo-50/50 text-indigo-900 font-semibold text-center cursor-pointer text-xs">Rounded</button>
+                    <button type="button" data-corner-square="dot" class="py-2 px-3 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-center cursor-pointer text-xs">Circular</button>
+                    <button type="button" data-corner-square="square" class="py-2 px-3 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-center cursor-pointer text-xs">Square</button>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-100">
+                  <label class="block text-xs font-semibold text-slate-700 mb-2" data-en="CORNER CENTER DOT SHAPE" data-bn="কোণার ভেতরের বিন্দু">CORNER CENTER DOT SHAPE</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" data-corner-dot="dot" class="py-2 px-3 rounded-lg border border-indigo-600 bg-indigo-50/50 text-indigo-900 font-semibold text-center cursor-pointer text-xs">Circle Dot</button>
+                    <button type="button" data-corner-dot="square" class="py-2 px-3 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-center cursor-pointer text-xs">Square Dot</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB: COLORS -->
+              <div id="design-sec-colors" class="space-y-4 hidden">
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-xs font-semibold text-slate-700" data-en="FOREGROUND COLOR" data-bn="কিউআর কোডের রঙ">FOREGROUND COLOR</label>
+                  <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs">
+                    <button type="button" id="btn-fg-solid" class="px-2.5 py-1 rounded-md font-medium shadow-xs bg-white text-slate-900 cursor-pointer" data-en="Solid" data-bn="একক">Solid</button>
+                    <button type="button" id="btn-fg-gradient" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer" data-en="Gradient" data-bn="গ্রেডিয়েন্ট">Gradient</button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <input type="color" id="picker-fg1" value="#0f172a" class="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0 shrink-0" />
+                    <div class="flex-1">
+                      <span class="block text-[11px] text-slate-500 font-medium" data-en="Color 1" data-bn="রঙ ১">Color 1</span>
+                      <input type="text" id="hex-fg1" value="#0f172a" class="text-xs font-mono uppercase bg-transparent outline-none w-full" />
+                    </div>
+                  </div>
+
+                  <div id="gradient-controls" class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200 hidden">
+                    <input type="color" id="picker-fg2" value="#4338ca" class="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0 shrink-0" />
+                    <div class="flex-1">
+                      <span class="block text-[11px] text-slate-500 font-medium" data-en="Color 2" data-bn="রঙ ২">Color 2</span>
+                      <input type="text" id="hex-fg2" value="#4338ca" class="text-xs font-mono uppercase bg-transparent outline-none w-full" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Swatches -->
+                <div class="flex items-center gap-1.5 flex-wrap pt-1">
+                  <button type="button" data-swatch="#0f172a" class="w-5 h-5 rounded bg-slate-900 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#1e3a8a" class="w-5 h-5 rounded bg-blue-900 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#4338ca" class="w-5 h-5 rounded bg-indigo-700 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#047857" class="w-5 h-5 rounded bg-emerald-700 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#0f766e" class="w-5 h-5 rounded bg-teal-700 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#b91c1c" class="w-5 h-5 rounded bg-red-700 border border-black/10 cursor-pointer"></button>
+                  <button type="button" data-swatch="#c2410c" class="w-5 h-5 rounded bg-orange-700 border border-black/10 cursor-pointer"></button>
+                </div>
+
+                <!-- Background color -->
+                <div class="pt-3 border-t border-slate-100">
+                  <div class="flex items-center justify-between mb-2">
+                    <label class="text-xs font-semibold text-slate-700" data-en="BACKGROUND COLOR" data-bn="ব্যাকগ্রাউন্ড রঙ">BACKGROUND COLOR</label>
+                    <div class="flex items-center gap-1.5">
+                      <input type="checkbox" id="check-bg-trans" class="rounded border-slate-300 text-indigo-600 cursor-pointer" />
+                      <label for="check-bg-trans" class="text-xs text-slate-600 cursor-pointer" data-en="Transparent" data-bn="স্বচ্ছ (ট্রান্সপারেন্ট)">Transparent</label>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <input type="color" id="picker-bg" value="#ffffff" class="w-8 h-8 rounded border border-slate-300 cursor-pointer p-0 shrink-0" />
+                    <div class="flex-1">
+                      <span class="block text-[11px] text-slate-500 font-medium" data-en="Background Hex" data-bn="ব্যাকগ্রাউন্ড হেক্স কোড">Background Hex</span>
+                      <input type="text" id="hex-bg" value="#ffffff" class="text-xs font-mono uppercase bg-transparent outline-none w-full" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB: LOGO -->
+              <div id="design-sec-logo" class="space-y-4 hidden">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-semibold text-slate-700" data-en="EMBED LOGO IN CENTER" data-bn="মাঝখানে নিজের লোগো যোগ করুন">EMBED LOGO IN CENTER</label>
+                  <button type="button" id="btn-remove-logo" class="text-xs text-rose-600 hover:text-rose-800 font-medium cursor-pointer hidden" data-en="Remove Logo" data-bn="লোগো মুছুন">
+                    Remove Logo
+                  </button>
+                </div>
+
+                <!-- Custom upload box -->
+                <div id="box-logo-upload" class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-xl p-4 text-center bg-slate-50/60 hover:bg-indigo-50/20 transition-colors cursor-pointer">
+                  <input type="file" id="file-logo-upload" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" />
+                  <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-xs border border-slate-200 flex items-center justify-center text-slate-600 mb-2">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                  </div>
+                  <div id="logo-active-name" class="text-xs font-semibold text-slate-900" data-en="Upload custom logo image (PNG, SVG, JPG)" data-bn="ডিভাইস থেকে নিজের লোগো আপলোড করুন">
+                    Upload custom logo image (PNG, SVG, JPG)
+                  </div>
+                  <div class="text-[11px] text-slate-500 mt-0.5" data-en="Square transparent PNG or SVG recommended" data-bn="স্বচ্ছ ব্যাকগ্রাউন্ডের স্কয়ার ছবি সবচেয়ে সুন্দর দেখায়">
+                    Square transparent PNG or SVG recommended
+                  </div>
+                </div>
+
+                <!-- Preset logos -->
+                <div>
+                  <span class="block text-xs font-semibold text-slate-700 mb-2" data-en="Or pick from preset icon badges:" data-bn="অথবা নিচের জনপ্রিয় ব্যাজগুলো বেছে নিন:">
+                    Or pick from preset icon badges:
+                  </span>
+                  <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    <button type="button" data-preset-logo="whatsapp" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">WhatsApp</button>
+                    <button type="button" data-preset-logo="wifi" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">Wi-Fi</button>
+                    <button type="button" data-preset-logo="link" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">Web</button>
+                    <button type="button" data-preset-logo="contact" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">Contact</button>
+                    <button type="button" data-preset-logo="location" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">Pin</button>
+                    <button type="button" data-preset-logo="star" class="p-2 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-xs text-center cursor-pointer">Star</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Live QR Preview & Actions (5 cols, sticky) -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm sticky top-20">
+            <!-- Header bar with Scannability indicator -->
+            <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-800" data-en="Live QR Preview" data-bn="লাইভ কিউআর প্রিভিউ">Live QR Preview</span>
+              </div>
+              <button
+                type="button"
+                id="btn-test-scan"
+                class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors cursor-pointer"
+              >
+                <svg class="w-3.5 h-3.5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+                <span data-en="Test Scan" data-bn="টেস্ট স্ক্যান">Test Scan</span>
+              </button>
+            </div>
+
+            <!-- QR Code Canvas Display -->
+            <div class="my-5 flex flex-col items-center justify-center">
+              <div id="qr-canvas-container" class="qr-canvas-wrapper relative p-4 rounded-xl border border-slate-200 bg-white shadow-2xs max-w-[320px] w-full flex items-center justify-center">
+                <!-- Canvas rendered dynamically by qr-code-styling -->
+              </div>
+
+              <!-- Contrast info bar -->
+              <div class="mt-3 w-full flex items-center justify-between text-xs px-2">
+                <span id="contrast-badge" class="font-semibold text-emerald-700">Optimal scannability</span>
+                <span id="contrast-ratio" class="font-mono text-slate-400 tabular-nums">21:1</span>
+              </div>
+            </div>
+
+            <!-- Resolution Selector -->
+            <div class="pt-3 border-t border-slate-100 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-slate-700" data-en="PNG RESOLUTION" data-bn="ডাউনলোড রেজোলিউশন">PNG RESOLUTION</span>
+                <span class="text-[11px] text-slate-400 font-mono" data-en="HD / Print-ready" data-bn="এইচডি / প্রিন্ট উপযোগী">HD / Print-ready</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-lg">
+                <button type="button" data-res="512" class="py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer text-slate-600 hover:text-slate-900">512 px</button>
+                <button type="button" data-res="1024" class="py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer bg-white text-slate-900 shadow-xs">1024 px</button>
+                <button type="button" data-res="2048" class="py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer text-slate-600 hover:text-slate-900">2048 px</button>
+              </div>
+            </div>
+
+            <!-- Main Download Buttons (PNG, SVG, JPG) -->
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  id="btn-download-png"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
+                >
+                  <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  <span>PNG</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-download-svg"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-all border border-slate-200 cursor-pointer active:scale-95"
+                  title="Scalable Vector Graphics (Infinite Resolution)"
+                >
+                  <svg class="w-3.5 h-3.5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <span>SVG</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-download-jpg"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition-all border border-slate-200 cursor-pointer active:scale-95"
+                >
+                  <svg class="w-3.5 h-3.5 text-slate-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <span>JPG</span>
+                </button>
+              </div>
+
+              <!-- Quick Utility Actions: Copy, Share, Print -->
+              <div class="grid grid-cols-3 gap-2 pt-1">
+                <button
+                  type="button"
+                  id="btn-copy"
+                  class="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span data-en="Copy" data-bn="কপি">Copy</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-share"
+                  class="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                  <span data-en="Share" data-bn="শেয়ার">Share</span>
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-print"
+                  class="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  <span data-en="Print" data-bn="প্রিন্ট">Print</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Trust highlights -->
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+              <span data-en="100% Free Forever" data-bn="১০০% সম্পূর্ণ ফ্রি">100% Free Forever</span>
+              <span>·</span>
+              <span data-en="No Login" data-bn="কোনো লগইন ছাড়া">No Login</span>
+              <span>·</span>
+              <span data-en="No Expiry" data-bn="মেয়াদ শেষ হবে না">No Expiry</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature highlights section -->
+      <section id="features-info" class="mt-16 pt-10 border-t border-slate-200">
+        <h2 class="text-lg font-bold text-slate-900 mb-6" data-en="Why QR Studio is Built for Privacy & Speed" data-bn="কেন কিউআর স্টুডিও দ্রুত ও সম্পূর্ণ নিরাপদ">
+          Why QR Studio is Built for Privacy & Speed
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm mb-3">
+              01
+            </div>
+            <h3 class="text-sm font-bold text-slate-900" data-en="Zero Server & Database" data-bn="কোনো ডাটাবেজ নেই">Zero Server & Database</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed" data-en="All QR generation happens directly in your browser's canvas. No Wi-Fi passwords, contact cards, or links are ever transmitted to any backend." data-bn="সম্পূর্ণ জেনারেশন আপনার ব্রাউজার মেমোরিতে সম্পন্ন হয়। কোনো তথ্য অন্য কোথাও যায় না।">
+              All QR generation happens directly in your browser's canvas. No Wi-Fi passwords, contact cards, or links are ever transmitted to any backend.
+            </p>
+          </div>
+
+          <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm mb-3">
+              02
+            </div>
+            <h3 class="text-sm font-bold text-slate-900" data-en="No Account or Login" data-bn="কোনো লগইন বা সাইনআপ নেই">No Account or Login</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed" data-en="Use immediately with zero barriers. No emails, no credit cards, no subscriptions, and zero paid ads." data-bn="কোনো ইমেইল বা পাসওয়ার্ড ছাড়া সরাসরি যেকোনো ব্রাউজার থেকে ব্যবহার করুন।">
+              Use immediately with zero barriers. No emails, no credit cards, no subscriptions, and zero paid ads.
+            </p>
+          </div>
+
+          <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm mb-3">
+              03
+            </div>
+            <h3 class="text-sm font-bold text-slate-900" data-en="Permanent QR Codes" data-bn="কখনো নষ্ট বা এক্সপায়ার হয় না">Permanent QR Codes</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed" data-en="Generated QR codes are direct standard payloads. They never expire, and will continue to work for years without monthly fees." data-bn="এটি স্ট্যান্ডার্ড কিউআর কোড তৈরি করে, ফলে আজীবন কোনো রিচার্জ বা রিনিউ ছাড়াই কাজ করবে।">
+              Generated QR codes are direct standard payloads. They never expire, and will continue to work for years without monthly fees.
+            </p>
+          </div>
+
+          <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm mb-3">
+              04
+            </div>
+            <h3 class="text-sm font-bold text-slate-900" data-en="Deployable Anywhere (Vercel)" data-bn="ভার্সেলে ফ্রি হোস্ট উপযোগী">Deployable Anywhere (Vercel)</h3>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed" data-en="Pure HTML, CSS, and JS with zero server dependencies. Deploy to Vercel, Netlify, or GitHub Pages in seconds." data-bn="পিওর স্ট্যাটিক ফাইল হিসেবে যেকোনো সার্ভার বা ভার্সেল এ একদম বিনামূল্যে হোস্ট করতে পারবেন।">
+              Pure HTML, CSS, and JS with zero server dependencies. Deploy to Vercel, Netlify, or GitHub Pages in seconds.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 bg-white py-6 no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+          <span>© 2026 QR Studio · Phase 1 Free Edition</span>
+          <span class="mx-2">·</span>
+          <span data-en="Client-Side HTML, CSS & JavaScript" data-bn="সম্পূর্ণ এইচটিএমএল, সিএসএস ও জাভাস্ক্রিপ্ট">Client-Side HTML, CSS & JavaScript</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-slate-900 cursor-pointer" data-en="Back to Top" data-bn="উপরে যান">Back to Top</button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- TEST SCAN SIMULATOR MODAL -->
+    <div id="test-scan-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden no-print">
+      <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 bg-slate-50">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            <h2 class="text-sm font-bold text-slate-900" data-en="Scanner Camera Simulation" data-bn="স্ক্যানার ক্যামেরা সিমুলেশন">Scanner Camera Simulation</h2>
+          </div>
+          <button type="button" id="btn-close-test-scan" class="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <!-- Viewfinder animation -->
+          <div class="relative p-6 rounded-xl bg-slate-900 text-white text-center overflow-hidden border border-slate-800">
+            <div class="laser-line"></div>
+            <div class="w-12 h-12 mx-auto rounded-full bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-indigo-300 mb-2">
+              <svg class="w-6 h-6 animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            </div>
+            <div class="text-xs font-semibold text-indigo-200" data-en="QR Code Detected" data-bn="কিউআর কোড শনাক্ত হয়েছে">QR Code Detected</div>
+            <div class="text-[11px] text-slate-400 mt-0.5" data-en="Phone triggers this native action:" data-bn="যেকোনো ফোনে স্ক্যান করলে এটি ঘটবে:">Phone triggers this native action:</div>
+          </div>
+
+          <!-- Dynamic content -->
+          <div id="test-scan-content" class="p-4 rounded-xl bg-slate-50 border border-slate-200"></div>
+        </div>
+
+        <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex justify-end">
+          <button type="button" onclick="document.getElementById('test-scan-modal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-200 hover:bg-slate-300 rounded-lg transition-colors cursor-pointer" data-en="Done" data-bn="ঠিক আছে">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPLOYMENT GUIDE MODAL -->
+    <div id="deploy-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden no-print">
+      <div class="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shadow-xs">
+              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-slate-900" data-en="Local Testing & Vercel Deployment" data-bn="লোকাল টেস্ট ও ভার্সেল ফ্রি ডিপ্লয় গাইড">Local Testing & Vercel Deployment</h2>
+              <p class="text-xs text-slate-500" data-en="100% Free HTML, CSS and JavaScript tool" data-bn="১০০% বিনামূল্যে যেকোনো হোস্টিংয়ে ডিপ্লয় করুন">100% Free HTML, CSS and JavaScript tool</p>
+            </div>
+          </div>
+          <button type="button" id="btn-close-deploy" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="flex border-b border-slate-200 px-6 bg-white gap-6 text-sm font-medium">
+          <button type="button" id="tab-btn-vercel" class="py-3 border-b-2 border-indigo-600 text-indigo-600 font-semibold cursor-pointer">Vercel Deployment</button>
+          <button type="button" id="tab-btn-local" class="py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">Local Testing (npm)</button>
+          <button type="button" id="tab-btn-architecture" class="py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">Files & Setup</button>
+        </div>
+
+        <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 leading-relaxed">
+          <!-- VERCEL TAB -->
+          <div id="tab-sec-vercel" class="space-y-4">
+            <div class="p-3 bg-indigo-50/70 rounded-xl border border-indigo-100 flex items-start gap-2.5">
+              <svg class="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div>
+                <div class="font-semibold text-indigo-950">Zero Server or Paid API Needed</div>
+                <div class="text-[11px] text-indigo-800 mt-0.5">
+                  This tool builds directly to static assets (HTML/CSS/JS). Host it on Vercel at $0 forever with custom domain support.
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-slate-900 text-sm mb-2">Option A: Deploy via Vercel CLI (1-Minute)</h3>
+              <div class="space-y-2">
+                <div class="p-2.5 bg-slate-900 text-slate-100 rounded-lg font-mono">
+                  <span class="text-slate-400 select-none">$ </span>npm install -g vercel
+                </div>
+                <div class="p-2.5 bg-slate-900 text-slate-100 rounded-lg font-mono">
+                  <span class="text-slate-400 select-none">$ </span>vercel
+                </div>
+                <div class="p-2.5 bg-slate-900 text-slate-100 rounded-lg font-mono">
+                  <span class="text-slate-400 select-none">$ </span>vercel --prod
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+              <h3 class="font-bold text-slate-900 text-sm mb-1.5">Option B: Git Push to GitHub & Connect Vercel</h3>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600">
+                <li>Push repository to your GitHub account: <code class="font-mono bg-slate-100 px-1 py-0.5 rounded">git push origin main</code></li>
+                <li>Visit <a href="https://vercel.com" target="_blank" rel="noreferrer" class="text-indigo-600 underline font-medium">vercel.com</a>, sign in, and click <strong>Add New Project</strong>.</li>
+                <li>Select the repository. Framework preset is automatically detected as <strong>Vite</strong>.</li>
+                <li>Click <strong>Deploy</strong>. Live URL with free SSL is generated immediately!</li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- LOCAL TAB -->
+          <div id="tab-sec-local" class="space-y-4 hidden">
+            <p>Run these commands on your computer to test locally:</p>
+            <div class="space-y-2">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="font-semibold text-slate-900 mb-1">1. Install dependencies:</div>
+                <code class="block p-2 bg-slate-900 text-slate-100 rounded-md font-mono">$ npm install</code>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="font-semibold text-slate-900 mb-1">2. Run local development server:</div>
+                <code class="block p-2 bg-slate-900 text-slate-100 rounded-md font-mono">$ npm run dev</code>
+                <p class="text-[11px] text-slate-500 mt-1">Opens at <code class="font-mono">http://localhost:3000</code></p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="font-semibold text-slate-900 mb-1">3. Build for production:</div>
+                <code class="block p-2 bg-slate-900 text-slate-100 rounded-md font-mono">$ npm run build</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- ARCHITECTURE TAB -->
+          <div id="tab-sec-architecture" class="space-y-3 hidden">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-semibold text-slate-900 mb-1">Clean HTML, CSS & JavaScript Structure</div>
+              <pre class="p-3 bg-slate-900 text-slate-200 rounded-lg font-mono text-[11px] overflow-x-auto leading-relaxed">
+/index.html          # Semantic HTML5 layout, UI controls & modals
+/src/style.css       # Tailwind CSS v4, custom theme & print media
+/src/app.js          # Pure JavaScript state, QR engine & exports
+/package.json        # Build scripts (npm run dev / npm run build)
+/vite.config.ts      # Zero-config Vite static bundler
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+          <span class="text-[11px] text-slate-500">QR Studio Phase 1 · Ready to deploy</span>
+          <button type="button" onclick="document.getElementById('deploy-modal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer">
+            Close Guide
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINT SHEET (Only appears during window.print) -->
+    <div class="print-only print-sheet">
+      <div class="border-4 border-black p-8 rounded-2xl max-w-md mx-auto my-0">
+        <h1 id="print-sheet-title" class="text-2xl font-black tracking-tight text-black mb-1">
+          Scan with Smartphone Camera
+        </h1>
+        <p id="print-sheet-detail" class="text-sm font-medium text-gray-700 mb-6 break-all">
+          Point your camera at the QR code below
+        </p>
+
+        <div class="p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl my-4 text-xs text-gray-600">
+          <p class="font-semibold text-black mb-1">How to scan:</p>
+          <p>Open your camera app, point it at the QR code, and tap the notification link to continue.</p>
+        </div>
+
+        <div class="pt-4 mt-6 border-t border-gray-200 text-[10px] text-gray-400">
+          Generated with QR Studio Phase 1 · Free & Client-Side
+        </div>
+      </div>
+    </div>
+
+    <!-- Pure JavaScript Application Script -->
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

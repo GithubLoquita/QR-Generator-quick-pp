@@ -1,0 +1,6 @@
+{
+  "name": "QR Studio - Free Custom QR Code Generator",
+  "description": "Generate custom, high-resolution QR codes for URL, Wi-Fi, WhatsApp, vCard & Text with custom patterns, colors, and logos. 100% free, private, and client-side.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
