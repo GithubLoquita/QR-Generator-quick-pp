@@ -6,14 +6,24 @@
 }
 
 :root {
-  color-scheme: light;
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-light: #f5f3ff;
+  --color-primary-border: #ddd6fe;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #0f172a;
-  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(180deg, #fbfaff 0%, #f6f5fc 100%);
+  color: #1e1b4b;
+  min-height: 100vh;
+}
+
+/* Subtle focus ring in soft-purple */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
 }
 
 /* Custom scrollbar */
@@ -25,53 +35,33 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d8b4fe;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #c084fc;
 }
 
-/* QR Canvas Container styling */
-.qr-canvas-wrapper canvas,
-.qr-canvas-wrapper svg {
+/* QR Canvas styling */
+.qr-preview-box canvas,
+.qr-preview-box svg {
   max-width: 100% !important;
   height: auto !important;
   display: block;
   margin: 0 auto;
+  border-radius: 12px;
 }
 
-/* Simulated laser animation in test scan */
-@keyframes laser-sweep {
-  0% {
-    top: 0%;
-    opacity: 0.8;
-  }
-  50% {
-    top: 92%;
-    opacity: 1;
-  }
-  100% {
-    top: 0%;
-    opacity: 0.8;
-  }
+/* Smooth button tap feedback */
+button:active {
+  transform: scale(0.985);
 }
 
-.laser-line {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #6366f1, #a855f7, #6366f1, transparent);
-  box-shadow: 0 0 12px #818cf8;
-  animation: laser-sweep 2.4s ease-in-out infinite;
-}
-
-/* Print styles for A4 sheet */
+/* Dedicated Print Stylesheet */
 @media print {
   body {
-    background: white !important;
-    color: black !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
   .no-print {
     display: none !important;
@@ -79,11 +69,14 @@ body {
   .print-only {
     display: block !important;
   }
-  .print-sheet {
+  .print-card {
     page-break-inside: avoid;
-    margin: 20px auto;
-    max-width: 500px;
+    max-width: 480px;
+    margin: 40px auto;
     text-align: center;
+    border: 3px solid #1e1b4b;
+    border-radius: 24px;
+    padding: 36px 24px;
   }
 }
 
