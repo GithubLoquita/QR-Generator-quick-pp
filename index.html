@@ -4,41 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Studio — Free QR Code Generator by ANIX Software Technology</title>
-    <meta name="description" content="Create, customize and download QR codes in seconds. 100% Free, no sign-up required. URL, Text, Wi-Fi, WhatsApp and Contact vCard QR generation." />
+    <meta name="description" content="Create, customize and download QR codes in seconds. 100% Free, no sign-up required. Developed by ANIX Software Technology." />
     <meta property="og:title" content="QR Studio — Free QR Code Generator" />
     <meta property="og:description" content="Create, customize and download QR codes in seconds. Developed by ANIX Software Technology." />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237c3aed'><rect width='7' height='7' x='3' y='3' rx='1.5'/><rect width='7' height='7' x='14' y='3' rx='1.5'/><rect width='7' height='7' x='3' y='14' rx='1.5'/><rect width='4' height='4' x='15' y='15' rx='1'/></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000000'><rect width='7' height='7' x='3' y='3' rx='1.5'/><rect width='7' height='7' x='14' y='3' rx='1.5'/><rect width='7' height='7' x='3' y='14' rx='1.5'/><rect width='4' height='4' x='15' y='15' rx='1'/></svg>" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-purple-200 selection:text-purple-900">
-    <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-purple-100/80 shadow-2xs no-print">
+  <body class="flex flex-col min-h-screen bg-neutral-50 text-neutral-900 antialiased selection:bg-black selection:text-white">
+    <!-- Top Navigation Bar (Strict Black & White) -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-2xs no-print">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Brand identity -->
-        <a href="/" class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-purple-200">
+        <a href="/" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white shadow-xs">
             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="6" height="6" x="3" y="3" rx="1.5"/><rect width="6" height="6" x="15" y="3" rx="1.5"/><rect width="6" height="6" x="3" y="15" rx="1.5"/><path d="M15 15h3a1 1 0 0 1 1 1v3"/><path d="M15 21v.01"/><path d="M21 15v.01"/>
             </svg>
           </div>
           <div class="flex flex-col">
-            <span class="text-lg font-extrabold tracking-tight text-slate-900 leading-tight">
+            <span class="text-lg font-extrabold tracking-tight text-black leading-tight">
               QR Studio
             </span>
-            <span class="text-[11px] font-medium text-purple-700 leading-tight">
+            <span class="text-[11px] font-semibold text-neutral-500 leading-tight">
               by ANIX Software Technology
             </span>
           </div>
         </a>
 
-        <!-- Visible 100% Free Label -->
+        <!-- 100% Free Badge -->
         <div class="flex items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-bold tracking-wide">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-900 text-xs font-bold tracking-wide">
+            <span class="w-2 h-2 rounded-full bg-black"></span>
             <span>100% Free</span>
           </div>
         </div>
@@ -47,12 +47,12 @@
 
     <!-- Main Studio Workspace -->
     <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 no-print">
-      <!-- Hero / Section Heading -->
+      <!-- Section Heading -->
       <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
           Create Your QR Code for Free
         </h1>
-        <p class="mt-2 text-sm sm:text-base text-slate-600">
+        <p class="mt-2 text-sm sm:text-base text-neutral-600">
           Create, customize and download QR codes in seconds.
         </p>
       </div>
@@ -63,16 +63,16 @@
         <!-- LEFT COLUMN: Type Selection, Data Form & Customization (7 cols) -->
         <div class="lg:col-span-7 space-y-6">
           
-          <!-- 1. Easy QR Type Selection -->
-          <div class="bg-white rounded-2xl border border-purple-100 p-2 shadow-xs">
+          <!-- 1. Easy QR Type Selection (Monochrome) -->
+          <div class="bg-white rounded-2xl border border-neutral-200 p-2 shadow-xs">
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
               <!-- URL -->
               <button
                 type="button"
                 data-type="url"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer bg-white text-purple-900 shadow-xs border border-purple-100"
+                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs"
               >
-                <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                 <span>URL</span>
               </button>
 
@@ -80,9 +80,9 @@
               <button
                 type="button"
                 data-type="text"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
               >
-                <svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
                 <span>Text</span>
               </button>
 
@@ -90,9 +90,9 @@
               <button
                 type="button"
                 data-type="wifi"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
               >
-                <svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
                 <span>Wi-Fi</span>
               </button>
 
@@ -100,9 +100,9 @@
               <button
                 type="button"
                 data-type="whatsapp"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
               >
-                <svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
                 <span>WhatsApp</span>
               </button>
 
@@ -110,20 +110,20 @@
               <button
                 type="button"
                 data-type="vcard"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
               >
-                <svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 2v2"/><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><circle cx="9" cy="11" r="2"/><path d="M15 18a3 3 0 0 0-6 0"/><path d="M18 18h4"/><path d="M20 16v4"/></svg>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 2v2"/><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><circle cx="9" cy="11" r="2"/><path d="M15 18a3 3 0 0 0-6 0"/><path d="M18 18h4"/><path d="M20 16v4"/></svg>
                 <span>Contact</span>
               </button>
             </div>
           </div>
 
           <!-- 2. Simple Form Card -->
-          <div class="bg-white rounded-2xl border border-purple-100 p-6 shadow-xs space-y-4">
+          <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-4">
             
             <!-- URL FORM -->
             <div id="form-url" class="space-y-3">
-              <label for="field-url" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <label for="field-url" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
                 Website or Link URL
               </label>
               <input
@@ -131,25 +131,25 @@
                 id="field-url"
                 value="https://example.com"
                 placeholder="https://yourwebsite.com"
-                class="w-full px-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 font-mono transition-colors"
+                class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono transition-colors"
               />
-              <p class="text-xs text-slate-500">
+              <p class="text-xs text-neutral-500">
                 Enter your website, portfolio, social profile, or file download link.
               </p>
             </div>
 
             <!-- TEXT FORM -->
             <div id="form-text" class="space-y-3 hidden">
-              <label for="field-text" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <label for="field-text" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
                 Plain Text or Message
               </label>
               <textarea
                 id="field-text"
                 rows="4"
                 placeholder="Type your message, notes, or instructions here..."
-                class="w-full px-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 transition-colors"
+                class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black transition-colors"
               >Welcome to QR Studio!</textarea>
-              <p class="text-xs text-slate-500">
+              <p class="text-xs text-neutral-500">
                 Works offline without internet. Scanning phones display this text immediately.
               </p>
             </div>
@@ -158,7 +158,7 @@
             <div id="form-wifi" class="space-y-4 hidden">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label for="wifi-ssid" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="wifi-ssid" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Network Name (SSID)
                   </label>
                   <input
@@ -166,17 +166,17 @@
                     id="wifi-ssid"
                     value="My_WiFi_Network"
                     placeholder="e.g. Office_Guest"
-                    class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900"
+                    class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black"
                   />
                 </div>
 
                 <div>
-                  <label for="wifi-enc" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="wifi-enc" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Security Type
                   </label>
                   <select
                     id="wifi-enc"
-                    class="w-full px-3.5 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 cursor-pointer"
+                    class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer"
                   >
                     <option value="WPA">WPA / WPA2 / WPA3 (Standard)</option>
                     <option value="WEP">WEP</option>
@@ -186,7 +186,7 @@
               </div>
 
               <div>
-                <label for="wifi-pass" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label for="wifi-pass" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                   Password
                 </label>
                 <div class="relative">
@@ -194,12 +194,12 @@
                     type="password"
                     id="wifi-pass"
                     placeholder="Enter network password"
-                    class="w-full px-4 py-2.5 pr-11 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 font-mono"
+                    class="w-full px-4 py-2.5 pr-11 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono"
                   />
                   <button
                     type="button"
                     id="btn-toggle-pass"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black cursor-pointer p-1"
                     title="Toggle password view"
                   >
                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -208,13 +208,13 @@
               </div>
 
               <div class="flex items-center gap-2">
-                <input id="wifi-hidden" type="checkbox" class="rounded border-slate-300 text-purple-600 focus:ring-purple-500 cursor-pointer w-4 h-4" />
-                <label for="wifi-hidden" class="text-xs text-slate-600 cursor-pointer">
+                <input id="wifi-hidden" type="checkbox" class="rounded border-neutral-300 text-black focus:ring-black cursor-pointer w-4 h-4" />
+                <label for="wifi-hidden" class="text-xs text-neutral-700 cursor-pointer">
                   Hidden Network (SSID is not publicly broadcasted)
                 </label>
               </div>
 
-              <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-100 text-xs text-purple-900 leading-relaxed">
+              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
                 Guests point their camera at the QR code and tap <strong>"Join Wi-Fi"</strong> to connect instantly without typing any password.
               </div>
             </div>
@@ -223,47 +223,47 @@
             <div id="form-whatsapp" class="space-y-4 hidden">
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="sm:col-span-1">
-                  <label for="wa-code" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="wa-code" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Country Code
                   </label>
-                  <select id="wa-code" class="w-full px-3 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 cursor-pointer">
-                    <option value="+1">🇺🇸 +1 (US/CA)</option>
-                    <option value="+44">🇬🇧 +44 (UK)</option>
-                    <option value="+91">🇮🇳 +91 (India)</option>
-                    <option value="+880">🇧🇩 +880 (BD)</option>
-                    <option value="+971">🇦🇪 +971 (UAE)</option>
-                    <option value="+966">🇸🇦 +966 (Saudi)</option>
-                    <option value="+61">🇦🇺 +61 (Australia)</option>
-                    <option value="+49">🇩🇪 +49 (Germany)</option>
+                  <select id="wa-code" class="w-full px-3 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer">
+                    <option value="+1">+1 (US/CA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+91">+91 (India)</option>
+                    <option value="+880">+880 (BD)</option>
+                    <option value="+971">+971 (UAE)</option>
+                    <option value="+966">+966 (Saudi)</option>
+                    <option value="+61">+61 (Australia)</option>
+                    <option value="+49">+49 (Germany)</option>
                   </select>
                 </div>
 
                 <div class="sm:col-span-2">
-                  <label for="wa-phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="wa-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     WhatsApp Phone Number
                   </label>
                   <input
                     type="tel"
                     id="wa-phone"
                     placeholder="e.g. 5551234567"
-                    class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 font-mono"
+                    class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label for="wa-msg" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label for="wa-msg" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                   Prefilled Message (Optional)
                 </label>
                 <textarea
                   id="wa-msg"
                   rows="2"
                   placeholder="Hello! I would like more information."
-                  class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900"
+                  class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black"
                 >Hello! I am contacting you via QR Studio.</textarea>
               </div>
 
-              <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 text-xs text-emerald-900 leading-relaxed">
+              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
                 Scanning immediately launches WhatsApp directly into the chat with your prefilled greeting.
               </div>
             </div>
@@ -272,188 +272,188 @@
             <div id="form-vcard" class="space-y-4 hidden">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="vcard-firstName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-firstName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     First Name *
                   </label>
-                  <input type="text" id="vcard-firstName" value="Alex" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                  <input type="text" id="vcard-firstName" value="Alex" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
                 </div>
                 <div>
-                  <label for="vcard-lastName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-lastName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Last Name
                   </label>
-                  <input type="text" id="vcard-lastName" value="Morgan" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                  <input type="text" id="vcard-lastName" value="Morgan" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
                 </div>
                 <div>
-                  <label for="vcard-phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Phone Number *
                   </label>
-                  <input type="tel" id="vcard-phone" value="+1 555 123 4567" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900 font-mono" />
+                  <input type="tel" id="vcard-phone" value="+1 555 123 4567" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono" />
                 </div>
                 <div>
-                  <label for="vcard-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-email" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Email Address
                   </label>
-                  <input type="email" id="vcard-email" value="alex@example.com" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                  <input type="email" id="vcard-email" value="alex@example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
                 </div>
                 <div>
-                  <label for="vcard-organization" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-organization" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Company / Organization
                   </label>
-                  <input type="text" id="vcard-organization" value="Tech Innovations Ltd" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                  <input type="text" id="vcard-organization" value="Tech Innovations Ltd" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
                 </div>
                 <div>
-                  <label for="vcard-title" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label for="vcard-title" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                     Job Title
                   </label>
-                  <input type="text" id="vcard-title" value="Product Director" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                  <input type="text" id="vcard-title" value="Product Director" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
                 </div>
               </div>
 
               <div>
-                <label for="vcard-website" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label for="vcard-website" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
                   Website
                 </label>
-                <input type="text" id="vcard-website" value="https://example.com" class="w-full px-3.5 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-sm text-slate-900" />
+                <input type="text" id="vcard-website" value="https://example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
               </div>
 
-              <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-100 text-xs text-purple-900 leading-relaxed">
+              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
                 Standard vCard format. When scanned on iPhone or Android, prompts "Add to Contacts" with one tap.
               </div>
             </div>
           </div>
 
-          <!-- 3. Customization Panel (Colors, Patterns, Logo) -->
-          <div class="bg-white rounded-2xl border border-purple-100 p-6 shadow-xs space-y-6">
-            <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-              <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <!-- 3. Customization Panel (Monochrome Style) -->
+          <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-6">
+            <h2 class="text-sm font-extrabold text-black uppercase tracking-wider flex items-center gap-2">
+              <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               <span>Personalize Your QR Code</span>
             </h2>
 
             <!-- A. Patterns: Classic square, rounded and dot -->
             <div class="space-y-2.5">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
                 Pattern Style
               </label>
               <div class="grid grid-cols-3 gap-2.5">
                 <button
                   type="button"
                   data-pattern="rounded"
-                  class="pattern-btn p-3 rounded-xl border-2 border-purple-600 bg-purple-50/60 text-left transition-all cursor-pointer text-xs font-semibold text-purple-950 shadow-xs"
+                  class="pattern-btn p-3 rounded-xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer text-xs font-bold text-black shadow-xs"
                 >
                   <div class="text-sm font-bold">Rounded</div>
-                  <div class="text-[11px] text-purple-700 mt-0.5">Smooth & Modern</div>
+                  <div class="text-[11px] text-neutral-600 mt-0.5">Smooth curves</div>
                 </button>
 
                 <button
                   type="button"
                   data-pattern="dots"
-                  class="pattern-btn p-3 rounded-xl border border-slate-200 hover:border-purple-300 hover:bg-purple-50/40 text-left transition-all cursor-pointer text-xs font-medium text-slate-700"
+                  class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700"
                 >
                   <div class="text-sm font-bold">Dots</div>
-                  <div class="text-[11px] text-slate-500 mt-0.5">Circular Minimal</div>
+                  <div class="text-[11px] text-neutral-500 mt-0.5">Circular minimal</div>
                 </button>
 
                 <button
                   type="button"
                   data-pattern="square"
-                  class="pattern-btn p-3 rounded-xl border border-slate-200 hover:border-purple-300 hover:bg-purple-50/40 text-left transition-all cursor-pointer text-xs font-medium text-slate-700"
+                  class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700"
                 >
                   <div class="text-sm font-bold">Classic</div>
-                  <div class="text-[11px] text-slate-500 mt-0.5">Square Industrial</div>
+                  <div class="text-[11px] text-neutral-500 mt-0.5">Square industrial</div>
                 </button>
               </div>
             </div>
 
             <!-- B. Colors: Foreground & Background -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+            <div class="space-y-3 pt-4 border-t border-neutral-100">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
                 Colors
               </label>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Foreground Color -->
-                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200 space-y-2">
-                  <span class="block text-xs font-semibold text-slate-700">QR Code Color</span>
+                <div class="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                  <span class="block text-xs font-semibold text-neutral-800">QR Code Color</span>
                   <div class="flex items-center gap-2">
-                    <input type="color" id="picker-fg" value="#1e1b4b" class="w-8 h-8 rounded-lg border border-slate-300 cursor-pointer p-0 shrink-0" />
-                    <input type="text" id="hex-fg" value="#1e1b4b" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-slate-900" />
+                    <input type="color" id="picker-fg" value="#000000" class="w-8 h-8 rounded-lg border border-neutral-300 cursor-pointer p-0 shrink-0" />
+                    <input type="text" id="hex-fg" value="#000000" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-black font-semibold" />
                   </div>
-                  <!-- Quick Swatches -->
+                  <!-- Black and white swatches -->
                   <div class="flex items-center gap-1.5 pt-1">
-                    <button type="button" data-swatch="#1e1b4b" class="w-5 h-5 rounded-md bg-[#1e1b4b] border border-black/10 cursor-pointer" title="Deep Purple"></button>
-                    <button type="button" data-swatch="#7c3aed" class="w-5 h-5 rounded-md bg-[#7c3aed] border border-black/10 cursor-pointer" title="Vibrant Purple"></button>
-                    <button type="button" data-swatch="#0f172a" class="w-5 h-5 rounded-md bg-[#0f172a] border border-black/10 cursor-pointer" title="Carbon Slate"></button>
-                    <button type="button" data-swatch="#2563eb" class="w-5 h-5 rounded-md bg-[#2563eb] border border-black/10 cursor-pointer" title="Royal Blue"></button>
-                    <button type="button" data-swatch="#059669" class="w-5 h-5 rounded-md bg-[#059669] border border-black/10 cursor-pointer" title="Emerald"></button>
-                    <button type="button" data-swatch="#dc2626" class="w-5 h-5 rounded-md bg-[#dc2626] border border-black/10 cursor-pointer" title="Ruby Red"></button>
+                    <button type="button" data-swatch="#000000" class="w-5 h-5 rounded-md bg-black border border-black/20 cursor-pointer" title="Pure Black"></button>
+                    <button type="button" data-swatch="#18181b" class="w-5 h-5 rounded-md bg-zinc-900 border border-black/20 cursor-pointer" title="Zinc Dark"></button>
+                    <button type="button" data-swatch="#27272a" class="w-5 h-5 rounded-md bg-zinc-800 border border-black/20 cursor-pointer" title="Charcoal"></button>
+                    <button type="button" data-swatch="#3f3f46" class="w-5 h-5 rounded-md bg-zinc-700 border border-black/20 cursor-pointer" title="Slate Gray"></button>
+                    <button type="button" data-swatch="#52525b" class="w-5 h-5 rounded-md bg-zinc-600 border border-black/20 cursor-pointer" title="Medium Gray"></button>
+                    <button type="button" data-swatch="#71717a" class="w-5 h-5 rounded-md bg-zinc-500 border border-black/20 cursor-pointer" title="Light Slate"></button>
                   </div>
                 </div>
 
                 <!-- Background Color -->
-                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200 space-y-2">
+                <div class="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                   <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold text-slate-700">Background</span>
+                    <span class="text-xs font-semibold text-neutral-800">Background</span>
                     <div class="flex items-center gap-1.5">
-                      <input type="checkbox" id="check-transparent" class="rounded border-slate-300 text-purple-600 cursor-pointer" />
-                      <label for="check-transparent" class="text-[11px] text-slate-600 cursor-pointer">Transparent</label>
+                      <input type="checkbox" id="check-transparent" class="rounded border-neutral-300 text-black cursor-pointer" />
+                      <label for="check-transparent" class="text-[11px] text-neutral-600 cursor-pointer">Transparent</label>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <input type="color" id="picker-bg" value="#ffffff" class="w-8 h-8 rounded-lg border border-slate-300 cursor-pointer p-0 shrink-0" />
-                    <input type="text" id="hex-bg" value="#ffffff" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-slate-900" />
+                    <input type="color" id="picker-bg" value="#ffffff" class="w-8 h-8 rounded-lg border border-neutral-300 cursor-pointer p-0 shrink-0" />
+                    <input type="text" id="hex-bg" value="#ffffff" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-black font-semibold" />
                   </div>
-                  <div class="text-[11px] text-slate-400">High contrast white is default & safest for scanning.</div>
+                  <div class="text-[11px] text-neutral-500">Pure white (#ffffff) ensures maximum camera read speed.</div>
                 </div>
               </div>
             </div>
 
             <!-- C. Optional Center Logo Upload & Size -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+            <div class="space-y-3 pt-4 border-t border-neutral-100">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
                 Optional Center Logo
               </label>
 
               <!-- Upload Drag & Drop Box -->
               <div
                 id="box-logo-upload"
-                class="border-2 border-dashed border-purple-200 hover:border-purple-500 rounded-2xl p-5 text-center bg-purple-50/30 hover:bg-purple-50/60 transition-all cursor-pointer group"
+                class="border-2 border-dashed border-neutral-300 hover:border-black rounded-2xl p-5 text-center bg-neutral-50 hover:bg-neutral-100 transition-all cursor-pointer group"
               >
                 <input type="file" id="file-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" />
-                <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-xs border border-purple-100 flex items-center justify-center text-purple-600 mb-2 group-hover:scale-105 transition-transform">
+                <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-xs border border-neutral-200 flex items-center justify-center text-black mb-2 group-hover:scale-105 transition-transform">
                   <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                 </div>
-                <div class="text-xs font-semibold text-slate-800">
+                <div class="text-xs font-semibold text-neutral-900">
                   Click to upload your logo or icon
                 </div>
-                <div class="text-[11px] text-slate-500 mt-0.5">
+                <div class="text-[11px] text-neutral-500 mt-0.5">
                   Supports PNG, JPG, or SVG
                 </div>
               </div>
 
               <!-- Active Logo Display & Controls -->
-              <div id="logo-preview-box" class="p-4 bg-purple-50/50 rounded-2xl border border-purple-200 hidden space-y-3">
+              <div id="logo-preview-box" class="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 hidden space-y-3">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
-                    <img id="logo-thumb" src="" alt="Logo" class="w-8 h-8 rounded-lg object-contain bg-white p-1 border border-purple-200 shadow-2xs" />
+                    <img id="logo-thumb" src="" alt="Logo" class="w-8 h-8 rounded-lg object-contain bg-white p-1 border border-neutral-200 shadow-2xs" />
                     <div>
-                      <div id="logo-title" class="text-xs font-bold text-slate-900 truncate max-w-[180px]">Logo</div>
-                      <div class="text-[10px] text-purple-700 font-medium">Auto 30% Error Correction enabled</div>
+                      <div id="logo-title" class="text-xs font-bold text-black truncate max-w-[180px]">Logo</div>
+                      <div class="text-[10px] text-neutral-600 font-medium">Automatic 30% Error Correction enabled</div>
                     </div>
                   </div>
                   <button
                     type="button"
                     id="btn-remove-logo"
-                    class="text-xs font-medium text-rose-600 hover:text-rose-800 p-1 cursor-pointer"
+                    class="text-xs font-medium text-neutral-700 hover:text-black p-1 cursor-pointer underline"
                   >
                     Remove Logo
                   </button>
                 </div>
 
                 <!-- Logo Size Slider -->
-                <div class="pt-2 border-t border-purple-100/70">
-                  <div class="flex items-center justify-between text-xs text-slate-700 mb-1">
+                <div class="pt-2 border-t border-neutral-200">
+                  <div class="flex items-center justify-between text-xs text-neutral-800 mb-1">
                     <span class="font-semibold">Logo Size</span>
-                    <span id="logo-size-label" class="font-mono text-purple-700 font-bold">Medium</span>
+                    <span id="logo-size-label" class="font-mono text-black font-bold">Medium</span>
                   </div>
                   <input
                     type="range"
@@ -462,7 +462,7 @@
                     max="0.36"
                     step="0.02"
                     value="0.28"
-                    class="w-full accent-purple-600 cursor-pointer"
+                    class="w-full accent-black cursor-pointer"
                   />
                 </div>
               </div>
@@ -473,13 +473,13 @@
 
         <!-- RIGHT COLUMN: Instant Live Preview, Downloads & Sharing (5 cols, Sticky) -->
         <div class="lg:col-span-5">
-          <div class="bg-white rounded-3xl border border-purple-100 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
+          <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
             
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+            <div class="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-black">
                 Instant QR Preview
               </span>
-              <span class="text-xs text-purple-700 font-semibold bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">
+              <span class="text-xs text-black font-semibold bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">
                 Live
               </span>
             </div>
@@ -488,23 +488,23 @@
             <div class="flex flex-col items-center justify-center">
               <div
                 id="qr-canvas-target"
-                class="qr-preview-box relative p-4 rounded-2xl border border-purple-100/80 bg-white shadow-2xs max-w-[300px] w-full flex items-center justify-center min-h-[300px]"
+                class="qr-preview-box relative p-4 rounded-2xl border border-neutral-200 bg-white shadow-2xs max-w-[300px] w-full flex items-center justify-center min-h-[300px]"
               >
                 <!-- Rendered dynamically -->
               </div>
 
               <!-- Contrast health check -->
               <div id="contrast-notice" class="mt-3.5 text-center">
-                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-semibold">
+                <span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold">
                   <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  Excellent contrast (Fast scanning)
+                  Optimal contrast (Instant camera read)
                 </span>
               </div>
             </div>
 
             <!-- Download Action Buttons (PNG, SVG, JPG) -->
-            <div class="space-y-2.5 pt-2 border-t border-slate-100">
-              <span class="block text-xs font-bold text-slate-700 uppercase tracking-wider text-center">
+            <div class="space-y-2.5 pt-2 border-t border-neutral-100">
+              <span class="block text-xs font-bold text-neutral-800 uppercase tracking-wider text-center">
                 Download High-Resolution Files
               </span>
 
@@ -512,7 +512,7 @@
                 <button
                   type="button"
                   id="btn-download-png"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold shadow-sm shadow-purple-200 transition-all cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
                   title="Download standard high-res PNG image"
                 >
                   <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
@@ -522,20 +522,20 @@
                 <button
                   type="button"
                   id="btn-download-svg"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 text-xs font-bold transition-all cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold transition-all cursor-pointer"
                   title="Download scalable vector file (infinite resolution for Figma/Illustrator/Print)"
                 >
-                  <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                   <span>SVG</span>
                 </button>
 
                 <button
                   type="button"
                   id="btn-download-jpg"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 text-xs font-bold transition-all cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold transition-all cursor-pointer"
                   title="Download JPG image"
                 >
-                  <svg class="w-4 h-4 text-slate-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <svg class="w-4 h-4 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                   <span>JPG</span>
                 </button>
               </div>
@@ -545,30 +545,30 @@
                 <button
                   type="button"
                   id="btn-copy"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
                   title="Copy QR image to clipboard"
                 >
-                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                   <span>Copy</span>
                 </button>
 
                 <button
                   type="button"
                   id="btn-share"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
                   title="Share using native device menu"
                 >
-                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
                   <span>Share</span>
                 </button>
 
                 <button
                   type="button"
                   id="btn-print"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
                   title="Print clean A4/label format"
                 >
-                  <svg class="w-3.5 h-3.5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
                   <span>Print</span>
                 </button>
               </div>
@@ -576,7 +576,7 @@
 
             <!-- Trust badge footer -->
             <div class="text-center pt-2">
-              <span class="text-[11px] text-slate-400">
+              <span class="text-[11px] text-neutral-500 font-medium">
                 100% Client-Side · No Data Stored · Never Expires
               </span>
             </div>
@@ -587,36 +587,48 @@
       </div>
     </main>
 
-    <!-- Footer Branding -->
-    <footer class="mt-auto border-t border-purple-100 bg-white py-6 text-center no-print">
-      <div class="max-w-6xl mx-auto px-4 text-xs text-slate-500">
-        <p class="font-medium text-slate-700">
-          © 2026 QR Studio. Developed by ANIX Software Technology.
-        </p>
-        <p class="text-[11px] text-slate-400 mt-1">
-          Free browser-based QR code generator.
-        </p>
+    <!-- Footer with Brand & Live Visitor Counter -->
+    <footer class="mt-auto border-t border-neutral-200 bg-white py-8 text-center no-print">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center gap-4">
+        
+        <!-- Live Visitor Count Badge in Footer -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-medium text-neutral-800 shadow-2xs">
+          <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="text-neutral-600">Total Visits:</span>
+          <span id="visitor-count" class="font-mono tabular-nums font-bold text-black text-sm">...</span>
+        </div>
+
+        <div>
+          <p class="font-bold text-black text-xs sm:text-sm">
+            © 2026 QR Studio. Developed by ANIX Software Technology.
+          </p>
+          <p class="text-[11px] text-neutral-500 mt-1">
+            Free, simple and private QR code generator.
+          </p>
+        </div>
       </div>
     </footer>
 
     <!-- Floating Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none">
+    <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none bg-black border border-neutral-700">
       Message
     </div>
 
     <!-- Print Card Template (Only visible when printing) -->
     <div class="print-only print-card">
-      <h2 id="print-title" class="text-2xl font-black text-slate-950 mb-2">
+      <h2 id="print-title" class="text-2xl font-black text-black mb-2">
         Scan QR Code
       </h2>
-      <p id="print-info" class="text-sm font-medium text-slate-700 mb-6 break-all">
+      <p id="print-info" class="text-sm font-medium text-neutral-800 mb-6 break-all">
         Point your smartphone camera to scan
       </p>
-      <div class="p-4 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl my-4 text-xs text-slate-600">
-        <p class="font-bold text-slate-900 mb-1">Instructions:</p>
+      <div class="p-4 bg-neutral-50 border-2 border-dashed border-neutral-400 rounded-xl my-4 text-xs text-neutral-700">
+        <p class="font-bold text-black mb-1">Instructions:</p>
         <p>Open your mobile camera app and point it at the code. Tap the notification banner to open.</p>
       </div>
-      <div class="pt-4 mt-6 border-t border-slate-200 text-[10px] text-slate-400">
+      <div class="pt-4 mt-6 border-t border-neutral-300 text-[10px] text-neutral-500">
         © 2026 QR Studio. Developed by ANIX Software Technology.
       </div>
     </div>

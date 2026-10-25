@@ -6,24 +6,24 @@
 }
 
 :root {
-  --color-primary: #7c3aed;
-  --color-primary-hover: #6d28d9;
-  --color-primary-light: #f5f3ff;
-  --color-primary-border: #ddd6fe;
+  --color-primary: #000000;
+  --color-primary-hover: #171717;
+  --color-primary-light: #f4f4f5;
+  --color-primary-border: #e4e4e7;
 }
 
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(180deg, #fbfaff 0%, #f6f5fc 100%);
-  color: #1e1b4b;
+  background-color: #fafafa;
+  color: #09090b;
   min-height: 100vh;
 }
 
-/* Subtle focus ring in soft-purple */
+/* Subtle focus ring in clean monochrome */
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Custom scrollbar */
@@ -35,11 +35,11 @@ input:focus, select:focus, textarea:focus {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d8b4fe;
+  background: #a1a1aa;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c084fc;
+  background: #71717a;
 }
 
 /* QR Canvas styling */
@@ -74,8 +74,8 @@ button:active {
     max-width: 480px;
     margin: 40px auto;
     text-align: center;
-    border: 3px solid #1e1b4b;
-    border-radius: 24px;
+    border: 3px solid #000000;
+    border-radius: 20px;
     padding: 36px 24px;
   }
 }

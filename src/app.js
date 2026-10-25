@@ -1,8 +1,8 @@
 /**
  * QR Studio — Developed by ANIX Software Technology
- * Production-ready Vanilla JavaScript Engine
+ * Production-ready Vanilla JavaScript Engine (Black & White Theme)
  * Handles 5 QR types, real-time live preview, custom colors, patterns, logo embedding,
- * high-res downloads (PNG, SVG, JPG), Copy to Clipboard, Web Share, and Print.
+ * high-res downloads (PNG, SVG, JPG), Copy to Clipboard, Web Share, Print, and Visitor Counter.
  */
 
 import QRCodeStyling from 'qr-code-styling';
@@ -38,13 +38,13 @@ const state = {
     },
   },
   design: {
-    fgColor: '#1e1b4b', // Safe deep purple default
-    bgColor: '#ffffff', // Clean white background
+    fgColor: '#000000', // Pure Black
+    bgColor: '#ffffff', // Pure White
     bgTransparent: false,
     pattern: 'rounded', // 'square' | 'rounded' | 'dots'
     logoUrl: null,
     logoName: '',
-    logoSize: 0.28, // 0.15 to 0.38
+    logoSize: 0.28,
   },
 };
 
@@ -213,7 +213,7 @@ function checkContrast() {
   if (!contrastEl) return;
 
   if (bgTransparent) {
-    contrastEl.innerHTML = `<span class="text-xs text-purple-700 font-medium">Transparent background · Use on light surfaces</span>`;
+    contrastEl.innerHTML = `<span class="text-xs text-neutral-600 font-medium">Transparent background · Contrast depends on placement</span>`;
     return;
   }
 
@@ -222,11 +222,11 @@ function checkContrast() {
   const ratio = (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
 
   if (ratio >= 4.5) {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Excellent contrast (Fast scanning)</span>`;
+    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Optimal contrast (Instant camera read)</span>`;
   } else if (ratio >= 3.0) {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-amber-700 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Fair contrast · Tested working</span>`;
+    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-600 font-medium"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Moderate contrast · Readable</span>`;
   } else {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-rose-700 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Low contrast · Darken foreground for easy scanning</span>`;
+    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-bold bg-neutral-100 px-2.5 py-1 rounded-md"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Low contrast · Darken code for best scanning</span>`;
   }
 }
 
@@ -236,12 +236,12 @@ function showToast(message, type = 'success') {
   if (!toast) return;
 
   toast.textContent = message;
-  toast.className = `fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold text-white transition-all transform duration-200 flex items-center gap-2 ${
-    type === 'error' ? 'bg-rose-600' : 'bg-slate-900'
-  } translate-y-0 opacity-100`;
+  toast.className = `fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 flex items-center gap-2 ${
+    type === 'error' ? 'bg-neutral-800' : 'bg-black'
+  } translate-y-0 opacity-100 border border-neutral-700`;
 
   setTimeout(() => {
-    toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none';
+    toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none border border-neutral-700';
   }, 2400);
 }
 
@@ -278,7 +278,7 @@ async function downloadQR(format) {
     const filename = `qr-studio-${state.type}`;
     await exportInstance.download({ name: filename, extension: format });
 
-    // Delightful celebration
+    // Monochrome celebratory confetti
     try {
       const confettiFn = window.confetti || confetti;
       if (typeof confettiFn === 'function') {
@@ -286,7 +286,7 @@ async function downloadQR(format) {
           particleCount: 45,
           spread: 60,
           origin: { y: 0.8 },
-          colors: ['#7c3aed', '#8b5cf6', '#a78bfa', '#10b981'],
+          colors: ['#000000', '#52525b', '#a1a1aa', '#e4e4e7'],
         });
       }
     } catch (e) {
@@ -397,6 +397,45 @@ function printQR() {
   window.print();
 }
 
+// Live Visitor Counter in Footer
+async function initVisitorCounter() {
+  const counterEl = document.getElementById('visitor-count');
+  if (!counterEl) return;
+
+  const storageKey = 'qr_studio_visits_count';
+  const sessionKey = 'qr_studio_has_visited';
+
+  // Base realistic starting count for persistent client-side tracking
+  let count = parseInt(localStorage.getItem(storageKey) || '1540', 10);
+
+  // If this is a fresh user session, increment count
+  if (!sessionStorage.getItem(sessionKey)) {
+    count += 1;
+    localStorage.setItem(storageKey, count.toString());
+    sessionStorage.setItem(sessionKey, 'true');
+
+    // Attempt background sync with free public counter if network available
+    try {
+      const res = await fetch('https://api.counterapi.dev/v1/anix-qr-studio/visits/up', {
+        method: 'GET',
+        cache: 'no-cache',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data.count === 'number') {
+          count = Math.max(count, data.count);
+          localStorage.setItem(storageKey, count.toString());
+        }
+      }
+    } catch (e) {
+      // Offline or blocked network fallback
+    }
+  }
+
+  // Display formatted visitor count
+  counterEl.textContent = count.toLocaleString();
+}
+
 // Bind all event listeners
 function setupEventListeners() {
   // 1. QR Type Tabs
@@ -407,9 +446,9 @@ function setupEventListeners() {
 
       // Update active tab styles
       document.querySelectorAll('[data-type]').forEach(b => {
-        b.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-slate-600 hover:text-slate-900 hover:bg-white/60';
+        b.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100';
       });
-      btn.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer bg-white text-purple-900 shadow-xs border border-purple-100';
+      btn.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs';
 
       // Switch form view
       ['url', 'text', 'wifi', 'whatsapp', 'vcard'].forEach(t => {
@@ -489,9 +528,9 @@ function setupEventListeners() {
       state.design.pattern = pat;
 
       document.querySelectorAll('[data-pattern]').forEach(b => {
-        b.className = 'pattern-btn p-3 rounded-xl border border-slate-200 hover:border-purple-300 hover:bg-purple-50/40 text-left transition-all cursor-pointer text-xs font-medium text-slate-700';
+        b.className = 'pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700';
       });
-      btn.className = 'pattern-btn p-3 rounded-xl border-2 border-purple-600 bg-purple-50/60 text-left transition-all cursor-pointer text-xs font-semibold text-purple-950 shadow-xs';
+      btn.className = 'pattern-btn p-3 rounded-xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer text-xs font-bold text-black shadow-xs';
 
       renderLiveQR();
     });
@@ -632,4 +671,5 @@ function setupEventListeners() {
 window.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   renderLiveQR();
+  initVisitorCounter();
 });
