@@ -926,39 +926,77 @@ function showToast(message, type = 'success') {
   }, 2400);
 }
 
-// Persistent visitor counter in footer
-async function initVisitorCounter() {
+// Real-Time Visitor Counter (1 to Infinity)
+const COUNTER_KEY = 'anix_qr_studio_realtime_visitors';
+const COUNTER_API = 'https://countapi.mileshilliard.com/api/v1';
+
+function updateVisitorDisplay(count) {
   const counterEl = document.getElementById('visitor-count');
   if (!counterEl) return;
+  const num = parseInt(count, 10) || 1;
+  counterEl.textContent = num.toLocaleString();
+  localStorage.setItem('qr_studio_last_known_count', num.toString());
+}
 
-  const storageKey = 'qr_studio_visits_count';
-  const sessionKey = 'qr_studio_has_visited';
+async function fetchLatestCount() {
+  try {
+    const res = await fetch(`${COUNTER_API}/get/${COUNTER_KEY}`, { cache: 'no-cache' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && typeof data.value === 'number') {
+        updateVisitorDisplay(data.value);
+        return data.value;
+      }
+    }
+  } catch (e) {
+    // Network offline fallback
+  }
+  return null;
+}
 
-  let count = parseInt(localStorage.getItem(storageKey) || '1680', 10);
-
-  if (!sessionStorage.getItem(sessionKey)) {
-    count += 1;
-    localStorage.setItem(storageKey, count.toString());
-    sessionStorage.setItem(sessionKey, 'true');
-
+async function registerVisitAndCount() {
+  const sessionCounted = sessionStorage.getItem('anix_session_visitor_counted');
+  
+  if (!sessionCounted) {
     try {
-      const res = await fetch('https://api.counterapi.dev/v1/anix-qr-studio/visits/up', {
-        method: 'GET',
-        cache: 'no-cache',
-      });
+      // First visit in this browser session: increment count (+1 from 1 to infinity)
+      const res = await fetch(`${COUNTER_API}/hit/${COUNTER_KEY}`, { cache: 'no-cache' });
       if (res.ok) {
         const data = await res.json();
-        if (data && typeof data.count === 'number') {
-          count = Math.max(count, data.count);
-          localStorage.setItem(storageKey, count.toString());
+        if (data && typeof data.value === 'number') {
+          sessionStorage.setItem('anix_session_visitor_counted', 'true');
+          updateVisitorDisplay(data.value);
+          return;
         }
       }
-    } catch (e) {
-      // Offline fallback
+    } catch (err) {
+      console.warn('Real-time counter hit error:', err);
     }
   }
 
-  counterEl.textContent = count.toLocaleString();
+  // If already counted in this session or hit failed, get current live count
+  const latest = await fetchLatestCount();
+  if (latest === null) {
+    let stored = parseInt(localStorage.getItem('qr_studio_last_known_count') || '1', 10);
+    if (!sessionCounted) {
+      stored += 1;
+      sessionStorage.setItem('anix_session_visitor_counted', 'true');
+    }
+    updateVisitorDisplay(stored);
+  }
+}
+
+function initVisitorCounter() {
+  // Show existing cached count immediately so there's zero layout shift
+  const cached = localStorage.getItem('qr_studio_last_known_count') || '1';
+  updateVisitorDisplay(cached);
+
+  registerVisitAndCount();
+
+  // Poll for real-time live visitor updates every 15 seconds
+  setInterval(() => {
+    fetchLatestCount();
+  }, 15000);
 }
 
 // ==========================================

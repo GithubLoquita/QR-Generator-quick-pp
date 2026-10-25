@@ -740,13 +740,14 @@
     <footer class="mt-auto border-t border-neutral-200 bg-white py-8 text-center no-print">
       <div class="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center gap-4">
         
-        <!-- Live Visitor Count Badge in Footer -->
+        <!-- Live Visitor Count Badge in Footer (1 to Infinity) -->
         <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-medium text-neutral-800 shadow-2xs">
-          <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-          <span class="text-neutral-600">Total Visits:</span>
-          <span id="visitor-count" class="font-mono tabular-nums font-bold text-black text-sm">...</span>
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-neutral-600">Live Visitor Count:</span>
+          <span id="visitor-count" class="font-mono tabular-nums font-bold text-black text-sm">1</span>
         </div>
 
         <div>
