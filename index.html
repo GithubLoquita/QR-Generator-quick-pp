@@ -8,6 +8,7 @@
     <meta property="og:title" content="QR Studio — Free QR, Barcode & PDF Suite" />
     <meta property="og:description" content="Free browser tools by ANIX Software Technology. Create QR codes, barcodes, convert images to PDF, and merge PDF files in seconds." />
     <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://qrenerator.vercel.app/" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -30,8 +31,8 @@
             <span class="text-lg font-extrabold tracking-tight text-black leading-tight">
               QR Studio
             </span>
-            <span class="text-[11px] font-semibold text-neutral-500 leading-tight">
-              by ANIX Software Technology
+            <span class="text-[10px] font-semibold tracking-wider uppercase text-neutral-500 leading-tight">
+              ANIX Software Technology
             </span>
           </div>
         </a>
@@ -44,8 +45,15 @@
           <button type="button" data-switch-tool="merge-pdf" class="px-3 py-1.5 rounded-lg hover:text-black cursor-pointer">Merge PDF</button>
         </nav>
 
-        <!-- 100% Free Badge -->
-        <div class="flex items-center gap-2">
+        <!-- Legal & Pages Quick Links -->
+        <div class="flex items-center gap-2 sm:gap-4">
+          <nav class="hidden lg:flex items-center gap-3 text-xs font-bold text-neutral-600">
+            <a href="/about" class="hover:text-black transition-colors">About</a>
+            <a href="/contact" class="hover:text-black transition-colors">Contact</a>
+            <a href="/privacy" class="hover:text-black transition-colors">Privacy</a>
+            <a href="/terms" class="hover:text-black transition-colors">Terms</a>
+          </nav>
+
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-900 text-xs font-bold tracking-wide">
             <span class="w-2 h-2 rounded-full bg-black"></span>
             <span>100% Free</span>
@@ -736,9 +744,9 @@
 
     </main>
 
-    <!-- Footer with Brand & Live Visitor Counter -->
-    <footer class="mt-auto border-t border-neutral-200 bg-white py-8 text-center no-print">
-      <div class="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center gap-4">
+    <!-- Footer with Brand, Navigation & Live Visitor Counter -->
+    <footer class="mt-auto border-t border-neutral-200 bg-white py-10 text-center no-print">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center gap-5">
         
         <!-- Live Visitor Count Badge in Footer (1 to Infinity) -->
         <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-medium text-neutral-800 shadow-2xs">
@@ -750,16 +758,280 @@
           <span id="visitor-count" class="font-mono tabular-nums font-bold text-black text-sm">1</span>
         </div>
 
-        <div>
+        <!-- Full Footer Navigation Links -->
+        <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-neutral-600">
+          <a href="/" class="hover:text-black">Tools</a>
+          <a href="/about" class="hover:text-black">About Us</a>
+          <a href="/contact" class="hover:text-black">Contact</a>
+          <a href="/privacy" class="hover:text-black">Privacy Policy</a>
+          <a href="/terms" class="hover:text-black">Terms & Conditions</a>
+          <a href="/cookie-policy" class="hover:text-black">Cookie Policy</a>
+          <button type="button" id="btn-open-privacy-prefs" class="hover:text-black cursor-pointer underline">Privacy Choices</button>
+        </nav>
+
+        <div class="space-y-1">
           <p class="font-bold text-black text-xs sm:text-sm">
             © 2026 QR Studio. Developed by ANIX Software Technology.
           </p>
-          <p class="text-[11px] text-neutral-500 mt-1">
-            Free, simple and private utility toolkit for QR codes, barcodes and PDF documents.
+          <p class="text-[11px] text-neutral-500">
+            Responsible Security & Legal Reporting: <a href="mailto:hembramgroupofficials@gmail.com" class="underline hover:text-black">hembramgroupofficials@gmail.com</a>
+          </p>
+          <p class="text-[10px] text-neutral-400">
+            All code generation and PDF processing executed locally in your browser. No files transmitted to servers.
           </p>
         </div>
       </div>
     </footer>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 1: FIRST-VISIT TERMS & CONDITIONS CONSENT (MANDATORY) -->
+    <!-- ======================================================== -->
+    <div
+      id="modal-terms-consent"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="terms-modal-heading"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs no-print"
+    >
+      <div class="bg-white border-2 border-black rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 animate-in fade-in zoom-in duration-200">
+        
+        <!-- Standard Consent Form State -->
+        <div id="terms-form-state" class="space-y-5">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-300 text-[11px] font-bold text-black uppercase tracking-wider">
+              Legal Consent & Privacy Notice
+            </div>
+            <h2 id="terms-modal-heading" class="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
+              Welcome to QR Studio
+            </h2>
+            <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+              Please review and accept our Terms & Conditions and Privacy Policy before using QR Studio. Our tools have limitations, and you are responsible for ensuring that the files and information you use are lawful and that you have permission to use them.
+            </p>
+          </div>
+
+          <!-- Policy Links -->
+          <div class="p-3.5 bg-neutral-50 border border-neutral-200 rounded-2xl flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-neutral-800">
+            <span>Review Full Policies:</span>
+            <div class="flex items-center gap-3">
+              <a href="/terms" target="_blank" rel="noopener noreferrer" class="underline hover:text-black">Terms & Conditions</a>
+              <span>·</span>
+              <a href="/privacy" target="_blank" rel="noopener noreferrer" class="underline hover:text-black">Privacy Policy</a>
+              <span>·</span>
+              <a href="/cookie-policy" target="_blank" rel="noopener noreferrer" class="underline hover:text-black">Cookie Policy</a>
+            </div>
+          </div>
+
+          <!-- Non-preselected Checkbox -->
+          <div class="flex items-start gap-3 p-3.5 bg-white border border-neutral-300 rounded-2xl">
+            <input
+              type="checkbox"
+              id="check-terms-agree"
+              class="mt-0.5 w-4 h-4 rounded border-neutral-400 text-black accent-black cursor-pointer"
+            />
+            <label for="check-terms-agree" class="text-xs text-neutral-800 leading-snug cursor-pointer select-none">
+              I have read and agree to the <a href="/terms" target="_blank" class="underline font-semibold">Terms & Conditions</a> and acknowledge the <a href="/privacy" target="_blank" class="underline font-semibold">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            <button
+              type="button"
+              id="btn-accept-terms"
+              disabled
+              class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-black text-white text-xs font-bold shadow-xs hover:bg-neutral-800 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Accept & Continue
+            </button>
+            <button
+              type="button"
+              id="btn-decline-terms"
+              class="w-full sm:w-auto py-3 px-5 rounded-xl border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-xs font-semibold transition-all cursor-pointer"
+            >
+              Decline & Exit
+            </button>
+          </div>
+        </div>
+
+        <!-- Declined Explanation State -->
+        <div id="terms-declined-state" class="hidden space-y-5">
+          <div class="w-12 h-12 rounded-2xl bg-neutral-100 border border-neutral-300 flex items-center justify-center text-black mb-2">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+          <div class="space-y-2">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-black">
+              Terms Acceptance Required
+            </h2>
+            <p class="text-xs sm:text-sm text-neutral-700 leading-relaxed">
+              You have declined the Terms & Conditions. Because QR Studio provides document processing and code generation tools that require compliance with applicable laws, the tools cannot be used without accepting the terms.
+            </p>
+            <p class="text-xs text-neutral-500 leading-relaxed">
+              No files or information have been processed. You are welcome to review the terms again whenever you are ready.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-3 border-t border-neutral-200">
+            <button
+              type="button"
+              id="btn-reopen-terms"
+              class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-black text-white text-xs font-bold shadow-xs hover:bg-neutral-800 transition-all cursor-pointer"
+            >
+              Review Terms Again
+            </button>
+            <a
+              href="/terms"
+              target="_blank"
+              class="w-full sm:w-auto text-center py-3 px-4 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-xs font-semibold text-neutral-800"
+            >
+              Read Full Terms
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 2: FILE UPLOAD RIGHTS CONFIRMATION (MANDATORY) -->
+    <!-- ======================================================== -->
+    <div
+      id="modal-upload-consent"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="upload-consent-heading"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs no-print"
+    >
+      <div class="bg-white border-2 border-black rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 animate-in fade-in zoom-in duration-200">
+        
+        <div class="space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center mb-3">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h2 id="upload-consent-heading" class="text-xl sm:text-2xl font-extrabold text-black">
+            Confirm File Rights & Privacy Notice
+          </h2>
+          <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+            Before uploading or processing files, confirm that you have the right to use these files, that they do not contain unlawfully obtained or shared material, and that you understand how QR Studio processes files as described in the Privacy Policy.
+          </p>
+        </div>
+
+        <div class="p-3.5 bg-neutral-50 border border-neutral-200 rounded-2xl text-xs text-neutral-700 space-y-1">
+          <p class="font-bold text-black">Local In-Browser Processing:</p>
+          <p>Files are converted directly inside your web browser memory and are never uploaded to our servers.</p>
+        </div>
+
+        <!-- Confirmation Checkbox -->
+        <div class="flex items-start gap-3 p-3.5 bg-white border border-neutral-300 rounded-2xl">
+          <input
+            type="checkbox"
+            id="check-upload-confirm"
+            class="mt-0.5 w-4 h-4 rounded border-neutral-400 text-black accent-black cursor-pointer"
+          />
+          <label for="check-upload-confirm" class="text-xs text-neutral-800 leading-snug cursor-pointer select-none">
+            I confirm that I have the right to use these files and agree to follow the <a href="/terms" target="_blank" class="underline font-semibold">Terms & Conditions</a>.
+          </label>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button
+            type="button"
+            id="btn-upload-continue"
+            disabled
+            class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-black text-white text-xs font-bold shadow-xs hover:bg-neutral-800 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Continue to Select Files
+          </button>
+          <button
+            type="button"
+            id="btn-upload-cancel"
+            class="w-full sm:w-auto py-3 px-5 rounded-xl border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-xs font-semibold transition-all cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL 3: COOKIE & PRIVACY PREFERENCES -->
+    <!-- ======================================================== -->
+    <div
+      id="modal-privacy-preferences"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="prefs-modal-heading"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs no-print"
+    >
+      <div class="bg-white border-2 border-black rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
+        
+        <div class="space-y-1">
+          <h2 id="prefs-modal-heading" class="text-xl sm:text-2xl font-extrabold text-black">
+            Cookie & Privacy Choices
+          </h2>
+          <p class="text-xs text-neutral-600">
+            Control your client-side storage and telemetry preferences for QR Studio.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <!-- Essential Storage -->
+          <div class="p-4 rounded-2xl border border-neutral-300 bg-neutral-50 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold text-black">Essential Browser Storage</p>
+              <p class="text-[11px] text-neutral-500">Saves your terms acceptance and upload consent locally.</p>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-black text-white rounded-md">Always Active</span>
+          </div>
+
+          <!-- Anonymous Visitor Counter -->
+          <div class="p-4 rounded-2xl border border-neutral-200 bg-white flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold text-black">Anonymous Visitor Telemetry</p>
+              <p class="text-[11px] text-neutral-500">Sends anonymous ping to CountAPI for global visitor count.</p>
+            </div>
+            <input type="checkbox" id="pref-telemetry" checked class="w-4 h-4 accent-black cursor-pointer" />
+          </div>
+
+          <!-- Advertising -->
+          <div class="p-4 rounded-2xl border border-neutral-200 bg-white flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-bold text-black">Personalized Advertising (Future)</p>
+              <p class="text-[11px] text-neutral-500">AdSense personalization cookies. (Currently zero ads).</p>
+            </div>
+            <input type="checkbox" id="pref-advertising" class="w-4 h-4 accent-black cursor-pointer" />
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-neutral-200">
+          <button
+            type="button"
+            id="btn-reset-all-consent"
+            class="text-xs text-rose-600 hover:text-rose-800 font-semibold cursor-pointer py-1"
+          >
+            Clear All Saved Consent
+          </button>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              type="button"
+              id="btn-close-privacy-prefs"
+              class="w-full sm:w-auto py-2.5 px-4 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-xs font-semibold"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              id="btn-save-privacy-prefs"
+              class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold"
+            >
+              Save Choices
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <!-- Floating Toast Notification -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none bg-black border border-neutral-700">

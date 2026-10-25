@@ -1314,8 +1314,49 @@ function setupEventListeners() {
   const selectOrientation = document.getElementById('pdf-orientation');
   const selectFit = document.getElementById('pdf-fit');
 
+  let pendingUploadCallback = null;
+
+  function hasValidTermsConsent() {
+    try {
+      const raw = localStorage.getItem('qr_studio_terms_consent');
+      if (!raw) return false;
+      const parsed = JSON.parse(raw);
+      return parsed && parsed.version === 'v1.0-draft-2026-10';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function hasValidUploadConsent() {
+    try {
+      const raw = localStorage.getItem('qr_studio_file_upload_consent');
+      if (!raw) return false;
+      const parsed = JSON.parse(raw);
+      return parsed && parsed.version === 'v1.0-draft-2026-10';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function requireUploadConsent(onConfirmed) {
+    if (hasValidUploadConsent()) {
+      onConfirmed();
+      return;
+    }
+    pendingUploadCallback = onConfirmed;
+    const modal = document.getElementById('modal-upload-consent');
+    const checkbox = document.getElementById('check-upload-confirm');
+    const btnContinue = document.getElementById('btn-upload-continue');
+    if (checkbox) checkbox.checked = false;
+    if (btnContinue) btnContinue.disabled = true;
+    if (modal) modal.classList.remove('hidden');
+  }
+
   if (btnSelectImages && imgFileInput) {
-    btnSelectImages.addEventListener('click', () => imgFileInput.click());
+    btnSelectImages.addEventListener('click', (e) => {
+      e.stopPropagation();
+      requireUploadConsent(() => imgFileInput.click());
+    });
   }
 
   if (imgFileInput) {
@@ -1330,7 +1371,7 @@ function setupEventListeners() {
 
     imgDropZone.addEventListener('click', (e) => {
       if (e.target !== imgFileInput && e.target !== btnSelectImages) {
-        imgFileInput?.click();
+        requireUploadConsent(() => imgFileInput?.click());
       }
     });
 
@@ -1363,7 +1404,10 @@ function setupEventListeners() {
       e.preventDefault();
       imgDragCounter = 0;
       imgDropZone.classList.remove('drop-zone-active');
-      if (e.dataTransfer?.files) handleImageFiles(e.dataTransfer.files);
+      if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+        const droppedFiles = e.dataTransfer.files;
+        requireUploadConsent(() => handleImageFiles(droppedFiles));
+      }
     });
   }
 
@@ -1390,7 +1434,10 @@ function setupEventListeners() {
   const btnMergePdfs = document.getElementById('btn-merge-pdfs');
 
   if (btnSelectPdfs && pdfFileInput) {
-    btnSelectPdfs.addEventListener('click', () => pdfFileInput.click());
+    btnSelectPdfs.addEventListener('click', (e) => {
+      e.stopPropagation();
+      requireUploadConsent(() => pdfFileInput.click());
+    });
   }
 
   if (pdfFileInput) {
@@ -1405,7 +1452,7 @@ function setupEventListeners() {
 
     pdfDropZone.addEventListener('click', (e) => {
       if (e.target !== pdfFileInput && e.target !== btnSelectPdfs) {
-        pdfFileInput?.click();
+        requireUploadConsent(() => pdfFileInput?.click());
       }
     });
 
@@ -1438,12 +1485,159 @@ function setupEventListeners() {
       e.preventDefault();
       pdfDragCounter = 0;
       pdfDropZone.classList.remove('drop-zone-active');
-      if (e.dataTransfer?.files) handlePdfFiles(e.dataTransfer.files);
+      if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+        const droppedFiles = e.dataTransfer.files;
+        requireUploadConsent(() => handlePdfFiles(droppedFiles));
+      }
     });
   }
 
   if (btnClearPdfs) btnClearPdfs.addEventListener('click', clearAllPdfs);
   if (btnMergePdfs) btnMergePdfs.addEventListener('click', mergeSelectedPDFs);
+
+  // ==========================================
+  // TERMS, UPLOAD CONSENT & PRIVACY PREFERENCES
+  // ==========================================
+  const termsModal = document.getElementById('modal-terms-consent');
+  const termsFormState = document.getElementById('terms-form-state');
+  const termsDeclinedState = document.getElementById('terms-declined-state');
+  const checkTermsAgree = document.getElementById('check-terms-agree');
+  const btnAcceptTerms = document.getElementById('btn-accept-terms');
+  const btnDeclineTerms = document.getElementById('btn-decline-terms');
+  const btnReopenTerms = document.getElementById('btn-reopen-terms');
+
+  // Show First-Visit Modal if not accepted
+  if (!hasValidTermsConsent()) {
+    if (termsModal) {
+      termsModal.classList.remove('hidden');
+      if (termsFormState) termsFormState.classList.remove('hidden');
+      if (termsDeclinedState) termsDeclinedState.classList.add('hidden');
+      if (checkTermsAgree) checkTermsAgree.checked = false;
+      if (btnAcceptTerms) btnAcceptTerms.disabled = true;
+    }
+  }
+
+  if (checkTermsAgree && btnAcceptTerms) {
+    checkTermsAgree.addEventListener('change', () => {
+      btnAcceptTerms.disabled = !checkTermsAgree.checked;
+    });
+  }
+
+  if (btnAcceptTerms) {
+    btnAcceptTerms.addEventListener('click', () => {
+      try {
+        localStorage.setItem(
+          'qr_studio_terms_consent',
+          JSON.stringify({
+            version: 'v1.0-draft-2026-10',
+            timestamp: new Date().toISOString(),
+          })
+        );
+      } catch (e) {}
+      if (termsModal) termsModal.classList.add('hidden');
+      showToast('Terms & Privacy Policy accepted');
+    });
+  }
+
+  if (btnDeclineTerms) {
+    btnDeclineTerms.addEventListener('click', () => {
+      if (termsFormState) termsFormState.classList.add('hidden');
+      if (termsDeclinedState) termsDeclinedState.classList.remove('hidden');
+    });
+  }
+
+  if (btnReopenTerms) {
+    btnReopenTerms.addEventListener('click', () => {
+      if (termsDeclinedState) termsDeclinedState.classList.add('hidden');
+      if (termsFormState) termsFormState.classList.remove('hidden');
+      if (checkTermsAgree) checkTermsAgree.checked = false;
+      if (btnAcceptTerms) btnAcceptTerms.disabled = true;
+    });
+  }
+
+  // Upload Consent Modal Handlers
+  const uploadModal = document.getElementById('modal-upload-consent');
+  const uploadCheck = document.getElementById('check-upload-confirm');
+  const uploadContinueBtn = document.getElementById('btn-upload-continue');
+  const uploadCancelBtn = document.getElementById('btn-upload-cancel');
+
+  if (uploadCheck && uploadContinueBtn) {
+    uploadCheck.addEventListener('change', () => {
+      uploadContinueBtn.disabled = !uploadCheck.checked;
+    });
+  }
+
+  if (uploadContinueBtn) {
+    uploadContinueBtn.addEventListener('click', () => {
+      try {
+        localStorage.setItem(
+          'qr_studio_file_upload_consent',
+          JSON.stringify({
+            version: 'v1.0-draft-2026-10',
+            timestamp: new Date().toISOString(),
+          })
+        );
+      } catch (e) {}
+
+      if (uploadModal) uploadModal.classList.add('hidden');
+      showToast('File rights confirmed');
+
+      if (typeof pendingUploadCallback === 'function') {
+        const cb = pendingUploadCallback;
+        pendingUploadCallback = null;
+        cb();
+      }
+    });
+  }
+
+  if (uploadCancelBtn) {
+    uploadCancelBtn.addEventListener('click', () => {
+      if (uploadModal) uploadModal.classList.add('hidden');
+      pendingUploadCallback = null;
+    });
+  }
+
+  // Privacy Preferences Modal Handlers
+  const prefsModal = document.getElementById('modal-privacy-preferences');
+  const openPrefsBtn = document.getElementById('btn-open-privacy-prefs');
+  const closePrefsBtn = document.getElementById('btn-close-privacy-prefs');
+  const savePrefsBtn = document.getElementById('btn-save-privacy-prefs');
+  const resetAllBtn = document.getElementById('btn-reset-all-consent');
+
+  if (openPrefsBtn && prefsModal) {
+    openPrefsBtn.addEventListener('click', () => {
+      prefsModal.classList.remove('hidden');
+    });
+  }
+
+  if (closePrefsBtn && prefsModal) {
+    closePrefsBtn.addEventListener('click', () => {
+      prefsModal.classList.add('hidden');
+    });
+  }
+
+  if (savePrefsBtn && prefsModal) {
+    savePrefsBtn.addEventListener('click', () => {
+      prefsModal.classList.add('hidden');
+      showToast('Privacy preferences saved');
+    });
+  }
+
+  if (resetAllBtn) {
+    resetAllBtn.addEventListener('click', () => {
+      localStorage.removeItem('qr_studio_terms_consent');
+      localStorage.removeItem('qr_studio_file_upload_consent');
+      if (prefsModal) prefsModal.classList.add('hidden');
+      if (termsModal) {
+        termsModal.classList.remove('hidden');
+        if (termsFormState) termsFormState.classList.remove('hidden');
+        if (termsDeclinedState) termsDeclinedState.classList.add('hidden');
+        if (checkTermsAgree) checkTermsAgree.checked = false;
+        if (btnAcceptTerms) btnAcceptTerms.disabled = true;
+      }
+      showToast('Consent reset. Please review terms again.');
+    });
+  }
 }
 
 // Initial Boot

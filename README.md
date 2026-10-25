@@ -1,81 +1,110 @@
-# QR Studio
+# QR Studio — Client-Side Utility Toolkit & Legal Compliance Suite
 
-> **Developed by ANIX Software Technology**  
-> A complete, free, browser-based utility toolkit for generating QR codes & barcodes, converting images to PDF, and merging PDF documents.
-
----
-
-## 4-in-1 Tool Suite
-
-1. **QR Code Generator**:
-   - URL, Plain Text, Wi-Fi network auto-connect, WhatsApp direct chat, and digital Contact (vCard 3.0).
-   - Custom pattern styles (Classic Square, Rounded, Dots), custom colors, and center logo upload.
-   - High-resolution exports (PNG, SVG, JPG, Copy, Share, Print).
-
-2. **Barcode Generator**:
-   - Formats: **CODE 128**, **EAN-13** (retail), **UPC-A** (retail), and **CODE 39** (logistics).
-   - Format-specific input validation with helpful error messages.
-   - Bar height, bar width, foreground color, background color, and human-readable text controls.
-   - High-resolution PNG and SVG downloads, plus Print action.
-
-3. **Image to PDF Converter**:
-   - Batch upload JPG, JPEG, PNG, and WebP images.
-   - Reorder images, view thumbnails, dimensions, and file sizes.
-   - Page sizing: A4, US Letter, or Original Image Dimensions.
-   - Orientation: Auto (matches aspect ratio), Portrait, or Landscape.
-   - Image fit options: Fit with margins, Fill bleed, or Stretch.
-   - Fast client-side conversion and download.
-
-4. **Merge PDF**:
-   - Drag & drop multiple PDF files.
-   - Reorder documents with Move Up / Move Down buttons.
-   - Shows filenames, file sizes, and page counts.
-   - Combines multiple PDFs into a single file in your specified sequence.
-   - Error handling for password-protected or encrypted PDFs.
+> **Brand**: QR Studio  
+> **Developer Credit**: Developed by **ANIX Software Technology**  
+> **Official Website**: [https://qrenerator.vercel.app/](https://qrenerator.vercel.app/)  
+> **Official Contact**: [hembramgroupofficials@gmail.com](mailto:hembramgroupofficials@gmail.com)  
+> **Hosting & Deployment**: Vercel
 
 ---
 
-## Privacy & Security
+## 1. Project Overview & Architecture
 
-- **100% Client-Side**: All barcodes, QR codes, images, and PDF documents are processed entirely within the user's browser memory.
-- **Zero Server Uploads**: No user data, passwords, contact cards, or files are ever sent to an external server or database.
-- **No Login / No Account**: Free for everyone with zero barriers or subscriptions.
+QR Studio is a 100% client-side, browser-based utility suite built with pure HTML5, Tailwind CSS, and Vanilla JavaScript. It offers 4 primary tools:
+
+1. **QR Code Generator**: URL, Plain Text, Wi-Fi, WhatsApp direct chat, and digital Contact (vCard 3.0) with custom dot patterns, colors, and logo embedding.
+2. **Barcode Generator**: Linear barcodes (CODE 128, EAN-13, UPC-A, and CODE 39) with dimension controls and instant SVG/PNG exports.
+3. **Image to PDF Converter**: Multi-image batch processing (JPG, PNG, WebP) with page reordering, format selection (A4, Letter, Original), orientation, and client-side PDF generation.
+4. **Merge PDF**: Client-side document combiner with page count extraction, sequence reordering, and encrypted file error detection.
 
 ---
 
-## Local Setup & Testing
+## 2. File Structure
+
+```text
+├── index.html                   # Core application: 4-tool workspace & consent modals
+├── about.html                   # About Us page (purpose, architecture, transparency)
+├── contact.html                 # Contact Us page (verified mailto channels & bug reporting)
+├── privacy.html                 # Privacy Policy (10 comprehensive sections, draft notice)
+├── terms.html                   # Terms & Conditions (18 sections, draft notice, Indian law)
+├── cookie-policy.html           # Cookie Policy (storage disclosures, AdSense readiness)
+├── src/
+│   ├── app.js                   # Application engine, tool handlers, consent verification
+│   └── style.css                # Monochrome theme, print stylesheet, drop-zone styles
+├── vercel.json                  # Vercel configuration (cleanUrls, CSP, security headers)
+├── vite.config.ts               # Multi-page Rollup input configuration
+├── metadata.json                # Applet configuration & metadata
+└── package.json                 # Project dependencies & scripts
+```
+
+---
+
+## 3. Implemented Privacy & Security Safeguards
+
+- **Privacy by Design**:
+  - Verification: All image and PDF operations execute inside the user's browser memory via `FileReader`, `jsPDF`, and `pdf-lib`. No files are uploaded or transmitted to any server.
+  - Zero Server Retention: Closing or refreshing the browser tab instantly flushes all document and image memory.
+- **Mandatory First-Visit Terms & Conditions Consent**:
+  - Displays a modal dialog on the first visit before normal usage of tools is permitted.
+  - Non-preselected checkbox requiring conscious user agreement.
+  - Decline state: Blocks tool usage politely and provides an option to review again.
+  - Versioned storage in `localStorage` (`v1.0-draft-2026-10`) so changes re-trigger consent.
+- **Mandatory Pre-Upload Rights Confirmation**:
+  - Displays a dedicated confirmation modal before any file selection, drop-zone click, or drag-and-drop file processing occurs.
+  - Enforces confirmation that the user holds the legal rights/license to the files.
+- **Granular Cookie & Privacy Preferences**:
+  - Interactive "Privacy Choices" modal in the footer.
+  - User can reset or review all consent decisions at any time.
+- **Vercel Security Headers (`vercel.json`)**:
+  - `Content-Security-Policy`: Restricts scripts, styles, fonts, and connects to verified origins (`countapi.mileshilliard.com`, `fonts.googleapis.com`, `fonts.gstatic.com`, `cdn.jsdelivr.net`).
+  - `X-Content-Type-Options: nosniff`: Prevents MIME-sniffing.
+  - `X-Frame-Options: SAMEORIGIN`: Defends against external clickjacking.
+  - `Referrer-Policy: strict-origin-when-cross-origin`: Limits referrer leakage.
+  - `Permissions-Policy`: Disables camera, microphone, and geolocation.
+- **Responsible Vulnerability Disclosure**:
+  - Dedicated email address (`hembramgroupofficials@gmail.com`) published on all pages.
+
+---
+
+## 4. Google AdSense Readiness
+
+- All policy pages disclose potential future third-party advertising cookies and the DoubleClick cookie.
+- Clear links to [Google Ads Settings](https://adssettings.google.com/) and [Google's Advertising Policies](https://policies.google.com/technologies/ads).
+- Advertising cookies are isolated from essential functional storage and are not set before legally compliant consent.
+
+---
+
+## 5. Local Setup & Testing
 
 ```bash
-# 1. Install dependencies
+# Install dependencies
 npm install
 
-# 2. Run local development server
+# Run local development server
 npm run dev
-# The website will be available at http://localhost:3000
 
-# 3. Build static production assets (outputs to /dist)
+# Build production distribution
 npm run build
 ```
 
 ---
 
-## Deployment to Vercel
+## 6. Verification & What Was Actually Tested
 
-### Option 1: Vercel CLI (1-Click)
-```bash
-npm install -g vercel
-vercel
-```
-
-### Option 2: Connect GitHub Repo to Vercel
-1. Push this repository to GitHub.
-2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
-3. Import your repository. Vercel automatically detects the project and static output.
-4. Click **Deploy**. The site is live with free global hosting and SSL.
+- **Build & Compilation**: `npm run build` compiled all 6 HTML pages (`index.html`, `about.html`, `contact.html`, `privacy.html`, `terms.html`, `cookie-policy.html`) with zero syntax or bundling errors.
+- **Linting**: Passed `npm run lint` cleanly.
+- **First-Visit Modal**: Verified that `hasValidTermsConsent()` checks version and timestamp; un-checked box disables primary button; decline shows polite message.
+- **File Upload Interception**: Verified that clicking "Choose Image Files", clicking the drop zone, or dropping files triggers `requireUploadConsent()` before opening file dialogs.
+- **Navigation & URLs**: Direct URL access configured via `cleanUrls: true` in `vercel.json` for all 5 static pages.
 
 ---
 
-## Brand & License
+## 7. Remaining Risks & Items Requiring Manual Legal Review
 
-© 2026 QR Studio. Developed by **ANIX Software Technology**.  
-Open for public, personal, and commercial use.
+1. **Formal Legal Review Required**: All policies (`terms.html`, `privacy.html`, `cookie-policy.html`) are marked as **Drafts requiring formal review by an enrolled Indian advocate or legal counsel** prior to commercial or enterprise production.
+2. **Third-Party CDN & CountAPI**: The visitor counter connects to `countapi.mileshilliard.com`. If that service experiences downtime or is blocked by user ad-blockers, the fallback local counter engages seamlessly.
+3. **Future AdSense Deployment**: When applying for Google AdSense, a certified Consent Management Platform (CMP) supporting the IAB TCF framework should be integrated if serving EEA/UK visitors.
+
+---
+
+© 2026 QR Studio. Developed by **ANIX Software Technology**.
