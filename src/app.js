@@ -749,7 +749,7 @@ async function handlePdfFiles(files) {
 
       mergePdfState.pdfFiles.push(item);
     } catch (err) {
-      console.error('Error reading PDF file:', file.name, err);
+      console.error('Error reading PDF file: document may be corrupt, password-protected, or in an unsupported format.');
       showToast(`Cannot read "${file.name}": file may be corrupt or encrypted.`, 'error');
     }
   }
@@ -930,6 +930,10 @@ function showToast(message, type = 'success') {
 const COUNTER_KEY = 'anix_qr_studio_realtime_visitors';
 const COUNTER_API = 'https://countapi.mileshilliard.com/api/v1';
 
+function isTelemetryAllowed() {
+  return localStorage.getItem('qr_studio_pref_telemetry') !== 'false';
+}
+
 function updateVisitorDisplay(count) {
   const counterEl = document.getElementById('visitor-count');
   if (!counterEl) return;
@@ -939,6 +943,7 @@ function updateVisitorDisplay(count) {
 }
 
 async function fetchLatestCount() {
+  if (!isTelemetryAllowed()) return null;
   try {
     const res = await fetch(`${COUNTER_API}/get/${COUNTER_KEY}`, { cache: 'no-cache' });
     if (res.ok) {
@@ -955,6 +960,12 @@ async function fetchLatestCount() {
 }
 
 async function registerVisitAndCount() {
+  if (!isTelemetryAllowed()) {
+    const stored = parseInt(localStorage.getItem('qr_studio_last_known_count') || '1', 10);
+    updateVisitorDisplay(stored);
+    return;
+  }
+
   const sessionCounted = sessionStorage.getItem('anix_session_visitor_counted');
   
   if (!sessionCounted) {
@@ -993,9 +1004,11 @@ function initVisitorCounter() {
 
   registerVisitAndCount();
 
-  // Poll for real-time live visitor updates every 15 seconds
+  // Poll for real-time live visitor updates every 15 seconds only if telemetry is enabled
   setInterval(() => {
-    fetchLatestCount();
+    if (isTelemetryAllowed()) {
+      fetchLatestCount();
+    }
   }, 15000);
 }
 
@@ -1604,8 +1617,13 @@ function setupEventListeners() {
   const savePrefsBtn = document.getElementById('btn-save-privacy-prefs');
   const resetAllBtn = document.getElementById('btn-reset-all-consent');
 
+  const prefTelemetryCheckbox = document.getElementById('pref-telemetry');
+
   if (openPrefsBtn && prefsModal) {
     openPrefsBtn.addEventListener('click', () => {
+      if (prefTelemetryCheckbox) {
+        prefTelemetryCheckbox.checked = localStorage.getItem('qr_studio_pref_telemetry') !== 'false';
+      }
       prefsModal.classList.remove('hidden');
     });
   }
@@ -1618,6 +1636,10 @@ function setupEventListeners() {
 
   if (savePrefsBtn && prefsModal) {
     savePrefsBtn.addEventListener('click', () => {
+      if (prefTelemetryCheckbox) {
+        const allowed = prefTelemetryCheckbox.checked;
+        localStorage.setItem('qr_studio_pref_telemetry', allowed ? 'true' : 'false');
+      }
       prefsModal.classList.add('hidden');
       showToast('Privacy preferences saved');
     });
