@@ -7,6 +7,7 @@
  * 4. Merge PDF
  * 
  * 100% Free, Client-Side, No Login, No Database, Black & White Aesthetic.
+ * Secure, zero third-party telemetry, memory-bounded, DOM-XSS hardened.
  */
 
 import QRCodeStyling from 'qr-code-styling';
@@ -14,6 +15,14 @@ import JsBarcode from 'jsbarcode';
 import { jsPDF } from 'jspdf';
 import { PDFDocument } from 'pdf-lib';
 import confetti from 'canvas-confetti';
+import {
+  IMAGE_LIMITS,
+  PDF_LIMITS,
+  LOGO_LIMITS,
+  detectImageSignature,
+  isPdfSignature,
+  validateImageDimensions,
+} from './validators.js';
 
 const QRCodeClass = window.QRCodeStyling || QRCodeStyling;
 const BarcodeFn = window.JsBarcode || JsBarcode;
@@ -193,21 +202,37 @@ function renderLiveQR() {
   const options = buildQrOptions(300);
 
   if (!qrCodeInstance) {
-    container.innerHTML = '';
+    container.replaceChildren();
     qrCodeInstance = new QRCodeClass(options);
     qrCodeInstance.append(container);
   } else {
     qrCodeInstance.update(options);
   }
 
-  // Update contrast feedback
+  // Update contrast feedback safely using DOM nodes
   const contrastEl = document.getElementById('contrast-notice');
   if (contrastEl) {
+    contrastEl.replaceChildren();
+    const span = document.createElement('span');
     if (qrState.design.bgTransparent) {
-      contrastEl.innerHTML = `<span class="text-xs text-neutral-600 font-medium">Transparent background · Contrast depends on placement</span>`;
+      span.className = 'text-xs text-neutral-600 font-medium';
+      span.textContent = 'Transparent background · Contrast depends on placement';
     } else {
-      contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Optimal contrast (Fast scanning)</span>`;
+      span.className = 'inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold';
+      const checkIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      checkIcon.setAttribute('class', 'w-3.5 h-3.5');
+      checkIcon.setAttribute('viewBox', '0 0 24 24');
+      checkIcon.setAttribute('fill', 'none');
+      checkIcon.setAttribute('stroke', 'currentColor');
+      checkIcon.setAttribute('stroke-width', '2.5');
+      const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      polyline.setAttribute('points', '20 6 9 17 4 12');
+      checkIcon.appendChild(polyline);
+
+      span.appendChild(checkIcon);
+      span.appendChild(document.createTextNode(' Optimal contrast (Fast scanning)'));
     }
+    contrastEl.appendChild(span);
   }
 }
 
@@ -332,7 +357,6 @@ function validateBarcodeInput(format, value) {
 
   switch (format) {
     case 'CODE128': {
-      // CODE128 accepts standard ASCII
       if (!/^[\x00-\x7F]+$/.test(val)) {
         return { valid: false, message: 'CODE 128 accepts standard ASCII text and numbers only.' };
       }
@@ -340,14 +364,12 @@ function validateBarcodeInput(format, value) {
     }
 
     case 'EAN13': {
-      // European Article Number: 12 or 13 numeric digits
       if (!/^\d+$/.test(val)) {
         return { valid: false, message: 'EAN-13 only accepts numeric numbers (digits 0-9).' };
       }
       if (val.length !== 12 && val.length !== 13) {
         return { valid: false, message: 'EAN-13 requires exactly 12 or 13 digits (current length: ' + val.length + ').' };
       }
-      // Check checksum if 13 digits
       if (val.length === 13) {
         let sum = 0;
         for (let i = 0; i < 12; i++) {
@@ -362,7 +384,6 @@ function validateBarcodeInput(format, value) {
     }
 
     case 'UPC': {
-      // UPC-A: 11 or 12 numeric digits
       if (!/^\d+$/.test(val)) {
         return { valid: false, message: 'UPC-A only accepts numeric digits (0-9).' };
       }
@@ -383,7 +404,6 @@ function validateBarcodeInput(format, value) {
     }
 
     case 'CODE39': {
-      // Digits, uppercase letters, and - . $ / + % space
       const upperVal = val.toUpperCase();
       if (!/^[0-9A-Z\-\.\ \$\/\+\%]+$/.test(upperVal)) {
         return { valid: false, message: 'CODE 39 only allows uppercase A-Z, 0-9, and symbols: - . $ / + % [space]' };
@@ -465,7 +485,6 @@ function downloadBarcodePNG() {
   const url = URL.createObjectURL(svgBlob);
 
   img.onload = () => {
-    // 2x high resolution canvas
     canvas.width = img.width * 2;
     canvas.height = img.height * 2;
     ctx.fillStyle = barcodeState.background;
@@ -505,7 +524,7 @@ function printBarcode() {
 // 4. IMAGE TO PDF CONVERTER STATE & ENGINE
 // ==========================================
 const imgToPdfState = {
-  images: [], // array of { id, file, name, size, type, dataUrl, width, height }
+  images: [], // array of { id, file, name, size, type, dataUrl, blobUrl, width, height }
   pageSize: 'a4', // 'a4' | 'letter' | 'original'
   orientation: 'auto', // 'auto' | 'portrait' | 'landscape'
   fit: 'fit', // 'fit' | 'fill' | 'stretch'
@@ -520,39 +539,92 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
-function handleImageFiles(files) {
-  const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
-  if (validFiles.length === 0) {
-    showToast('Please select valid image files (JPG, PNG, WebP).', 'error');
+async function handleImageFiles(files) {
+  const fileList = Array.from(files);
+  if (fileList.length === 0) return;
+
+  // Batch count limit check
+  if (imgToPdfState.images.length + fileList.length > IMAGE_LIMITS.MAX_BATCH_COUNT) {
+    showToast(`Batch limit exceeded: Maximum ${IMAGE_LIMITS.MAX_BATCH_COUNT} images allowed.`, 'error');
     return;
   }
 
-  validFiles.forEach((file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target.result;
+  // Batch total size limit check
+  const currentTotalSize = imgToPdfState.images.reduce((acc, item) => acc + item.size, 0);
+  const newTotalSize = fileList.reduce((acc, f) => acc + f.size, 0);
+  if (currentTotalSize + newTotalSize > IMAGE_LIMITS.MAX_BATCH_SIZE_BYTES) {
+    showToast(`Batch size exceeds 100 MB limit. Please convert in smaller batches.`, 'error');
+    return;
+  }
+
+  for (const file of fileList) {
+    // Individual file size check
+    if (file.size > IMAGE_LIMITS.MAX_FILE_SIZE_BYTES) {
+      showToast(`"${file.name}" exceeds 25 MB limit (${formatBytes(file.size)}).`, 'error');
+      continue;
+    }
+
+    try {
+      // Magic bytes verification
+      const headerBuffer = await file.slice(0, 16).arrayBuffer();
+      const headerBytes = new Uint8Array(headerBuffer);
+      const sig = detectImageSignature(headerBytes);
+      if (!sig.isValid || !['jpeg', 'png', 'webp'].includes(sig.format)) {
+        showToast(`"${file.name}" is not a valid JPEG, PNG, or WebP image.`, 'error');
+        continue;
+      }
+
+      // Memory-safe URL
+      const blobUrl = URL.createObjectURL(file);
       const img = new Image();
-      img.onload = () => {
-        const item = {
-          id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-          file,
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          dataUrl,
-          width: img.width,
-          height: img.height,
-        };
-        imgToPdfState.images.push(item);
-        renderImageThumbnails();
-      };
-      img.src = dataUrl;
-    };
-    reader.readAsDataURL(file);
-  });
+
+      await new Promise((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error('Corrupt or unreadable image file.'));
+        img.src = blobUrl;
+      });
+
+      // Decompression bomb / dimension protection
+      const dimCheck = validateImageDimensions(img.naturalWidth, img.naturalHeight);
+      if (!dimCheck.valid) {
+        URL.revokeObjectURL(blobUrl);
+        showToast(`"${file.name}": ${dimCheck.error}`, 'error');
+        continue;
+      }
+
+      // Read data URL for jsPDF
+      const reader = new FileReader();
+      const dataUrl = await new Promise((resolve, reject) => {
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('Failed reading file data.'));
+        reader.readAsDataURL(file);
+      });
+
+      imgToPdfState.images.push({
+        id: 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type || `image/${sig.format}`,
+        dataUrl,
+        blobUrl,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+      });
+
+      renderImageThumbnails();
+    } catch (err) {
+      console.error('Image loading error:', err);
+      showToast(`Cannot read "${file.name}": ${err.message || 'unsupported file'}`, 'error');
+    }
+  }
 }
 
 function removeImageItem(id) {
+  const item = imgToPdfState.images.find(x => x.id === id);
+  if (item && item.blobUrl) {
+    URL.revokeObjectURL(item.blobUrl);
+  }
   imgToPdfState.images = imgToPdfState.images.filter(x => x.id !== id);
   renderImageThumbnails();
 }
@@ -567,10 +639,17 @@ function moveImageItem(index, direction) {
 }
 
 function clearAllImages() {
+  imgToPdfState.images.forEach(item => {
+    if (item.blobUrl) URL.revokeObjectURL(item.blobUrl);
+  });
   imgToPdfState.images = [];
   renderImageThumbnails();
 }
 
+/**
+ * Renders the image items list safely using createElement, textContent, and event listeners.
+ * Completely immune to DOM-based XSS via filenames or attributes.
+ */
 function renderImageThumbnails() {
   const listEl = document.getElementById('image-files-list');
   const countEl = document.getElementById('image-count-label');
@@ -583,7 +662,7 @@ function renderImageThumbnails() {
   if (countEl) countEl.textContent = `${count} image${count === 1 ? '' : 's'} added`;
 
   if (count === 0) {
-    listEl.innerHTML = '';
+    listEl.replaceChildren();
     if (emptyEl) emptyEl.classList.remove('hidden');
     if (actionsEl) actionsEl.classList.add('hidden');
     return;
@@ -592,31 +671,78 @@ function renderImageThumbnails() {
   if (emptyEl) emptyEl.classList.add('hidden');
   if (actionsEl) actionsEl.classList.remove('hidden');
 
-  listEl.innerHTML = imgToPdfState.images.map((item, idx) => `
-    <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3">
-      <div class="flex items-center gap-3 min-w-0">
-        <span class="w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black">
-          ${idx + 1}
-        </span>
-        <img src="${item.dataUrl}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover border border-neutral-200 shrink-0 bg-neutral-100" />
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[280px]">${item.name}</div>
-          <div class="text-[11px] text-neutral-500 font-mono">${item.width}×${item.height}px · ${formatBytes(item.size)}</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-1 shrink-0">
-        <button type="button" onclick="window.__moveImage(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Up">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-        </button>
-        <button type="button" onclick="window.__moveImage(${idx}, 1)" ${idx === count - 1 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Down">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <button type="button" onclick="window.__removeImage('${item.id}')" class="p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1" title="Remove image">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-    </div>
-  `).join('');
+  listEl.replaceChildren();
+
+  imgToPdfState.images.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'flex items-center justify-between p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3';
+
+    // Left info
+    const left = document.createElement('div');
+    left.className = 'flex items-center gap-3 min-w-0';
+
+    const numBadge = document.createElement('span');
+    numBadge.className = 'w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black';
+    numBadge.textContent = String(idx + 1);
+
+    const thumb = document.createElement('img');
+    thumb.src = item.blobUrl || item.dataUrl;
+    thumb.alt = 'Thumbnail for ' + item.name;
+    thumb.className = 'w-12 h-12 rounded-lg object-cover border border-neutral-200 shrink-0 bg-neutral-100';
+
+    const details = document.createElement('div');
+    details.className = 'min-w-0';
+
+    const title = document.createElement('div');
+    title.className = 'text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[280px]';
+    title.textContent = item.name;
+
+    const meta = document.createElement('div');
+    meta.className = 'text-[11px] text-neutral-500 font-mono';
+    meta.textContent = `${item.width}×${item.height}px · ${formatBytes(item.size)}`;
+
+    details.appendChild(title);
+    details.appendChild(meta);
+
+    left.appendChild(numBadge);
+    left.appendChild(thumb);
+    left.appendChild(details);
+
+    // Right actions
+    const right = document.createElement('div');
+    right.className = 'flex items-center gap-1 shrink-0';
+
+    const btnUp = document.createElement('button');
+    btnUp.type = 'button';
+    btnUp.title = 'Move Up';
+    btnUp.disabled = idx === 0;
+    btnUp.className = 'p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer';
+    btnUp.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>`;
+    btnUp.addEventListener('click', () => moveImageItem(idx, -1));
+
+    const btnDown = document.createElement('button');
+    btnDown.type = 'button';
+    btnDown.title = 'Move Down';
+    btnDown.disabled = idx === count - 1;
+    btnDown.className = 'p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer';
+    btnDown.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+    btnDown.addEventListener('click', () => moveImageItem(idx, 1));
+
+    const btnRemove = document.createElement('button');
+    btnRemove.type = 'button';
+    btnRemove.title = 'Remove image';
+    btnRemove.className = 'p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1';
+    btnRemove.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    btnRemove.addEventListener('click', () => removeImageItem(item.id));
+
+    right.appendChild(btnUp);
+    right.appendChild(btnDown);
+    right.appendChild(btnRemove);
+
+    card.appendChild(left);
+    card.appendChild(right);
+    listEl.appendChild(card);
+  });
 }
 
 // Convert all images to PDF
@@ -643,7 +769,6 @@ async function convertImagesToPDF() {
       const isLandscape = item.width > item.height;
       const pageOrientation = orientation === 'auto' ? (isLandscape ? 'landscape' : 'portrait') : orientation;
 
-      // Determine dimensions in points (72 pt per inch)
       let pageW, pageH;
       if (pageSize === 'a4') {
         pageW = pageOrientation === 'portrait' ? 595.28 : 841.89;
@@ -652,7 +777,6 @@ async function convertImagesToPDF() {
         pageW = pageOrientation === 'portrait' ? 612 : 792;
         pageH = pageOrientation === 'portrait' ? 792 : 612;
       } else {
-        // Original image size
         pageW = item.width * 0.75;
         pageH = item.height * 0.75;
       }
@@ -667,9 +791,8 @@ async function convertImagesToPDF() {
         doc.addPage(pageSize === 'original' ? [pageW, pageH] : pageSize, pageOrientation);
       }
 
-      // Calculate image placement
       let imgX = 0, imgY = 0, imgW = pageW, imgH = pageH;
-      const margin = fit === 'fit' ? 20 : 0; // margin in points
+      const margin = fit === 'fit' ? 20 : 0;
       const availW = pageW - margin * 2;
       const availH = pageH - margin * 2;
 
@@ -686,14 +809,12 @@ async function convertImagesToPDF() {
         imgX = (pageW - imgW) / 2;
         imgY = (pageH - imgH) / 2;
       } else {
-        // stretch
         imgX = 0;
         imgY = 0;
         imgW = pageW;
         imgH = pageH;
       }
 
-      // Detect format
       const imgFormat = item.type.includes('png') ? 'PNG' : item.type.includes('webp') ? 'WEBP' : 'JPEG';
       doc.addImage(item.dataUrl, imgFormat, imgX, imgY, imgW, imgH);
     }
@@ -722,34 +843,56 @@ const mergePdfState = {
 };
 
 async function handlePdfFiles(files) {
-  const validFiles = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
-  if (validFiles.length === 0) {
-    showToast('Please select valid PDF documents.', 'error');
+  const fileList = Array.from(files);
+  if (fileList.length === 0) return;
+
+  // Batch count limit check
+  if (mergePdfState.pdfFiles.length + fileList.length > PDF_LIMITS.MAX_BATCH_COUNT) {
+    showToast(`Batch limit exceeded: Maximum ${PDF_LIMITS.MAX_BATCH_COUNT} PDF files allowed.`, 'error');
+    return;
+  }
+
+  // Batch total size limit check
+  const currentTotalSize = mergePdfState.pdfFiles.reduce((acc, item) => acc + item.size, 0);
+  const newTotalSize = fileList.reduce((acc, f) => acc + f.size, 0);
+  if (currentTotalSize + newTotalSize > PDF_LIMITS.MAX_BATCH_SIZE_BYTES) {
+    showToast(`Batch size exceeds 150 MB limit. Please merge fewer or smaller documents.`, 'error');
     return;
   }
 
   const errorEl = document.getElementById('merge-error-msg');
   if (errorEl) errorEl.classList.add('hidden');
 
-  for (const file of validFiles) {
+  for (const file of fileList) {
+    // Individual file size check
+    if (file.size > PDF_LIMITS.MAX_FILE_SIZE_BYTES) {
+      showToast(`"${file.name}" exceeds 50 MB limit (${formatBytes(file.size)}).`, 'error');
+      continue;
+    }
+
     try {
+      // Magic bytes verification (%PDF-)
+      const headerBuffer = await file.slice(0, 8).arrayBuffer();
+      const headerBytes = new Uint8Array(headerBuffer);
+      if (!isPdfSignature(headerBytes)) {
+        showToast(`"${file.name}" is not a valid PDF file (missing %PDF- header).`, 'error');
+        continue;
+      }
+
       const buffer = await file.arrayBuffer();
-      // Inspect page count with PDFLib
       const pdfDoc = await PDFDocClass.load(buffer, { ignoreEncryption: true });
       const pageCount = pdfDoc.getPageCount();
 
-      const item = {
-        id: 'pdf_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      mergePdfState.pdfFiles.push({
+        id: 'pdf_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
         file,
         name: file.name,
         size: file.size,
         pageCount,
         buffer,
-      };
-
-      mergePdfState.pdfFiles.push(item);
+      });
     } catch (err) {
-      console.error('Error reading PDF file: document may be corrupt, password-protected, or in an unsupported format.');
+      console.error('Error reading PDF file:', err);
       showToast(`Cannot read "${file.name}": file may be corrupt or encrypted.`, 'error');
     }
   }
@@ -776,6 +919,10 @@ function clearAllPdfs() {
   renderPdfFileList();
 }
 
+/**
+ * Renders the PDF documents list safely using createElement, textContent, and event listeners.
+ * Completely immune to DOM-based XSS via filenames or attributes.
+ */
 function renderPdfFileList() {
   const listEl = document.getElementById('pdf-files-list');
   const countEl = document.getElementById('pdf-count-label');
@@ -792,7 +939,7 @@ function renderPdfFileList() {
   }
 
   if (count === 0) {
-    listEl.innerHTML = '';
+    listEl.replaceChildren();
     if (emptyEl) emptyEl.classList.remove('hidden');
     if (actionsEl) actionsEl.classList.add('hidden');
     return;
@@ -801,33 +948,77 @@ function renderPdfFileList() {
   if (emptyEl) emptyEl.classList.add('hidden');
   if (actionsEl) actionsEl.classList.remove('hidden');
 
-  listEl.innerHTML = mergePdfState.pdfFiles.map((item, idx) => `
-    <div class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3">
-      <div class="flex items-center gap-3 min-w-0">
-        <span class="w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black">
-          ${idx + 1}
-        </span>
-        <div class="w-10 h-10 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center shrink-0 text-black">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        </div>
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[320px]">${item.name}</div>
-          <div class="text-[11px] text-neutral-500 font-mono">${item.pageCount} page${item.pageCount === 1 ? '' : 's'} · ${formatBytes(item.size)}</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-1 shrink-0">
-        <button type="button" onclick="window.__movePdf(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Up">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-        </button>
-        <button type="button" onclick="window.__movePdf(${idx}, 1)" ${idx === count - 1 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Down">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <button type="button" onclick="window.__removePdf('${item.id}')" class="p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1" title="Remove PDF">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-    </div>
-  `).join('');
+  listEl.replaceChildren();
+
+  mergePdfState.pdfFiles.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'flex items-center justify-between p-3.5 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3';
+
+    // Left info
+    const left = document.createElement('div');
+    left.className = 'flex items-center gap-3 min-w-0';
+
+    const numBadge = document.createElement('span');
+    numBadge.className = 'w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black';
+    numBadge.textContent = String(idx + 1);
+
+    const icon = document.createElement('div');
+    icon.className = 'w-10 h-10 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center shrink-0 text-black';
+    icon.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+
+    const details = document.createElement('div');
+    details.className = 'min-w-0';
+
+    const title = document.createElement('div');
+    title.className = 'text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[320px]';
+    title.textContent = item.name;
+
+    const meta = document.createElement('div');
+    meta.className = 'text-[11px] text-neutral-500 font-mono';
+    meta.textContent = `${item.pageCount} page${item.pageCount === 1 ? '' : 's'} · ${formatBytes(item.size)}`;
+
+    details.appendChild(title);
+    details.appendChild(meta);
+
+    left.appendChild(numBadge);
+    left.appendChild(icon);
+    left.appendChild(details);
+
+    // Right actions
+    const right = document.createElement('div');
+    right.className = 'flex items-center gap-1 shrink-0';
+
+    const btnUp = document.createElement('button');
+    btnUp.type = 'button';
+    btnUp.title = 'Move Up';
+    btnUp.disabled = idx === 0;
+    btnUp.className = 'p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer';
+    btnUp.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>`;
+    btnUp.addEventListener('click', () => movePdfItem(idx, -1));
+
+    const btnDown = document.createElement('button');
+    btnDown.type = 'button';
+    btnDown.title = 'Move Down';
+    btnDown.disabled = idx === count - 1;
+    btnDown.className = 'p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer';
+    btnDown.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+    btnDown.addEventListener('click', () => movePdfItem(idx, 1));
+
+    const btnRemove = document.createElement('button');
+    btnRemove.type = 'button';
+    btnRemove.title = 'Remove PDF';
+    btnRemove.className = 'p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1';
+    btnRemove.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    btnRemove.addEventListener('click', () => removePdfItem(item.id));
+
+    right.appendChild(btnUp);
+    right.appendChild(btnDown);
+    right.appendChild(btnRemove);
+
+    card.appendChild(left);
+    card.appendChild(right);
+    listEl.appendChild(card);
+  });
 }
 
 // Perform client-side PDF Merge
@@ -887,14 +1078,8 @@ async function mergeSelectedPDFs() {
   }
 }
 
-// Global window helpers for inline HTML event handlers
-window.__removeImage = removeImageItem;
-window.__moveImage = moveImageItem;
-window.__removePdf = removePdfItem;
-window.__movePdf = movePdfItem;
-
 // ==========================================
-// 6. UI HELPERS & VISITOR COUNTER
+// 6. UI HELPERS & NOTIFICATIONS
 // ==========================================
 function triggerConfetti() {
   try {
@@ -923,93 +1108,7 @@ function showToast(message, type = 'success') {
 
   setTimeout(() => {
     toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none border border-neutral-700';
-  }, 2400);
-}
-
-// Real-Time Visitor Counter (1 to Infinity)
-const COUNTER_KEY = 'anix_qr_studio_realtime_visitors';
-const COUNTER_API = 'https://countapi.mileshilliard.com/api/v1';
-
-function isTelemetryAllowed() {
-  return localStorage.getItem('qr_studio_pref_telemetry') !== 'false';
-}
-
-function updateVisitorDisplay(count) {
-  const counterEl = document.getElementById('visitor-count');
-  if (!counterEl) return;
-  const num = parseInt(count, 10) || 1;
-  counterEl.textContent = num.toLocaleString();
-  localStorage.setItem('qr_studio_last_known_count', num.toString());
-}
-
-async function fetchLatestCount() {
-  if (!isTelemetryAllowed()) return null;
-  try {
-    const res = await fetch(`${COUNTER_API}/get/${COUNTER_KEY}`, { cache: 'no-cache' });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && typeof data.value === 'number') {
-        updateVisitorDisplay(data.value);
-        return data.value;
-      }
-    }
-  } catch (e) {
-    // Network offline fallback
-  }
-  return null;
-}
-
-async function registerVisitAndCount() {
-  if (!isTelemetryAllowed()) {
-    const stored = parseInt(localStorage.getItem('qr_studio_last_known_count') || '1', 10);
-    updateVisitorDisplay(stored);
-    return;
-  }
-
-  const sessionCounted = sessionStorage.getItem('anix_session_visitor_counted');
-  
-  if (!sessionCounted) {
-    try {
-      // First visit in this browser session: increment count (+1 from 1 to infinity)
-      const res = await fetch(`${COUNTER_API}/hit/${COUNTER_KEY}`, { cache: 'no-cache' });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && typeof data.value === 'number') {
-          sessionStorage.setItem('anix_session_visitor_counted', 'true');
-          updateVisitorDisplay(data.value);
-          return;
-        }
-      }
-    } catch (err) {
-      console.warn('Real-time counter hit error:', err);
-    }
-  }
-
-  // If already counted in this session or hit failed, get current live count
-  const latest = await fetchLatestCount();
-  if (latest === null) {
-    let stored = parseInt(localStorage.getItem('qr_studio_last_known_count') || '1', 10);
-    if (!sessionCounted) {
-      stored += 1;
-      sessionStorage.setItem('anix_session_visitor_counted', 'true');
-    }
-    updateVisitorDisplay(stored);
-  }
-}
-
-function initVisitorCounter() {
-  // Show existing cached count immediately so there's zero layout shift
-  const cached = localStorage.getItem('qr_studio_last_known_count') || '1';
-  updateVisitorDisplay(cached);
-
-  registerVisitAndCount();
-
-  // Poll for real-time live visitor updates every 15 seconds only if telemetry is enabled
-  setInterval(() => {
-    if (isTelemetryAllowed()) {
-      fetchLatestCount();
-    }
-  }, 15000);
+  }, 2600);
 }
 
 // ==========================================
@@ -1166,7 +1265,7 @@ function setupEventListeners() {
     });
   });
 
-  // QR Logo Upload
+  // QR Logo Upload with Magic Byte & Size Validation
   const logoInput = document.getElementById('file-logo');
   const logoBox = document.getElementById('box-logo-upload');
   const logoPreview = document.getElementById('logo-preview-box');
@@ -1178,25 +1277,53 @@ function setupEventListeners() {
 
   if (logoBox && logoInput) {
     logoBox.addEventListener('click', () => logoInput.click());
-    logoInput.addEventListener('change', (e) => {
+    logoInput.addEventListener('change', async (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      if (!file.type.startsWith('image/')) {
-        showToast('Please upload an image file (PNG, JPG, SVG).', 'error');
+
+      if (file.size > LOGO_LIMITS.MAX_FILE_SIZE_BYTES) {
+        showToast(`Logo exceeds 5 MB limit (${formatBytes(file.size)}).`, 'error');
+        e.target.value = '';
         return;
       }
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        qrState.design.logoUrl = event.target?.result;
-        qrState.design.logoName = file.name;
-        if (logoThumb) logoThumb.src = event.target?.result;
-        if (logoTitle) logoTitle.textContent = file.name;
-        if (logoBox) logoBox.classList.add('hidden');
-        if (logoPreview) logoPreview.classList.remove('hidden');
-        renderLiveQR();
-        showToast('Logo embedded with 30% error correction!');
-      };
-      reader.readAsDataURL(file);
+
+      try {
+        const headerBuffer = await file.slice(0, 16).arrayBuffer();
+        const headerBytes = new Uint8Array(headerBuffer);
+        const sig = detectImageSignature(headerBytes);
+        if (!sig.isValid) {
+          showToast('Uploaded file is not a valid image (PNG, JPG, SVG, WebP).', 'error');
+          e.target.value = '';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const imgUrl = event.target?.result;
+          const img = new Image();
+          img.onload = () => {
+            if (img.width > LOGO_LIMITS.MAX_DIMENSION_PX || img.height > LOGO_LIMITS.MAX_DIMENSION_PX) {
+              showToast(`Logo dimension exceeds ${LOGO_LIMITS.MAX_DIMENSION_PX}px.`, 'error');
+              return;
+            }
+            qrState.design.logoUrl = imgUrl;
+            qrState.design.logoName = file.name;
+            if (logoThumb) logoThumb.src = imgUrl;
+            if (logoTitle) logoTitle.textContent = file.name;
+            if (logoBox) logoBox.classList.add('hidden');
+            if (logoPreview) logoPreview.classList.remove('hidden');
+            renderLiveQR();
+            showToast('Logo embedded with 30% error correction!');
+          };
+          img.onerror = () => {
+            showToast('Failed to load logo image.', 'error');
+          };
+          img.src = imgUrl;
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        showToast('Error validating logo image.', 'error');
+      }
       e.target.value = '';
     });
   }
@@ -1257,7 +1384,6 @@ function setupEventListeners() {
   if (barcodeFormat) {
     barcodeFormat.addEventListener('change', (e) => {
       barcodeState.format = e.target.value;
-      // Helpful placeholder / default value per format
       if (e.target.value === 'EAN13' && (!barcodeState.value || barcodeState.value.length < 12 || !/^\d+$/.test(barcodeState.value))) {
         barcodeState.value = '5901234123457';
         if (barcodeInput) barcodeInput.value = barcodeState.value;
@@ -1617,13 +1743,8 @@ function setupEventListeners() {
   const savePrefsBtn = document.getElementById('btn-save-privacy-prefs');
   const resetAllBtn = document.getElementById('btn-reset-all-consent');
 
-  const prefTelemetryCheckbox = document.getElementById('pref-telemetry');
-
   if (openPrefsBtn && prefsModal) {
     openPrefsBtn.addEventListener('click', () => {
-      if (prefTelemetryCheckbox) {
-        prefTelemetryCheckbox.checked = localStorage.getItem('qr_studio_pref_telemetry') !== 'false';
-      }
       prefsModal.classList.remove('hidden');
     });
   }
@@ -1636,10 +1757,6 @@ function setupEventListeners() {
 
   if (savePrefsBtn && prefsModal) {
     savePrefsBtn.addEventListener('click', () => {
-      if (prefTelemetryCheckbox) {
-        const allowed = prefTelemetryCheckbox.checked;
-        localStorage.setItem('qr_studio_pref_telemetry', allowed ? 'true' : 'false');
-      }
       prefsModal.classList.add('hidden');
       showToast('Privacy preferences saved');
     });
@@ -1649,6 +1766,7 @@ function setupEventListeners() {
     resetAllBtn.addEventListener('click', () => {
       localStorage.removeItem('qr_studio_terms_consent');
       localStorage.removeItem('qr_studio_file_upload_consent');
+      localStorage.removeItem('qr_studio_last_known_count');
       if (prefsModal) prefsModal.classList.add('hidden');
       if (termsModal) {
         termsModal.classList.remove('hidden');
@@ -1667,5 +1785,4 @@ window.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   renderLiveQR();
   renderLiveBarcode();
-  initVisitorCounter();
 });

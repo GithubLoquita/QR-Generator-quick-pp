@@ -88,27 +88,21 @@
               <tbody class="divide-y divide-neutral-200 font-mono text-[11px]">
                 <tr>
                   <td class="p-3.5 font-bold text-black">qr_studio_terms_consent</td>
-                  <td class="p-3.5 text-neutral-600">Essential</td>
+                  <td class="p-3.5 text-neutral-600">Essential (Local)</td>
                   <td class="p-3.5 text-neutral-600">Persistent</td>
-                  <td class="p-3.5 font-sans text-xs">Records your acknowledgment of the Terms & Conditions and Privacy Policy version so you aren't prompted on every page load.</td>
+                  <td class="p-3.5 font-sans text-xs">Records your acknowledgment of the Terms & Conditions and Privacy Policy draft version so you are not prompted repeatedly.</td>
                 </tr>
                 <tr>
                   <td class="p-3.5 font-bold text-black">qr_studio_file_upload_consent</td>
-                  <td class="p-3.5 text-neutral-600">Essential</td>
+                  <td class="p-3.5 text-neutral-600">Essential (Local)</td>
                   <td class="p-3.5 text-neutral-600">Persistent</td>
-                  <td class="p-3.5 font-sans text-xs">Records that you confirmed having legal rights to upload/convert selected image and PDF files.</td>
+                  <td class="p-3.5 font-sans text-xs">Records your confirmation that you hold lawful rights to process your selected image and PDF files.</td>
                 </tr>
-                <tr>
-                  <td class="p-3.5 font-bold text-black">qr_studio_last_known_count</td>
-                  <td class="p-3.5 text-neutral-600">Functional</td>
-                  <td class="p-3.5 text-neutral-600">Persistent</td>
-                  <td class="p-3.5 font-sans text-xs">Caches the last known public visitor count to prevent layout shift while fresh data loads.</td>
-                </tr>
-                <tr>
-                  <td class="p-3.5 font-bold text-black">anix_session_visitor_counted</td>
-                  <td class="p-3.5 text-neutral-600">Telemetry</td>
-                  <td class="p-3.5 text-neutral-600">Session (tab close)</td>
-                  <td class="p-3.5 font-sans text-xs">Prevents spamming the public counter API on successive page refreshes within the same browser session.</td>
+                <tr class="bg-neutral-50/50">
+                  <td class="p-3.5 font-bold text-neutral-500">Third-Party Tracking Cookies</td>
+                  <td class="p-3.5 text-neutral-500">None</td>
+                  <td class="p-3.5 text-neutral-500">N/A</td>
+                  <td class="p-3.5 font-sans text-xs text-neutral-600">None. Zero cookies are set by QR Studio. All telemetry and external counting endpoints have been removed.</td>
                 </tr>
               </tbody>
             </table>
@@ -137,24 +131,29 @@
           </p>
           <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm text-neutral-700">
             <li><strong>Chrome / Edge:</strong> Settings → Privacy and security → Third-party cookies / Site data → Search for "qrenerator.vercel.app" → Clear data.</li>
-            <li><strong>Firefox:</strong> Settings → Privacy & Security → Cookies and Site Data → Clear Data.</li>
+            <li><strong>Firefox:</strong> Settings → Privacy &amp; Security → Cookies and Site Data → Clear Data.</li>
             <li><strong>Safari:</strong> Settings → Privacy → Manage Website Data → Remove.</li>
           </ul>
         </section>
 
         <!-- Quick Reset Consent Button -->
-        <section class="p-6 rounded-2xl bg-white border border-neutral-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h3 class="text-sm font-bold text-black">Reset Local Consent Storage</h3>
-            <p class="text-xs text-neutral-600 mt-0.5">Clear your saved terms and file upload acceptance flags on this device.</p>
+        <section class="p-6 rounded-2xl bg-white border border-neutral-300 space-y-3">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-sm font-bold text-black">Reset Local Consent Storage</h3>
+              <p class="text-xs text-neutral-600 mt-0.5">Clear your saved terms and file upload acceptance flags on this device.</p>
+            </div>
+            <button
+              type="button"
+              id="btn-reset-cookie-consent"
+              class="px-4 py-2.5 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-black text-xs font-bold transition-all cursor-pointer shadow-2xs shrink-0"
+            >
+              Reset Consent State
+            </button>
           </div>
-          <button
-            type="button"
-            id="btn-reset-cookie-consent"
-            class="px-4 py-2.5 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-black text-xs font-bold transition-all cursor-pointer shadow-2xs"
-          >
-            Reset Consent State
-          </button>
+          <div id="reset-feedback" class="hidden text-xs text-emerald-800 bg-emerald-50 border border-emerald-300 p-3 rounded-xl font-medium">
+            Local consent settings have been cleared. When you visit the home page, the Terms modal will be displayed again.
+          </div>
         </section>
 
       </div>
@@ -168,7 +167,7 @@
           <a href="/about" class="hover:text-black">About Us</a>
           <a href="/contact" class="hover:text-black">Contact</a>
           <a href="/privacy" class="hover:text-black">Privacy Policy</a>
-          <a href="/terms" class="hover:text-black">Terms & Conditions</a>
+          <a href="/terms" class="hover:text-black">Terms &amp; Conditions</a>
           <a href="/cookie-policy" class="text-black font-bold">Cookie Policy</a>
         </div>
         <div>
@@ -182,15 +181,6 @@
       </div>
     </footer>
 
-    <script>
-      const btnReset = document.getElementById('btn-reset-cookie-consent');
-      if (btnReset) {
-        btnReset.addEventListener('click', () => {
-          localStorage.removeItem('qr_studio_terms_consent');
-          localStorage.removeItem('qr_studio_file_upload_consent');
-          alert('Local consent settings have been cleared. When you visit the home page, the Terms modal will be displayed again.');
-        });
-      }
-    </script>
+    <script type="module" src="/src/subpage.js"></script>
   </body>
 </html>

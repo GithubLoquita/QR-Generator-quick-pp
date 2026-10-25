@@ -146,10 +146,10 @@
           <section class="space-y-2">
             <h2 class="text-lg font-bold text-black flex items-center gap-2">
               <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">7</span>
-              <span>PDF Conversion and Merge Limitations</span>
+              <span>PDF Conversion, Merge Limitations &amp; Resource Boundaries</span>
             </h2>
             <p>
-              PDF conversion and merging rely on in-browser WebAssembly and JavaScript libraries (<code class="font-mono text-xs">jsPDF</code>, <code class="font-mono text-xs">pdf-lib</code>). The service cannot merge password-encrypted, DRM-protected, or corrupted PDF files. Processing speed and capability depend on your device's available memory. QR Studio is not responsible for document formatting variations or memory-limit terminations.
+              PDF conversion and merging rely on in-browser JavaScript engines (<code class="font-mono text-xs">jsPDF</code>, <code class="font-mono text-xs">pdf-lib</code>). To preserve stability and prevent device memory exhaustion, files are subject to defined technical thresholds: up to 50 images per batch (max 25 MB/file, max 100 MB aggregate, max 8,192 px dimension); up to 30 PDF documents (max 50 MB/file, max 150 MB aggregate). The service cannot merge password-encrypted, DRM-locked, or structurally corrupted PDF files. Processing speed and capacity depend on your device's available RAM. QR Studio is not responsible for document formatting variations or memory-limit terminations.
             </p>
           </section>
 
@@ -179,7 +179,7 @@
           <section class="space-y-2">
             <h2 class="text-lg font-bold text-black flex items-center gap-2">
               <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">10</span>
-              <span>Security Limitations & Vulnerability Reporting</span>
+              <span>Security Limitations &amp; Vulnerability Reporting</span>
             </h2>
             <p>
               We implement reasonable administrative and client-side security measures. However, you acknowledge that no web-based system is completely immune to cyber vulnerabilities. Any suspected security issues should be responsibly reported to <a href="mailto:hembramgroupofficials@gmail.com" class="underline font-bold text-black">hembramgroupofficials@gmail.com</a>.
@@ -193,7 +193,7 @@
               <span>Third-Party Services, External Links, and Advertising</span>
             </h2>
             <p>
-              The platform may display links to third-party websites or services (e.g., Google Fonts, Vercel, CountAPI, or future advertising networks such as Google AdSense). We do not control or endorse external websites and are not liable for their content, policies, or practices.
+              The platform may display links to third-party services or infrastructure (e.g., Google Fonts, Vercel edge infrastructure, or future advertising networks such as Google AdSense). We do not control external websites and are not liable for their content, policies, or practices. All external third-party tracking scripts have been eliminated from this application.
             </p>
           </section>
 

@@ -950,14 +950,15 @@
     <footer class="mt-auto border-t border-neutral-200 bg-white py-10 text-center no-print">
       <div class="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center gap-5">
         
-        <!-- Live Visitor Count Badge in Footer (1 to Infinity) -->
-        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-medium text-neutral-800 shadow-2xs">
+        <!-- Verified Privacy & Client-Side Processing Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-semibold text-neutral-800 shadow-2xs">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-neutral-900"></span>
           </span>
-          <span class="text-neutral-600">Live Visitor Count:</span>
-          <span id="visitor-count" class="font-mono tabular-nums font-bold text-black text-sm">1</span>
+          <span class="text-neutral-800">100% Client-Side Engine</span>
+          <span class="text-neutral-400">·</span>
+          <span class="text-neutral-600">Zero Server Uploads &amp; Tracking</span>
         </div>
 
         <!-- Full Footer Navigation Links -->
@@ -1181,28 +1182,28 @@
           <!-- Essential Storage -->
           <div class="p-4 rounded-2xl border border-neutral-300 bg-neutral-50 flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-bold text-black">Essential Browser Storage</p>
-              <p class="text-[11px] text-neutral-500">Saves your terms acceptance and upload consent locally.</p>
+              <p class="text-xs font-bold text-black">Essential Browser Storage (localStorage)</p>
+              <p class="text-[11px] text-neutral-500">Saves your terms acceptance and upload rights consent on this device.</p>
             </div>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-black text-white rounded-md">Always Active</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-black text-white rounded-md shrink-0">Always Active</span>
           </div>
 
-          <!-- Anonymous Visitor Counter -->
+          <!-- Zero Telemetry -->
           <div class="p-4 rounded-2xl border border-neutral-200 bg-white flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-bold text-black">Anonymous Visitor Telemetry</p>
-              <p class="text-[11px] text-neutral-500">Sends anonymous ping to CountAPI for global visitor count.</p>
+              <p class="text-xs font-bold text-black">External Analytics &amp; Telemetry</p>
+              <p class="text-[11px] text-neutral-500">Zero third-party tracking, zero analytics scripts, zero external counters.</p>
             </div>
-            <input type="checkbox" id="pref-telemetry" checked class="w-4 h-4 accent-black cursor-pointer" />
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-neutral-200 text-neutral-700 rounded-md shrink-0">Disabled / None</span>
           </div>
 
           <!-- Advertising -->
           <div class="p-4 rounded-2xl border border-neutral-200 bg-white flex items-center justify-between gap-3">
             <div>
-              <p class="text-xs font-bold text-black">Personalized Advertising (Future)</p>
-              <p class="text-[11px] text-neutral-500">AdSense personalization cookies. (Currently zero ads).</p>
+              <p class="text-xs font-bold text-black">Advertising Cookies</p>
+              <p class="text-[11px] text-neutral-500">100% ad-free utility suite. Zero marketing trackers or commercial beacons.</p>
             </div>
-            <input type="checkbox" id="pref-advertising" class="w-4 h-4 accent-black cursor-pointer" />
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-neutral-200 text-neutral-700 rounded-md shrink-0">Disabled / None</span>
           </div>
         </div>
 

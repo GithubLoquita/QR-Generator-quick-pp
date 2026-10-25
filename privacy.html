@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy — QR Studio by ANIX Software Technology</title>
-    <meta name="description" content="Privacy Policy for QR Studio. Transparent disclosure of client-side file processing, local browser storage, hosting logs, and data protection practices." />
+    <meta name="description" content="Privacy Policy for QR Studio. Transparent disclosure of client-side file processing, zero external tracking, hosting logs, and data protection practices." />
     <link rel="canonical" href="https://qrenerator.vercel.app/privacy" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,14 +42,14 @@
     <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       <div class="space-y-10">
         
-        <!-- Legal Draft Disclaimer Banner -->
+        <!-- Legal Draft Notice Banner -->
         <div class="p-5 rounded-2xl border-2 border-black bg-neutral-100 space-y-2">
           <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-black">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             <span>Notice: Draft Policy Under Legal Review</span>
           </div>
           <p class="text-xs text-neutral-700 leading-relaxed">
-            This document is a technical and procedural draft reflecting the verified software architecture of QR Studio as of October 2026. It has been prepared to align with Indian legal frameworks (including the Information Technology Act, 2000, applicable IT Rules, and digital data protection principles). It is subject to formal legal review before production reliance. No representation is made that a lawyer has certified this draft.
+            This document is a technical and operational policy draft reflecting the verified client-side software architecture of QR Studio as of October 2026. It is drafted to align with Indian legislation (including the Information Technology Act, 2000, applicable IT Rules, and digital data protection principles) and international best practices. It must be formally reviewed by qualified legal counsel prior to formal production reliance.
           </p>
         </div>
 
@@ -58,176 +58,260 @@
           <div class="flex items-center gap-3 text-xs font-mono text-neutral-500 mb-2">
             <span>VERSION 1.0 (DRAFT)</span>
             <span>·</span>
-            <span>EFFECTIVE: OCTOBER 25, 2026</span>
+            <span>EFFECTIVE DATE: OCTOBER 25, 2026</span>
           </div>
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
             Privacy Policy
           </h1>
           <p class="mt-3 text-sm sm:text-base text-neutral-600 leading-relaxed">
-            QR Studio ("we", "us", or "our"), developed by ANIX Software Technology, is committed to transparency. This Privacy Policy details exactly how your information, uploaded files, and technical data are handled when using our browser tools.
+            QR Studio ("we", "us", or "our"), developed by ANIX Software Technology, prioritizes user privacy through client-side architecture. This policy details how your technical data, files, and browser interactions are handled.
           </p>
         </div>
 
-        <!-- Section 1 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">1</span>
-            <span>What Information We Collect and Why</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            We operate on a <strong>data-minimization principle</strong>:
-          </p>
-          <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-neutral-700">
-            <li><strong>No Account Information:</strong> We do not ask for, create, or store user accounts, logins, passwords, or personal profiles.</li>
-            <li><strong>No Payment Details:</strong> The service is 100% free; we never request credit cards, bank accounts, or billing information.</li>
-            <li><strong>Visitor Count Telemetry:</strong> To display an anonymous live visit counter, the application connects to a public counting endpoint (<code class="bg-white px-1 border border-neutral-300 rounded font-mono text-xs">countapi.mileshilliard.com</code>). This request transmits standard HTTP request headers without collecting or recording your personal name or phone number.</li>
-            <li><strong>Correspondence Data:</strong> If you voluntarily email us at <a href="mailto:hembramgroupofficials@gmail.com" class="underline font-medium text-black">hembramgroupofficials@gmail.com</a>, we retain your email address and message contents solely to answer your inquiry or address your grievance.</li>
-          </ul>
-        </section>
+        <!-- 17 Comprehensive Policy Sections -->
+        <div class="space-y-8 text-neutral-700 text-sm leading-relaxed">
 
-        <!-- Section 2 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">2</span>
-            <span>Local In-Browser Processing (Verified Technical Reality)</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            We have architected QR Studio so that all core computation occurs locally inside your web browser engine:
-          </p>
-          <div class="p-5 rounded-2xl bg-white border border-neutral-300 space-y-2 text-xs sm:text-sm text-neutral-700">
-            <p><strong>QR Codes:</strong> Generated client-side using JavaScript Canvas and SVG manipulation (<code class="font-mono">qr-code-styling</code>).</p>
-            <p><strong>Barcodes:</strong> Rendered directly into DOM SVG elements using client-side mathematical algorithms (<code class="font-mono">JsBarcode</code>).</p>
-            <p><strong>Image to PDF:</strong> Selected images are read via the browser's native <code class="font-mono">FileReader API</code> into temporary memory (Blob/DataURL) and compiled into PDF binary format using <code class="font-mono">jsPDF</code> locally.</p>
-            <p><strong>Merge PDF:</strong> Input PDF files are loaded as in-memory <code class="font-mono">ArrayBuffer</code> objects and merged via <code class="font-mono">pdf-lib</code> inside your device's memory.</p>
-          </div>
-        </section>
+          <!-- Section 1 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">1</span>
+              <span>Data Controller &amp; Developer Identity</span>
+            </h2>
+            <p>
+              The platform is developed and maintained by <strong>ANIX Software Technology</strong> (operating the website <a href="https://qrenerator.vercel.app/" class="underline font-medium text-black">https://qrenerator.vercel.app/</a>). For data protection, compliance inquiries, or security matters, our designated contact is <a href="mailto:hembramgroupofficials@gmail.com" class="underline font-medium text-black">hembramgroupofficials@gmail.com</a>.
+            </p>
+          </section>
 
-        <!-- Section 3 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">3</span>
-            <span>No Remote Transmission of User Files</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            Your document files, pictures, generated QR payloads (such as private Wi-Fi passwords, contact phone numbers, or WhatsApp messages), and PDF files are <strong>never uploaded, mirrored, or transmitted</strong> to any server operated by ANIX Software Technology or any remote conversion API. You can independently verify this at any time by inspecting the browser's Network Developer Tools (<kbd class="px-1.5 py-0.5 bg-neutral-100 border border-neutral-300 rounded font-mono text-xs">F12 → Network</kbd>) while processing files.
-          </p>
-        </section>
-
-        <!-- Section 4 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">4</span>
-            <span>Hosting Provider Logs & Browser Storage</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            While we operate no custom backend server, the website is hosted on <strong>Vercel Inc.</strong> edge infrastructure:
-          </p>
-          <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-neutral-700">
-            <li><strong>Edge Access Logs:</strong> Like virtually all hosting providers, Vercel automatically logs HTTP request headers, client IP addresses, requesting URL, user-agent string, and timestamps for system stability, DDoS mitigation, and operational metrics. These logs are managed under Vercel's Privacy Policy.</li>
-            <li><strong>Local Storage (<code class="font-mono text-xs">localStorage</code>):</strong> We use client-side keys purely to save your local UI preferences:
-              <ul class="list-circle list-inside pl-5 mt-1 space-y-1 text-xs text-neutral-600">
-                <li><code class="font-mono">qr_studio_terms_consent</code>: Stores your accepted terms version and timestamp.</li>
-                <li><code class="font-mono">qr_studio_file_upload_consent</code>: Stores your acknowledgment of file ownership rights.</li>
-                <li><code class="font-mono">qr_studio_last_known_count</code>: Stores cached visitor count locally for smooth rendering.</li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Section 5 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">5</span>
-            <span>File Retention and Instant Deletion</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            Because files remain solely in your web browser's volatile memory (RAM), there is <strong>zero server-side retention</strong>. When you close the browser tab, click "Clear All", or navigate away, the browser immediately releases the allocated memory and the files are discarded.
-          </p>
-        </section>
-
-        <!-- Section 6 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">6</span>
-            <span>Security Limitations & Vulnerability Reporting</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            While we apply strict client-side isolation, no internet service can guarantee 100% absolute security:
-          </p>
-          <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-neutral-700">
-            <li>Your device environment (such as malicious third-party browser extensions, unpatched operating systems, or screen-recording software) may potentially inspect DOM contents.</li>
-            <li>We encourage users not to process sensitive unredacted government identification documents or highly confidential credentials on shared public computers.</li>
-            <li><strong>Reporting a Vulnerability or Data Concern:</strong> If you identify a potential security flaw or unintended network leak, please report it immediately to our dedicated response email: <a href="mailto:hembramgroupofficials@gmail.com" class="underline font-bold text-black">hembramgroupofficials@gmail.com</a>.</li>
-          </ul>
-        </section>
-
-        <!-- Section 7 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">7</span>
-            <span>Third-Party Services & Google AdSense Disclosures</span>
-          </h2>
-          <div class="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
-            <p>Our website utilizes the following external resources:</p>
-            <ul class="list-disc list-inside space-y-1">
-              <li><strong>Google Fonts:</strong> Loads the "Plus Jakarta Sans" and "JetBrains Mono" typography. Google may log your IP address to deliver font assets in accordance with their privacy policy.</li>
-              <li><strong>CountAPI Service:</strong> Anonymous incrementing counter for public site metrics.</li>
+          <!-- Section 2 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">2</span>
+              <span>Local In-Browser Processing (Zero Server Transmission)</span>
+            </h2>
+            <p>
+              All primary core features of QR Studio operate entirely within the client's local browser environment:
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm pl-2">
+              <li><strong>QR Code Generation:</strong> Generated locally via mathematical algorithms rendering into HTML Canvas and SVG elements (<code class="font-mono">qr-code-styling</code>).</li>
+              <li><strong>Barcode Generation:</strong> Rendered into inline SVG elements via client-side libraries (<code class="font-mono">JsBarcode</code>).</li>
+              <li><strong>Image to PDF Conversion:</strong> Local files are parsed into client memory via the native <code class="font-mono">FileReader API</code> and compiled directly into PDF binaries using <code class="font-mono">jsPDF</code>.</li>
+              <li><strong>Merge PDF Tool:</strong> Files are read as in-memory <code class="font-mono">ArrayBuffer</code> structures and assembled into combined PDF documents using <code class="font-mono">pdf-lib</code>.</li>
             </ul>
-            <div class="p-5 rounded-2xl bg-neutral-100 border border-neutral-300 space-y-2 mt-3">
-              <h3 class="text-sm font-bold text-black">Future Google AdSense Disclosures (AdSense Readiness)</h3>
-              <p class="text-xs text-neutral-600 leading-relaxed">
-                If third-party advertising via Google AdSense is enabled on this website in the future:
-              </p>
-              <ul class="list-disc list-inside space-y-1 text-xs text-neutral-600">
-                <li>Google, as a third-party vendor, uses cookies (including the DoubleClick cookie) to serve ads based on prior visits to this website or other websites on the Internet.</li>
-                <li>Users may opt out of personalized advertising by visiting <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer" class="underline text-black font-semibold">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" class="underline text-black font-semibold">aboutads.info</a>.</li>
-                <li>You can review how Google uses information from sites or apps that use their services by reviewing <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" class="underline text-black font-semibold">Google's Advertising Policies</a>.</li>
-                <li>Advertising cookies will not be set before obtaining applicable legally mandated consent through our consent controls or a certified Consent Management Platform (CMP).</li>
-              </ul>
+            <p class="text-xs text-neutral-600 bg-neutral-100 p-3 rounded-xl border border-neutral-200">
+              Your files, images, documents, text strings, Wi-Fi credentials, contact details, and generated codes are <strong>never uploaded, mirrored, or transferred</strong> across the network to our servers or any third-party conversion API.
+            </p>
+          </section>
+
+          <!-- Section 3 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">3</span>
+              <span>Zero Account Creation &amp; Zero Payment Information</span>
+            </h2>
+            <p>
+              QR Studio is 100% free for public use without requiring user accounts, passwords, identity registration, telephone verification, or payment cards. We do not maintain user profile databases or monetary transaction records.
+            </p>
+          </section>
+
+          <!-- Section 4 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">4</span>
+              <span>Elimination of Third-Party Telemetry &amp; External Counters</span>
+            </h2>
+            <p>
+              In accordance with our strict data-minimization architecture, all external tracking endpoints (including former CountAPI polling scripts) have been removed from this website. The application initiates zero unsolicited background tracking calls, zero analytical beacons, and zero telemetry pings.
+            </p>
+          </section>
+
+          <!-- Section 5 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">5</span>
+              <span>Edge Hosting Provider Infrastructure Logs (Vercel Inc.)</span>
+            </h2>
+            <p>
+              QR Studio is statically hosted on edge infrastructure provided by <strong>Vercel Inc.</strong> When a browser requests static website assets (such as HTML, CSS, JavaScript bundles, or icons), Vercel's edge network automatically processes standard HTTP request headers. These technical logs may include your IP address, browser type, referral header, and timestamp for network routing, DDoS defense, and infrastructure security, handled subject to Vercel's Privacy Policy.
+            </p>
+          </section>
+
+          <!-- Section 6 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">6</span>
+              <span>External Typography &amp; Font Delivery (Google Fonts)</span>
+            </h2>
+            <p>
+              To ensure readable, high-contrast typography, the website requests standard web fonts ("Plus Jakarta Sans" and "JetBrains Mono") from Google Fonts CDN (<code class="font-mono text-xs">fonts.googleapis.com</code> and <code class="font-mono text-xs">fonts.gstatic.com</code>). When downloading fonts, your browser transmits standard connection headers to Google servers under Google's Privacy Policy.
+            </p>
+          </section>
+
+          <!-- Section 7 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">7</span>
+              <span>Local Browser Storage (<code class="font-mono text-xs">localStorage</code>)</span>
+            </h2>
+            <p>
+              We use strictly local storage on your client device solely to persist essential operational choices:
+            </p>
+            <div class="overflow-x-auto rounded-xl border border-neutral-300 bg-white">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-neutral-100 text-black font-bold uppercase border-b border-neutral-300">
+                  <tr>
+                    <th class="p-3">Key</th>
+                    <th class="p-3">Classification</th>
+                    <th class="p-3">Function</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-neutral-200 font-mono text-[11px]">
+                  <tr>
+                    <td class="p-3 font-bold text-black">qr_studio_terms_consent</td>
+                    <td class="p-3 text-neutral-600 font-sans">Essential</td>
+                    <td class="p-3 font-sans text-xs">Stores acknowledgment of terms version to prevent repetitive modal interruptions.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-black">qr_studio_file_upload_consent</td>
+                    <td class="p-3 text-neutral-600 font-sans">Essential</td>
+                    <td class="p-3 font-sans text-xs">Stores user confirmation of lawful file rights prior to file processing.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
-        </section>
+            <p class="text-xs text-neutral-500 pt-1">
+              You may clear these keys at any time through our "Privacy Choices" modal or via your browser's site settings.
+            </p>
+          </section>
 
-        <!-- Section 8 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">8</span>
-            <span>Children's Privacy Protection</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            QR Studio does not knowingly collect, request, or solicit personal identification information from children under the age of 18 years (or under 13 in relevant jurisdictions). Because all generation and conversion activities are client-side, we possess no database of child data. If a parent or guardian believes their child has submitted personal information via email correspondence, please contact us for immediate deletion.
-          </p>
-        </section>
+          <!-- Section 8 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">8</span>
+              <span>Zero Tracking Cookies</span>
+            </h2>
+            <p>
+              QR Studio does not set, read, or distribute any HTTP tracking cookies, marketing beacons, or cross-site profiling trackers.
+            </p>
+          </section>
 
-        <!-- Section 9 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">9</span>
-            <span>Contact & Grievance Redressal</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            In compliance with the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 and applicable data protection principles, for any questions, concerns, or grievances concerning this Privacy Policy, please contact our designated Grievance Officer:
-          </p>
-          <div class="p-4 rounded-xl border border-neutral-300 bg-white text-xs text-neutral-700 font-mono space-y-1">
-            <p><strong>Grievance Officer:</strong> ANIX Software Technology Support Desk</p>
-            <p><strong>Email:</strong> <a href="mailto:hembramgroupofficials@gmail.com" class="underline text-black">hembramgroupofficials@gmail.com</a></p>
-            <p><strong>Postal Jurisdiction:</strong> India</p>
-          </div>
-        </section>
+          <!-- Section 9 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">9</span>
+              <span>Memory Lifecycle &amp; Instant Cleanup</span>
+            </h2>
+            <p>
+              Uploaded images and documents reside strictly in volatile browser RAM using temporary Object URLs. When you remove a file item, click "Clear All", or navigate away/close the browser tab, the application triggers <code class="font-mono text-xs">URL.revokeObjectURL()</code> to promptly release system memory.
+            </p>
+          </section>
 
-        <!-- Section 10 -->
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-black flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-black text-white text-xs flex items-center justify-center font-mono">10</span>
-            <span>Changes and Version History</span>
-          </h2>
-          <p class="text-sm text-neutral-700 leading-relaxed">
-            We may revise this Privacy Policy periodically to reflect architectural updates or legal requirements. Material changes will be accompanied by an updated policy version identifier, and returning visitors will be asked to review and acknowledge the updated draft upon their next visit.
-          </p>
-          <div class="text-xs text-neutral-500 font-mono pt-2">
-            Current Version: v1.0-draft-2026-10 · Last Modified: October 25, 2026
-          </div>
-        </section>
+          <!-- Section 10 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">10</span>
+              <span>File Safety Boundaries &amp; Resource Limits</span>
+            </h2>
+            <p>
+              To safeguard user devices against decompression bombs, memory exhaustion, or format exploits, QR Studio enforces explicit client-side resource quotas:
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm pl-2">
+              <li><strong>Image to PDF:</strong> Max 50 files per batch; max 25 MB per individual file; max 100 MB aggregate batch; max 8,192 px dimension / 32 Megapixels. Magic-byte inspection verifies genuine JPEG, PNG, or WebP binary formats.</li>
+              <li><strong>Merge PDF:</strong> Max 30 files per batch; max 50 MB per file; max 150 MB total. Magic-byte verification checks for valid <code class="font-mono">%PDF-</code> headers.</li>
+              <li><strong>QR Embedded Logo:</strong> Max 5 MB; max 2,048 px dimension with verified image signatures.</li>
+            </ul>
+          </section>
+
+          <!-- Section 11 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">11</span>
+              <span>DOM Security &amp; XSS Remediation</span>
+            </h2>
+            <p>
+              The application utilizes strict DOM APIs (<code class="font-mono text-xs">document.createElement</code>, <code class="font-mono text-xs">textContent</code>, and programmatic event listeners) for dynamic rendering of file lists, eliminating DOM-based cross-site scripting (XSS) risks from untrusted file names.
+            </p>
+          </section>
+
+          <!-- Section 12 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">12</span>
+              <span>User Responsibility &amp; File Ownership Rights</span>
+            </h2>
+            <p>
+              Users are solely responsible for ensuring that all documents, photographs, and logos processed via QR Studio do not infringe third-party copyrights, trade secrets, privacy rights, or statutory laws. Users are advised not to process sensitive unredacted government credentials on unmanaged or shared public workstations.
+            </p>
+          </section>
+
+          <!-- Section 13 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">13</span>
+              <span>Children's Privacy Protection</span>
+            </h2>
+            <p>
+              QR Studio does not knowingly collect, record, or retain any personal information from children under 18 years of age (or under 13 in jurisdictions with specific COPPA/digital safety legislation). Since all tools execute client-side, we store no repository of minor user records.
+            </p>
+          </section>
+
+          <!-- Section 14 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">14</span>
+              <span>Future Advertising &amp; AdSense Contingency Disclosures</span>
+            </h2>
+            <p>
+              QR Studio is currently completely ad-free. If commercial advertising (such as Google AdSense) is enabled in future releases:
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-xs text-neutral-600 pl-2">
+              <li>Third-party advertising vendors (including Google) may employ cookies to serve advertisements based on past visits to this or other websites.</li>
+              <li>Users will be presented with a certified Consent Management Platform (CMP) before any advertising cookies are activated.</li>
+              <li>Users may manage personalized advertising settings at <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer" class="underline font-bold text-black">Google Ads Settings</a> and <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" class="underline font-bold text-black">aboutads.info</a>.</li>
+            </ul>
+          </section>
+
+          <!-- Section 15 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">15</span>
+              <span>Grievance Redressal Mechanism &amp; Compliance Officer</span>
+            </h2>
+            <p>
+              In accordance with the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, you may address any concerns, grievances, or legal inquiries to:
+            </p>
+            <div class="p-4 rounded-xl border border-neutral-300 bg-white text-xs font-mono space-y-1">
+              <p><strong>Officer Title:</strong> Grievance Officer, ANIX Software Technology</p>
+              <p><strong>Email:</strong> <a href="mailto:hembramgroupofficials@gmail.com" class="underline text-black font-bold">hembramgroupofficials@gmail.com</a></p>
+              <p><strong>Response Time:</strong> Acknowledged within 24 hours; resolved within 15 days in accordance with applicable rules.</p>
+            </div>
+          </section>
+
+          <!-- Section 16 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">16</span>
+              <span>Governing Law &amp; Jurisdiction</span>
+            </h2>
+            <p>
+              This Privacy Policy is construed and governed under the laws of the Republic of India. Subject to applicable statutory consumer protections, any dispute arising out of this policy shall be subject to the exclusive jurisdiction of the competent courts of India.
+            </p>
+          </section>
+
+          <!-- Section 17 -->
+          <section class="space-y-2">
+            <h2 class="text-lg font-bold text-black flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-black text-white text-xs flex items-center justify-center font-mono">17</span>
+              <span>Policy Modifications &amp; Version History</span>
+            </h2>
+            <p>
+              We reserve the right to revise this policy to reflect application enhancements or regulatory revisions. Material modifications will trigger an updated policy version identifier requiring fresh user acknowledgment on subsequent visits.
+            </p>
+            <p class="text-xs font-mono text-neutral-500 pt-1">
+              Policy Version: v1.0-draft-2026-10 · Effective Date: October 25, 2026
+            </p>
+          </section>
+
+        </div>
 
       </div>
     </main>
@@ -240,7 +324,7 @@
           <a href="/about" class="hover:text-black">About Us</a>
           <a href="/contact" class="hover:text-black">Contact</a>
           <a href="/privacy" class="text-black font-bold">Privacy Policy</a>
-          <a href="/terms" class="hover:text-black">Terms & Conditions</a>
+          <a href="/terms" class="hover:text-black">Terms &amp; Conditions</a>
           <a href="/cookie-policy" class="hover:text-black">Cookie Policy</a>
         </div>
         <div>
