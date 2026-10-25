@@ -1326,19 +1326,43 @@ function setupEventListeners() {
   }
 
   if (imgDropZone) {
-    ['dragenter', 'dragover'].forEach(eventName => {
-      imgDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        imgDropZone.classList.add('border-black', 'bg-neutral-100');
-      });
+    let imgDragCounter = 0;
+
+    imgDropZone.addEventListener('click', (e) => {
+      if (e.target !== imgFileInput && e.target !== btnSelectImages) {
+        imgFileInput?.click();
+      }
     });
-    ['dragleave', 'drop'].forEach(eventName => {
-      imgDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        imgDropZone.classList.remove('border-black', 'bg-neutral-100');
-      });
+
+    imgDropZone.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      imgDragCounter++;
+      if (imgDragCounter === 1) {
+        imgDropZone.classList.add('drop-zone-active');
+      }
     });
+
+    imgDropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      if (!imgDropZone.classList.contains('drop-zone-active')) {
+        imgDropZone.classList.add('drop-zone-active');
+      }
+    });
+
+    imgDropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      imgDragCounter--;
+      if (imgDragCounter <= 0) {
+        imgDragCounter = 0;
+        imgDropZone.classList.remove('drop-zone-active');
+      }
+    });
+
     imgDropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      imgDragCounter = 0;
+      imgDropZone.classList.remove('drop-zone-active');
       if (e.dataTransfer?.files) handleImageFiles(e.dataTransfer.files);
     });
   }
@@ -1377,19 +1401,43 @@ function setupEventListeners() {
   }
 
   if (pdfDropZone) {
-    ['dragenter', 'dragover'].forEach(eventName => {
-      pdfDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        pdfDropZone.classList.add('border-black', 'bg-neutral-100');
-      });
+    let pdfDragCounter = 0;
+
+    pdfDropZone.addEventListener('click', (e) => {
+      if (e.target !== pdfFileInput && e.target !== btnSelectPdfs) {
+        pdfFileInput?.click();
+      }
     });
-    ['dragleave', 'drop'].forEach(eventName => {
-      pdfDropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        pdfDropZone.classList.remove('border-black', 'bg-neutral-100');
-      });
+
+    pdfDropZone.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      pdfDragCounter++;
+      if (pdfDragCounter === 1) {
+        pdfDropZone.classList.add('drop-zone-active');
+      }
     });
+
+    pdfDropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      if (!pdfDropZone.classList.contains('drop-zone-active')) {
+        pdfDropZone.classList.add('drop-zone-active');
+      }
+    });
+
+    pdfDropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      pdfDragCounter--;
+      if (pdfDragCounter <= 0) {
+        pdfDragCounter = 0;
+        pdfDropZone.classList.remove('drop-zone-active');
+      }
+    });
+
     pdfDropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      pdfDragCounter = 0;
+      pdfDropZone.classList.remove('drop-zone-active');
       if (e.dataTransfer?.files) handlePdfFiles(e.dataTransfer.files);
     });
   }

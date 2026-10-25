@@ -57,6 +57,32 @@ button:active {
   transform: scale(0.985);
 }
 
+/* Drag and Drop Zone Enhanced Visual Feedback */
+.drop-zone {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.drop-zone.drop-zone-active {
+  border-color: #000000 !important;
+  border-style: solid !important;
+  background-color: #f4f4f5 !important;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px) scale(1.006);
+}
+
+.drop-zone .drop-zone-icon {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drop-zone.drop-zone-active .drop-zone-icon {
+  transform: scale(1.12);
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2);
+}
+
 /* Dedicated Print Stylesheet */
 @media print {
   body {
