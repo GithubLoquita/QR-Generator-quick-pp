@@ -16,6 +16,7 @@ QR Studio is a 100% client-side, browser-based utility suite built with pure HTM
 2. **Barcode Generator**: Linear barcodes (CODE 128, EAN-13, UPC-A, and CODE 39) with dimension controls and instant SVG/PNG exports.
 3. **Image to PDF Converter**: Multi-image batch processing (JPG, PNG, WebP) with page reordering, format selection (A4, Letter, Original), orientation, and client-side PDF generation.
 4. **Merge PDF**: Client-side document combiner with page count extraction, sequence reordering, and encrypted file error detection.
+5. **Diwali Festive Celebration Campaign**: Animated festive banner featuring 100% CSS/HTML cartoon Indian colleagues celebrating Diwali in traditional kurtas and lehengas, live flickering clay diyas, hanging akash kandils, marigold toran garland, and floating golden sparkles.
 
 ---
 
