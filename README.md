@@ -1,75 +1,77 @@
 # QR Studio
 
 > **Developed by ANIX Software Technology**  
-> A simple, elegant, and 100% free browser tool to create, customize, and download QR codes in seconds.
+> A complete, free, browser-based utility toolkit for generating QR codes & barcodes, converting images to PDF, and merging PDF documents.
 
 ---
 
-## Highlights
+## 4-in-1 Tool Suite
 
-- **100% Free**: No subscriptions, no ads, and no hidden upgrades.
-- **Privacy First**: 100% client-side. All QR codes are generated directly in the browser's memory without sending any personal data, passwords, or contact info to any server.
-- **No Account Required**: Ready to use the second you open the website.
-- **Supported QR Types**:
-  1. **URL** (Websites & Links)
-  2. **Text** (Plain text, messages, notes)
-  3. **Wi-Fi** (Direct network connect without typing passwords)
-  4. **WhatsApp** (Direct chat launch with phone number & pre-filled message)
-  5. **Contact (vCard)** (Digital business card saved with one tap on iOS & Android)
-- **Customization**:
-  - Foreground & Background colors
-  - Pattern styles: Classic Square, Rounded, and Dots
-  - Custom center logo upload with size control
-  - Live preview with automatic contrast check
-- **High-Resolution Exports**:
-  - **PNG** (Crisp high-resolution image)
-  - **SVG** (Infinite resolution scalable vector)
-  - **JPG** (Standard image format)
-  - **Copy Image** directly to clipboard
-  - **Share** via native mobile sharing menu
-  - **Print** with clean, dedicated print layout
+1. **QR Code Generator**:
+   - URL, Plain Text, Wi-Fi network auto-connect, WhatsApp direct chat, and digital Contact (vCard 3.0).
+   - Custom pattern styles (Classic Square, Rounded, Dots), custom colors, and center logo upload.
+   - High-resolution exports (PNG, SVG, JPG, Copy, Share, Print).
+
+2. **Barcode Generator**:
+   - Formats: **CODE 128**, **EAN-13** (retail), **UPC-A** (retail), and **CODE 39** (logistics).
+   - Format-specific input validation with helpful error messages.
+   - Bar height, bar width, foreground color, background color, and human-readable text controls.
+   - High-resolution PNG and SVG downloads, plus Print action.
+
+3. **Image to PDF Converter**:
+   - Batch upload JPG, JPEG, PNG, and WebP images.
+   - Reorder images, view thumbnails, dimensions, and file sizes.
+   - Page sizing: A4, US Letter, or Original Image Dimensions.
+   - Orientation: Auto (matches aspect ratio), Portrait, or Landscape.
+   - Image fit options: Fit with margins, Fill bleed, or Stretch.
+   - Fast client-side conversion and download.
+
+4. **Merge PDF**:
+   - Drag & drop multiple PDF files.
+   - Reorder documents with Move Up / Move Down buttons.
+   - Shows filenames, file sizes, and page counts.
+   - Combines multiple PDFs into a single file in your specified sequence.
+   - Error handling for password-protected or encrypted PDFs.
+
+---
+
+## Privacy & Security
+
+- **100% Client-Side**: All barcodes, QR codes, images, and PDF documents are processed entirely within the user's browser memory.
+- **Zero Server Uploads**: No user data, passwords, contact cards, or files are ever sent to an external server or database.
+- **No Login / No Account**: Free for everyone with zero barriers or subscriptions.
 
 ---
 
 ## Local Setup & Testing
 
-### Option 1: Run with Vite (Recommended)
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Start local dev server
+# 2. Run local development server
 npm run dev
 # The website will be available at http://localhost:3000
 
-# 3. Build for production (outputs to /dist)
+# 3. Build static production assets (outputs to /dist)
 npm run build
-```
-
-### Option 2: Run as a Pure Static Site
-Because QR Studio uses only standard HTML5, CSS3, and modern Vanilla JavaScript, you can open `index.html` in any web browser or serve it with any static web server:
-```bash
-npx serve .
-# or
-python3 -m http.server 3000
 ```
 
 ---
 
 ## Deployment to Vercel
 
-### Option 1: Deploy with Vercel CLI (1-Click)
+### Option 1: Vercel CLI (1-Click)
 ```bash
 npm install -g vercel
 vercel
 ```
 
-### Option 2: Deploy from GitHub
+### Option 2: Connect GitHub Repo to Vercel
 1. Push this repository to GitHub.
 2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
-3. Import this repository.
-4. Framework Preset will auto-detect **Vite** (or Static).
-5. Click **Deploy**. Your custom QR Studio tool is live immediately with free SSL.
+3. Import your repository. Vercel automatically detects the project and static output.
+4. Click **Deploy**. The site is live with free global hosting and SSL.
 
 ---
 

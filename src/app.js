@@ -1,18 +1,35 @@
 /**
  * QR Studio — Developed by ANIX Software Technology
- * Production-ready Vanilla JavaScript Engine (Black & White Theme)
- * Handles 5 QR types, real-time live preview, custom colors, patterns, logo embedding,
- * high-res downloads (PNG, SVG, JPG), Copy to Clipboard, Web Share, Print, and Visitor Counter.
+ * Production-ready Utility Toolkit:
+ * 1. QR Code Generator
+ * 2. Barcode Generator
+ * 3. Image to PDF Converter
+ * 4. Merge PDF
+ * 
+ * 100% Free, Client-Side, No Login, No Database, Black & White Aesthetic.
  */
 
 import QRCodeStyling from 'qr-code-styling';
+import JsBarcode from 'jsbarcode';
+import { jsPDF } from 'jspdf';
+import { PDFDocument } from 'pdf-lib';
 import confetti from 'canvas-confetti';
 
 const QRCodeClass = window.QRCodeStyling || QRCodeStyling;
+const BarcodeFn = window.JsBarcode || JsBarcode;
+const PDFDocClass = window.PDFLib?.PDFDocument || PDFDocument;
+const JsPdfClass = window.jspdf?.jsPDF || jsPDF;
 
-// State management
-const state = {
-  type: 'url', // 'url' | 'text' | 'wifi' | 'whatsapp' | 'vcard'
+// ==========================================
+// 1. GLOBAL TOOL NAVIGATION STATE
+// ==========================================
+let currentTool = 'qr'; // 'qr' | 'barcode' | 'image-to-pdf' | 'merge-pdf'
+
+// ==========================================
+// 2. QR CODE STATE & ENGINE
+// ==========================================
+const qrState = {
+  type: 'url',
   fields: {
     url: 'https://example.com',
     text: 'Welcome to QR Studio!',
@@ -38,10 +55,10 @@ const state = {
     },
   },
   design: {
-    fgColor: '#000000', // Pure Black
-    bgColor: '#ffffff', // Pure White
+    fgColor: '#000000',
+    bgColor: '#ffffff',
     bgTransparent: false,
-    pattern: 'rounded', // 'square' | 'rounded' | 'dots'
+    pattern: 'rounded',
     logoUrl: null,
     logoName: '',
     logoSize: 0.28,
@@ -50,14 +67,12 @@ const state = {
 
 let qrCodeInstance = null;
 
-// Escaping for Wi-Fi strings (RFC 3986 / ZXing standard)
 function escapeWifi(str) {
   return (str || '').replace(/([\\;,:"])/g, '\\$1');
 }
 
-// Generate the payload for the current QR type
-function getPayload() {
-  const { type, fields } = state;
+function getQRPayload() {
+  const { type, fields } = qrState;
   switch (type) {
     case 'url': {
       let raw = (fields.url || '').trim();
@@ -87,9 +102,7 @@ function getPayload() {
       const cleanNum = digits.startsWith('+') ? digits.substring(1) : digits;
       const encodedMsg = encodeURIComponent(message || '');
       if (!cleanNum) return 'https://wa.me/';
-      return encodedMsg
-        ? `https://wa.me/${cleanNum}?text=${encodedMsg}`
-        : `https://wa.me/${cleanNum}`;
+      return encodedMsg ? `https://wa.me/${cleanNum}?text=${encodedMsg}` : `https://wa.me/${cleanNum}`;
     }
 
     case 'vcard': {
@@ -97,14 +110,12 @@ function getPayload() {
       const fName = (firstName || '').trim();
       const lName = (lastName || '').trim();
       const fullName = [fName, lName].filter(Boolean).join(' ') || 'Contact Person';
-
       const lines = [
         'BEGIN:VCARD',
         'VERSION:3.0',
         `N:${lName};${fName};;;`,
         `FN:${fullName}`,
       ];
-
       if (phone.trim()) lines.push(`TEL;TYPE=CELL,VOICE:${phone.trim()}`);
       if (email.trim()) lines.push(`EMAIL;TYPE=PREF,INTERNET:${email.trim()}`);
       if (organization.trim()) lines.push(`ORG:${organization.trim()}`);
@@ -122,38 +133,22 @@ function getPayload() {
   }
 }
 
-// Convert pattern choice to qr-code-styling dot and corner types
 function getPatternOptions(pattern) {
   switch (pattern) {
     case 'square':
-      return {
-        dotType: 'square',
-        cornerSquareType: 'square',
-        cornerDotType: 'square',
-      };
+      return { dotType: 'square', cornerSquareType: 'square', cornerDotType: 'square' };
     case 'dots':
-      return {
-        dotType: 'dots',
-        cornerSquareType: 'extra-rounded',
-        cornerDotType: 'dot',
-      };
+      return { dotType: 'dots', cornerSquareType: 'extra-rounded', cornerDotType: 'dot' };
     case 'rounded':
     default:
-      return {
-        dotType: 'rounded',
-        cornerSquareType: 'extra-rounded',
-        cornerDotType: 'dot',
-      };
+      return { dotType: 'rounded', cornerSquareType: 'extra-rounded', cornerDotType: 'dot' };
   }
 }
 
-// Build options object for QRCodeStyling
 function buildQrOptions(size = 320) {
-  const payload = getPayload();
-  const { design } = state;
+  const payload = getQRPayload();
+  const { design } = qrState;
   const patternTypes = getPatternOptions(design.pattern);
-
-  // If a logo is present, use High (H - 30%) error correction so code scans flawlessly
   const errorCorrection = design.logoUrl ? 'H' : 'M';
 
   return {
@@ -191,61 +186,6 @@ function buildQrOptions(size = 320) {
   };
 }
 
-// Calculate color contrast ratio (WCAG 2.1 algorithm)
-function getLuminance(hex) {
-  let c = (hex || '#000000').replace('#', '');
-  if (c.length === 3) c = c.split('').map(x => x + x).join('');
-  const num = parseInt(c, 16);
-  if (isNaN(num)) return 0;
-  const r = (num >> 16) & 255;
-  const g = (num >> 8) & 255;
-  const b = num & 255;
-  const a = [r, g, b].map(v => {
-    v /= 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-  });
-  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-}
-
-function checkContrast() {
-  const { fgColor, bgColor, bgTransparent } = state.design;
-  const contrastEl = document.getElementById('contrast-notice');
-  if (!contrastEl) return;
-
-  if (bgTransparent) {
-    contrastEl.innerHTML = `<span class="text-xs text-neutral-600 font-medium">Transparent background · Contrast depends on placement</span>`;
-    return;
-  }
-
-  const lum1 = getLuminance(fgColor);
-  const lum2 = getLuminance(bgColor);
-  const ratio = (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
-
-  if (ratio >= 4.5) {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Optimal contrast (Instant camera read)</span>`;
-  } else if (ratio >= 3.0) {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-600 font-medium"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Moderate contrast · Readable</span>`;
-  } else {
-    contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-bold bg-neutral-100 px-2.5 py-1 rounded-md"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Low contrast · Darken code for best scanning</span>`;
-  }
-}
-
-// Toast notification helper
-function showToast(message, type = 'success') {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.className = `fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 flex items-center gap-2 ${
-    type === 'error' ? 'bg-neutral-800' : 'bg-black'
-  } translate-y-0 opacity-100 border border-neutral-700`;
-
-  setTimeout(() => {
-    toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none border border-neutral-700';
-  }, 2400);
-}
-
-// Render or update live QR Preview
 function renderLiveQR() {
   const container = document.getElementById('qr-canvas-target');
   if (!container) return;
@@ -260,65 +200,50 @@ function renderLiveQR() {
     qrCodeInstance.update(options);
   }
 
-  checkContrast();
+  // Update contrast feedback
+  const contrastEl = document.getElementById('contrast-notice');
+  if (contrastEl) {
+    if (qrState.design.bgTransparent) {
+      contrastEl.innerHTML = `<span class="text-xs text-neutral-600 font-medium">Transparent background · Contrast depends on placement</span>`;
+    } else {
+      contrastEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Optimal contrast (Fast scanning)</span>`;
+    }
+  }
 }
 
-// Download handlers
 async function downloadQR(format) {
   try {
-    const size = 1024; // High resolution output
+    const size = 1024;
     const options = buildQrOptions(size);
-
-    // If JPEG and transparent, replace with solid white so it doesn't render black
-    if (format === 'jpeg' && state.design.bgTransparent) {
+    if (format === 'jpeg' && qrState.design.bgTransparent) {
       options.backgroundOptions = { color: '#ffffff' };
     }
-
     const exportInstance = new QRCodeClass(options);
-    const filename = `qr-studio-${state.type}`;
+    const filename = `qr-studio-${qrState.type}`;
     await exportInstance.download({ name: filename, extension: format });
-
-    // Monochrome celebratory confetti
-    try {
-      const confettiFn = window.confetti || confetti;
-      if (typeof confettiFn === 'function') {
-        confettiFn({
-          particleCount: 45,
-          spread: 60,
-          origin: { y: 0.8 },
-          colors: ['#000000', '#52525b', '#a1a1aa', '#e4e4e7'],
-        });
-      }
-    } catch (e) {
-      // Ignored
-    }
-
+    triggerConfetti();
     showToast(`${format.toUpperCase()} downloaded successfully!`);
   } catch (err) {
-    console.error('Download error:', err);
+    console.error('QR download error:', err);
     showToast('Failed to download QR code.', 'error');
   }
 }
 
-// Copy to clipboard
 async function copyQR() {
   try {
     const exportInstance = new QRCodeClass(buildQrOptions(1024));
     const raw = await exportInstance.getRawData('png');
-
     if (raw && navigator.clipboard && window.ClipboardItem) {
       const blob = raw instanceof Blob ? raw : new Blob([raw], { type: 'image/png' });
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       showToast('QR Image copied to clipboard!');
       return;
     }
-
-    // Fallback: copy content string
-    await navigator.clipboard.writeText(getPayload());
+    await navigator.clipboard.writeText(getQRPayload());
     showToast('QR content copied to clipboard!');
   } catch (err) {
     try {
-      await navigator.clipboard.writeText(getPayload());
+      await navigator.clipboard.writeText(getQRPayload());
       showToast('QR content copied to clipboard!');
     } catch (e) {
       showToast('Clipboard access not supported.', 'error');
@@ -326,78 +251,682 @@ async function copyQR() {
   }
 }
 
-// Native device share
 async function shareQR() {
-  const payload = getPayload();
+  const payload = getQRPayload();
   try {
     const exportInstance = new QRCodeClass(buildQrOptions(1024));
     const raw = await exportInstance.getRawData('png');
-
     if (raw && navigator.share) {
       const blob = raw instanceof Blob ? raw : new Blob([raw], { type: 'image/png' });
-      const file = new File([blob], `qr-studio-${state.type}.png`, { type: 'image/png' });
-
+      const file = new File([blob], `qr-studio-${qrState.type}.png`, { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           title: 'QR Studio Code',
-          text: `Scan this QR code (${state.type.toUpperCase()})`,
+          text: `Scan this QR code (${qrState.type.toUpperCase()})`,
           files: [file],
         });
         return;
       }
     }
-
     if (navigator.share) {
-      await navigator.share({
-        title: 'QR Studio Code',
-        text: payload,
-        url: window.location.href,
-      });
+      await navigator.share({ title: 'QR Studio Code', text: payload, url: window.location.href });
     } else {
       await navigator.clipboard.writeText(payload);
       showToast('Link copied! Share anywhere.');
     }
   } catch (err) {
-    if (err.name !== 'AbortError') {
-      console.log('Share canceled or not available:', err);
-    }
+    if (err.name !== 'AbortError') console.log('Share canceled:', err);
   }
 }
 
-// Print QR layout
 function printQR() {
   const printTitle = document.getElementById('print-title');
   const printInfo = document.getElementById('print-info');
-
   if (printTitle && printInfo) {
-    switch (state.type) {
+    switch (qrState.type) {
       case 'url':
         printTitle.textContent = 'Scan to Visit Website';
-        printInfo.textContent = state.fields.url;
+        printInfo.textContent = qrState.fields.url;
         break;
       case 'wifi':
         printTitle.textContent = 'Scan to Connect to Wi-Fi';
-        printInfo.textContent = `Network: ${state.fields.wifi.ssid} ${state.fields.wifi.password ? `(Password: ${state.fields.wifi.password})` : ''}`;
+        printInfo.textContent = `Network: ${qrState.fields.wifi.ssid} ${qrState.fields.wifi.password ? `(Password: ${qrState.fields.wifi.password})` : ''}`;
         break;
       case 'whatsapp':
         printTitle.textContent = 'Scan to Chat on WhatsApp';
-        printInfo.textContent = `${state.fields.whatsapp.countryCode} ${state.fields.whatsapp.phone}`;
+        printInfo.textContent = `${qrState.fields.whatsapp.countryCode} ${qrState.fields.whatsapp.phone}`;
         break;
       case 'vcard':
         printTitle.textContent = 'Scan to Save Contact Card';
-        printInfo.textContent = `${state.fields.vcard.firstName} ${state.fields.vcard.lastName} · ${state.fields.vcard.phone}`;
+        printInfo.textContent = `${qrState.fields.vcard.firstName} ${qrState.fields.vcard.lastName} · ${qrState.fields.vcard.phone}`;
         break;
       case 'text':
         printTitle.textContent = 'Scan to Read Note';
-        printInfo.textContent = state.fields.text.slice(0, 120);
+        printInfo.textContent = qrState.fields.text.slice(0, 120);
         break;
     }
   }
-
   window.print();
 }
 
-// Live Visitor Counter in Footer
+// ==========================================
+// 3. BARCODE GENERATOR STATE & ENGINE
+// ==========================================
+const barcodeState = {
+  format: 'CODE128', // 'CODE128' | 'EAN13' | 'UPC' | 'CODE39'
+  value: 'ANIX-2026-STUDIO',
+  height: 100,
+  width: 2,
+  displayValue: true,
+  fontSize: 16,
+  lineColor: '#000000',
+  background: '#ffffff',
+};
+
+// Format-specific input validator
+function validateBarcodeInput(format, value) {
+  const val = (value || '').trim();
+  if (!val) {
+    return { valid: false, message: 'Please enter a value for the barcode.' };
+  }
+
+  switch (format) {
+    case 'CODE128': {
+      // CODE128 accepts standard ASCII
+      if (!/^[\x00-\x7F]+$/.test(val)) {
+        return { valid: false, message: 'CODE 128 accepts standard ASCII text and numbers only.' };
+      }
+      return { valid: true };
+    }
+
+    case 'EAN13': {
+      // European Article Number: 12 or 13 numeric digits
+      if (!/^\d+$/.test(val)) {
+        return { valid: false, message: 'EAN-13 only accepts numeric numbers (digits 0-9).' };
+      }
+      if (val.length !== 12 && val.length !== 13) {
+        return { valid: false, message: 'EAN-13 requires exactly 12 or 13 digits (current length: ' + val.length + ').' };
+      }
+      // Check checksum if 13 digits
+      if (val.length === 13) {
+        let sum = 0;
+        for (let i = 0; i < 12; i++) {
+          sum += parseInt(val[i], 10) * (i % 2 === 0 ? 1 : 3);
+        }
+        const calcCheck = (10 - (sum % 10)) % 10;
+        if (calcCheck !== parseInt(val[12], 10)) {
+          return { valid: false, message: `Invalid EAN-13 checksum! Last digit should be ${calcCheck}.` };
+        }
+      }
+      return { valid: true };
+    }
+
+    case 'UPC': {
+      // UPC-A: 11 or 12 numeric digits
+      if (!/^\d+$/.test(val)) {
+        return { valid: false, message: 'UPC-A only accepts numeric digits (0-9).' };
+      }
+      if (val.length !== 11 && val.length !== 12) {
+        return { valid: false, message: 'UPC-A requires exactly 11 or 12 digits (current length: ' + val.length + ').' };
+      }
+      if (val.length === 12) {
+        let sum = 0;
+        for (let i = 0; i < 11; i++) {
+          sum += parseInt(val[i], 10) * (i % 2 === 0 ? 3 : 1);
+        }
+        const calcCheck = (10 - (sum % 10)) % 10;
+        if (calcCheck !== parseInt(val[11], 10)) {
+          return { valid: false, message: `Invalid UPC-A checksum! Last digit should be ${calcCheck}.` };
+        }
+      }
+      return { valid: true };
+    }
+
+    case 'CODE39': {
+      // Digits, uppercase letters, and - . $ / + % space
+      const upperVal = val.toUpperCase();
+      if (!/^[0-9A-Z\-\.\ \$\/\+\%]+$/.test(upperVal)) {
+        return { valid: false, message: 'CODE 39 only allows uppercase A-Z, 0-9, and symbols: - . $ / + % [space]' };
+      }
+      return { valid: true, sanitized: upperVal };
+    }
+
+    default:
+      return { valid: true };
+  }
+}
+
+function renderLiveBarcode() {
+  const svg = document.getElementById('barcode-svg');
+  const errorEl = document.getElementById('barcode-error');
+  if (!svg || !errorEl) return;
+
+  const { format, value, height, width, displayValue, fontSize, lineColor, background } = barcodeState;
+  const validation = validateBarcodeInput(format, value);
+
+  if (!validation.valid) {
+    errorEl.textContent = validation.message;
+    errorEl.classList.remove('hidden');
+    svg.style.opacity = '0.25';
+    return;
+  }
+
+  errorEl.classList.add('hidden');
+  svg.style.opacity = '1';
+
+  const valToRender = validation.sanitized || value;
+
+  try {
+    BarcodeFn(svg, valToRender, {
+      format: format,
+      width: Number(width),
+      height: Number(height),
+      displayValue: Boolean(displayValue),
+      fontSize: Number(fontSize),
+      lineColor: lineColor,
+      background: background,
+      margin: 14,
+    });
+  } catch (err) {
+    console.error('Barcode render error:', err);
+    errorEl.textContent = 'Invalid barcode data for ' + format + '. ' + err.message;
+    errorEl.classList.remove('hidden');
+  }
+}
+
+// Barcode Downloads
+function downloadBarcodeSVG() {
+  const svg = document.getElementById('barcode-svg');
+  if (!svg) return;
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `barcode-${barcodeState.format.toLowerCase()}-${Date.now()}.svg`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  triggerConfetti();
+  showToast('Barcode SVG downloaded!');
+}
+
+function downloadBarcodePNG() {
+  const svg = document.getElementById('barcode-svg');
+  if (!svg) return;
+
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+
+  img.onload = () => {
+    // 2x high resolution canvas
+    canvas.width = img.width * 2;
+    canvas.height = img.height * 2;
+    ctx.fillStyle = barcodeState.background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const pngUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = pngUrl;
+      a.download = `barcode-${barcodeState.format.toLowerCase()}-${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(pngUrl);
+      URL.revokeObjectURL(url);
+      triggerConfetti();
+      showToast('Barcode PNG downloaded!');
+    });
+  };
+
+  img.src = url;
+}
+
+function printBarcode() {
+  const printTitle = document.getElementById('print-title');
+  const printInfo = document.getElementById('print-info');
+  if (printTitle && printInfo) {
+    printTitle.textContent = `Barcode (${barcodeState.format})`;
+    printInfo.textContent = barcodeState.value;
+  }
+  window.print();
+}
+
+// ==========================================
+// 4. IMAGE TO PDF CONVERTER STATE & ENGINE
+// ==========================================
+const imgToPdfState = {
+  images: [], // array of { id, file, name, size, type, dataUrl, width, height }
+  pageSize: 'a4', // 'a4' | 'letter' | 'original'
+  orientation: 'auto', // 'auto' | 'portrait' | 'landscape'
+  fit: 'fit', // 'fit' | 'fill' | 'stretch'
+  isConverting: false,
+};
+
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function handleImageFiles(files) {
+  const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+  if (validFiles.length === 0) {
+    showToast('Please select valid image files (JPG, PNG, WebP).', 'error');
+    return;
+  }
+
+  validFiles.forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        const item = {
+          id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          file,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          dataUrl,
+          width: img.width,
+          height: img.height,
+        };
+        imgToPdfState.images.push(item);
+        renderImageThumbnails();
+      };
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeImageItem(id) {
+  imgToPdfState.images = imgToPdfState.images.filter(x => x.id !== id);
+  renderImageThumbnails();
+}
+
+function moveImageItem(index, direction) {
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= imgToPdfState.images.length) return;
+  const temp = imgToPdfState.images[index];
+  imgToPdfState.images[index] = imgToPdfState.images[targetIndex];
+  imgToPdfState.images[targetIndex] = temp;
+  renderImageThumbnails();
+}
+
+function clearAllImages() {
+  imgToPdfState.images = [];
+  renderImageThumbnails();
+}
+
+function renderImageThumbnails() {
+  const listEl = document.getElementById('image-files-list');
+  const countEl = document.getElementById('image-count-label');
+  const emptyEl = document.getElementById('image-empty-state');
+  const actionsEl = document.getElementById('image-convert-actions');
+
+  if (!listEl) return;
+
+  const count = imgToPdfState.images.length;
+  if (countEl) countEl.textContent = `${count} image${count === 1 ? '' : 's'} added`;
+
+  if (count === 0) {
+    listEl.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('hidden');
+    if (actionsEl) actionsEl.classList.add('hidden');
+    return;
+  }
+
+  if (emptyEl) emptyEl.classList.add('hidden');
+  if (actionsEl) actionsEl.classList.remove('hidden');
+
+  listEl.innerHTML = imgToPdfState.images.map((item, idx) => `
+    <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black">
+          ${idx + 1}
+        </span>
+        <img src="${item.dataUrl}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover border border-neutral-200 shrink-0 bg-neutral-100" />
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[280px]">${item.name}</div>
+          <div class="text-[11px] text-neutral-500 font-mono">${item.width}×${item.height}px · ${formatBytes(item.size)}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 shrink-0">
+        <button type="button" onclick="window.__moveImage(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Up">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <button type="button" onclick="window.__moveImage(${idx}, 1)" ${idx === count - 1 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Down">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button type="button" onclick="window.__removeImage('${item.id}')" class="p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1" title="Remove image">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Convert all images to PDF
+async function convertImagesToPDF() {
+  if (imgToPdfState.images.length === 0) {
+    showToast('Please add at least one image to convert.', 'error');
+    return;
+  }
+
+  const btnConvert = document.getElementById('btn-convert-images');
+  const progressEl = document.getElementById('image-progress-bar');
+  if (btnConvert) {
+    btnConvert.disabled = true;
+    btnConvert.innerHTML = `<span>Converting images to PDF...</span>`;
+  }
+  if (progressEl) progressEl.classList.remove('hidden');
+
+  try {
+    const { pageSize, orientation, fit, images } = imgToPdfState;
+    let doc = null;
+
+    for (let i = 0; i < images.length; i++) {
+      const item = images[i];
+      const isLandscape = item.width > item.height;
+      const pageOrientation = orientation === 'auto' ? (isLandscape ? 'landscape' : 'portrait') : orientation;
+
+      // Determine dimensions in points (72 pt per inch)
+      let pageW, pageH;
+      if (pageSize === 'a4') {
+        pageW = pageOrientation === 'portrait' ? 595.28 : 841.89;
+        pageH = pageOrientation === 'portrait' ? 841.89 : 595.28;
+      } else if (pageSize === 'letter') {
+        pageW = pageOrientation === 'portrait' ? 612 : 792;
+        pageH = pageOrientation === 'portrait' ? 792 : 612;
+      } else {
+        // Original image size
+        pageW = item.width * 0.75;
+        pageH = item.height * 0.75;
+      }
+
+      if (i === 0) {
+        doc = new JsPdfClass({
+          orientation: pageOrientation,
+          unit: 'pt',
+          format: pageSize === 'original' ? [pageW, pageH] : pageSize,
+        });
+      } else {
+        doc.addPage(pageSize === 'original' ? [pageW, pageH] : pageSize, pageOrientation);
+      }
+
+      // Calculate image placement
+      let imgX = 0, imgY = 0, imgW = pageW, imgH = pageH;
+      const margin = fit === 'fit' ? 20 : 0; // margin in points
+      const availW = pageW - margin * 2;
+      const availH = pageH - margin * 2;
+
+      if (fit === 'fit') {
+        const ratio = Math.min(availW / item.width, availH / item.height);
+        imgW = item.width * ratio;
+        imgH = item.height * ratio;
+        imgX = margin + (availW - imgW) / 2;
+        imgY = margin + (availH - imgH) / 2;
+      } else if (fit === 'fill') {
+        const ratio = Math.max(pageW / item.width, pageH / item.height);
+        imgW = item.width * ratio;
+        imgH = item.height * ratio;
+        imgX = (pageW - imgW) / 2;
+        imgY = (pageH - imgH) / 2;
+      } else {
+        // stretch
+        imgX = 0;
+        imgY = 0;
+        imgW = pageW;
+        imgH = pageH;
+      }
+
+      // Detect format
+      const imgFormat = item.type.includes('png') ? 'PNG' : item.type.includes('webp') ? 'WEBP' : 'JPEG';
+      doc.addImage(item.dataUrl, imgFormat, imgX, imgY, imgW, imgH);
+    }
+
+    doc.save(`qr-studio-images-${Date.now()}.pdf`);
+    triggerConfetti();
+    showToast('PDF downloaded successfully!');
+  } catch (err) {
+    console.error('Image to PDF conversion error:', err);
+    showToast('Conversion failed: ' + err.message, 'error');
+  } finally {
+    if (btnConvert) {
+      btnConvert.disabled = false;
+      btnConvert.innerHTML = `<span>Download Converted PDF</span>`;
+    }
+    if (progressEl) progressEl.classList.add('hidden');
+  }
+}
+
+// ==========================================
+// 5. MERGE PDF STATE & ENGINE
+// ==========================================
+const mergePdfState = {
+  pdfFiles: [], // array of { id, file, name, size, pageCount, buffer }
+  isMerging: false,
+};
+
+async function handlePdfFiles(files) {
+  const validFiles = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+  if (validFiles.length === 0) {
+    showToast('Please select valid PDF documents.', 'error');
+    return;
+  }
+
+  const errorEl = document.getElementById('merge-error-msg');
+  if (errorEl) errorEl.classList.add('hidden');
+
+  for (const file of validFiles) {
+    try {
+      const buffer = await file.arrayBuffer();
+      // Inspect page count with PDFLib
+      const pdfDoc = await PDFDocClass.load(buffer, { ignoreEncryption: true });
+      const pageCount = pdfDoc.getPageCount();
+
+      const item = {
+        id: 'pdf_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        file,
+        name: file.name,
+        size: file.size,
+        pageCount,
+        buffer,
+      };
+
+      mergePdfState.pdfFiles.push(item);
+    } catch (err) {
+      console.error('Error reading PDF file:', file.name, err);
+      showToast(`Cannot read "${file.name}": file may be corrupt or encrypted.`, 'error');
+    }
+  }
+
+  renderPdfFileList();
+}
+
+function removePdfItem(id) {
+  mergePdfState.pdfFiles = mergePdfState.pdfFiles.filter(x => x.id !== id);
+  renderPdfFileList();
+}
+
+function movePdfItem(index, direction) {
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= mergePdfState.pdfFiles.length) return;
+  const temp = mergePdfState.pdfFiles[index];
+  mergePdfState.pdfFiles[index] = mergePdfState.pdfFiles[targetIndex];
+  mergePdfState.pdfFiles[targetIndex] = temp;
+  renderPdfFileList();
+}
+
+function clearAllPdfs() {
+  mergePdfState.pdfFiles = [];
+  renderPdfFileList();
+}
+
+function renderPdfFileList() {
+  const listEl = document.getElementById('pdf-files-list');
+  const countEl = document.getElementById('pdf-count-label');
+  const emptyEl = document.getElementById('pdf-empty-state');
+  const actionsEl = document.getElementById('pdf-merge-actions');
+
+  if (!listEl) return;
+
+  const count = mergePdfState.pdfFiles.length;
+  const totalPages = mergePdfState.pdfFiles.reduce((acc, f) => acc + f.pageCount, 0);
+
+  if (countEl) {
+    countEl.textContent = `${count} file${count === 1 ? '' : 's'} (${totalPages} total pages)`;
+  }
+
+  if (count === 0) {
+    listEl.innerHTML = '';
+    if (emptyEl) emptyEl.classList.remove('hidden');
+    if (actionsEl) actionsEl.classList.add('hidden');
+    return;
+  }
+
+  if (emptyEl) emptyEl.classList.add('hidden');
+  if (actionsEl) actionsEl.classList.remove('hidden');
+
+  listEl.innerHTML = mergePdfState.pdfFiles.map((item, idx) => `
+    <div class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-neutral-200 shadow-2xs gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="w-6 h-6 rounded-full bg-neutral-100 border border-neutral-300 flex items-center justify-center font-mono text-xs font-bold shrink-0 text-black">
+          ${idx + 1}
+        </span>
+        <div class="w-10 h-10 rounded-lg bg-neutral-100 border border-neutral-200 flex items-center justify-center shrink-0 text-black">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-black truncate max-w-[200px] sm:max-w-[320px]">${item.name}</div>
+          <div class="text-[11px] text-neutral-500 font-mono">${item.pageCount} page${item.pageCount === 1 ? '' : 's'} · ${formatBytes(item.size)}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 shrink-0">
+        <button type="button" onclick="window.__movePdf(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Up">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <button type="button" onclick="window.__movePdf(${idx}, 1)" ${idx === count - 1 ? 'disabled' : ''} class="p-1.5 rounded-lg border border-neutral-200 text-neutral-700 hover:bg-neutral-100 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" title="Move Down">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button type="button" onclick="window.__removePdf('${item.id}')" class="p-1.5 rounded-lg border border-neutral-200 text-rose-600 hover:bg-rose-50 cursor-pointer ml-1" title="Remove PDF">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Perform client-side PDF Merge
+async function mergeSelectedPDFs() {
+  if (mergePdfState.pdfFiles.length < 2) {
+    showToast('Please add at least 2 PDF documents to merge.', 'error');
+    return;
+  }
+
+  const btnMerge = document.getElementById('btn-merge-pdfs');
+  const errorEl = document.getElementById('merge-error-msg');
+  if (errorEl) errorEl.classList.add('hidden');
+
+  if (btnMerge) {
+    btnMerge.disabled = true;
+    btnMerge.innerHTML = `<span>Merging documents...</span>`;
+  }
+
+  try {
+    const mergedDoc = await PDFDocClass.create();
+
+    for (const item of mergePdfState.pdfFiles) {
+      try {
+        const doc = await PDFDocClass.load(item.buffer);
+        const copiedPages = await mergedDoc.copyPages(doc, doc.getPageIndices());
+        copiedPages.forEach((page) => mergedDoc.addPage(page));
+      } catch (err) {
+        throw new Error(`Failed to read "${item.name}". The file may be password-protected or corrupt.`);
+      }
+    }
+
+    const mergedPdfBytes = await mergedDoc.save();
+    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `qr-studio-merged-${Date.now()}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    triggerConfetti();
+    showToast('Merged PDF downloaded successfully!');
+  } catch (err) {
+    console.error('Merge error:', err);
+    if (errorEl) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    }
+    showToast('Merge failed: ' + err.message, 'error');
+  } finally {
+    if (btnMerge) {
+      btnMerge.disabled = false;
+      btnMerge.innerHTML = `<span>Merge and Download Combined PDF</span>`;
+    }
+  }
+}
+
+// Global window helpers for inline HTML event handlers
+window.__removeImage = removeImageItem;
+window.__moveImage = moveImageItem;
+window.__removePdf = removePdfItem;
+window.__movePdf = movePdfItem;
+
+// ==========================================
+// 6. UI HELPERS & VISITOR COUNTER
+// ==========================================
+function triggerConfetti() {
+  try {
+    const confettiFn = window.confetti || confetti;
+    if (typeof confettiFn === 'function') {
+      confettiFn({
+        particleCount: 45,
+        spread: 60,
+        origin: { y: 0.8 },
+        colors: ['#000000', '#52525b', '#a1a1aa', '#e4e4e7'],
+      });
+    }
+  } catch (e) {
+    // Ignored
+  }
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.className = `fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 flex items-center gap-2 ${
+    type === 'error' ? 'bg-neutral-800' : 'bg-black'
+  } translate-y-0 opacity-100 border border-neutral-700`;
+
+  setTimeout(() => {
+    toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold text-white transition-all transform duration-200 translate-y-8 opacity-0 pointer-events-none border border-neutral-700';
+  }, 2400);
+}
+
+// Persistent visitor counter in footer
 async function initVisitorCounter() {
   const counterEl = document.getElementById('visitor-count');
   if (!counterEl) return;
@@ -405,16 +934,13 @@ async function initVisitorCounter() {
   const storageKey = 'qr_studio_visits_count';
   const sessionKey = 'qr_studio_has_visited';
 
-  // Base realistic starting count for persistent client-side tracking
-  let count = parseInt(localStorage.getItem(storageKey) || '1540', 10);
+  let count = parseInt(localStorage.getItem(storageKey) || '1680', 10);
 
-  // If this is a fresh user session, increment count
   if (!sessionStorage.getItem(sessionKey)) {
     count += 1;
     localStorage.setItem(storageKey, count.toString());
     sessionStorage.setItem(sessionKey, 'true');
 
-    // Attempt background sync with free public counter if network available
     try {
       const res = await fetch('https://api.counterapi.dev/v1/anix-qr-studio/visits/up', {
         method: 'GET',
@@ -428,29 +954,81 @@ async function initVisitorCounter() {
         }
       }
     } catch (e) {
-      // Offline or blocked network fallback
+      // Offline fallback
     }
   }
 
-  // Display formatted visitor count
   counterEl.textContent = count.toLocaleString();
 }
 
-// Bind all event listeners
+// ==========================================
+// 7. TOOL SWITCHING LOGIC
+// ==========================================
+function switchTool(toolId) {
+  currentTool = toolId;
+
+  // Update active states on dashboard buttons
+  document.querySelectorAll('[data-switch-tool]').forEach(btn => {
+    const isTarget = btn.getAttribute('data-switch-tool') === toolId;
+    if (isTarget) {
+      btn.className = 'tool-card p-4 rounded-2xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer shadow-xs';
+      btn.querySelector('.tool-indicator')?.classList.remove('hidden');
+    } else {
+      btn.className = 'tool-card p-4 rounded-2xl border border-neutral-200 bg-white hover:border-neutral-400 hover:bg-neutral-50 text-left transition-all cursor-pointer';
+      btn.querySelector('.tool-indicator')?.classList.add('hidden');
+    }
+  });
+
+  // Toggle main tool sections
+  ['qr', 'barcode', 'image-to-pdf', 'merge-pdf'].forEach(t => {
+    const section = document.getElementById(`tool-section-${t}`);
+    if (section) {
+      if (t === toolId) section.classList.remove('hidden');
+      else section.classList.add('hidden');
+    }
+  });
+
+  // Render specific tool canvas if needed
+  if (toolId === 'qr') {
+    renderLiveQR();
+  } else if (toolId === 'barcode') {
+    renderLiveBarcode();
+  }
+
+  // Update URL hash without reload
+  if (history.replaceState) {
+    history.replaceState(null, '', `#${toolId}`);
+  }
+}
+
+// ==========================================
+// 8. BIND EVENT LISTENERS
+// ==========================================
 function setupEventListeners() {
-  // 1. QR Type Tabs
+  // Tool switcher buttons
+  document.querySelectorAll('[data-switch-tool]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const toolId = btn.getAttribute('data-switch-tool');
+      switchTool(toolId);
+    });
+  });
+
+  // Hash-based routing
+  const initialHash = window.location.hash.replace('#', '');
+  if (['qr', 'barcode', 'image-to-pdf', 'merge-pdf'].includes(initialHash)) {
+    switchTool(initialHash);
+  }
+
+  // QR CODE LISTENERS
   document.querySelectorAll('[data-type]').forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.getAttribute('data-type');
-      state.type = type;
-
-      // Update active tab styles
+      qrState.type = type;
       document.querySelectorAll('[data-type]').forEach(b => {
-        b.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100';
+        b.className = 'type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100';
       });
-      btn.className = 'type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs';
+      btn.className = 'type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs';
 
-      // Switch form view
       ['url', 'text', 'wifi', 'whatsapp', 'vcard'].forEach(t => {
         const form = document.getElementById(`form-${t}`);
         if (form) {
@@ -458,85 +1036,55 @@ function setupEventListeners() {
           else form.classList.add('hidden');
         }
       });
-
       renderLiveQR();
     });
   });
 
-  // 2. Input Fields Binding
-  // URL
+  // QR Input bindings
   const inputUrl = document.getElementById('field-url');
-  if (inputUrl) {
-    inputUrl.addEventListener('input', (e) => {
-      state.fields.url = e.target.value;
-      renderLiveQR();
-    });
-  }
+  if (inputUrl) inputUrl.addEventListener('input', (e) => { qrState.fields.url = e.target.value; renderLiveQR(); });
 
-  // Text
   const inputText = document.getElementById('field-text');
-  if (inputText) {
-    inputText.addEventListener('input', (e) => {
-      state.fields.text = e.target.value;
-      renderLiveQR();
-    });
-  }
+  if (inputText) inputText.addEventListener('input', (e) => { qrState.fields.text = e.target.value; renderLiveQR(); });
 
-  // Wi-Fi
   const wifiSsid = document.getElementById('wifi-ssid');
   const wifiPass = document.getElementById('wifi-pass');
   const wifiEnc = document.getElementById('wifi-enc');
   const wifiHidden = document.getElementById('wifi-hidden');
   const togglePass = document.getElementById('btn-toggle-pass');
 
-  if (wifiSsid) wifiSsid.addEventListener('input', (e) => { state.fields.wifi.ssid = e.target.value; renderLiveQR(); });
-  if (wifiPass) wifiPass.addEventListener('input', (e) => { state.fields.wifi.password = e.target.value; renderLiveQR(); });
-  if (wifiEnc) wifiEnc.addEventListener('change', (e) => { state.fields.wifi.encryption = e.target.value; renderLiveQR(); });
-  if (wifiHidden) wifiHidden.addEventListener('change', (e) => { state.fields.wifi.hidden = e.target.checked; renderLiveQR(); });
-
+  if (wifiSsid) wifiSsid.addEventListener('input', (e) => { qrState.fields.wifi.ssid = e.target.value; renderLiveQR(); });
+  if (wifiPass) wifiPass.addEventListener('input', (e) => { qrState.fields.wifi.password = e.target.value; renderLiveQR(); });
+  if (wifiEnc) wifiEnc.addEventListener('change', (e) => { qrState.fields.wifi.encryption = e.target.value; renderLiveQR(); });
+  if (wifiHidden) wifiHidden.addEventListener('change', (e) => { qrState.fields.wifi.hidden = e.target.checked; renderLiveQR(); });
   if (togglePass && wifiPass) {
-    togglePass.addEventListener('click', () => {
-      wifiPass.type = wifiPass.type === 'password' ? 'text' : 'password';
-    });
+    togglePass.addEventListener('click', () => { wifiPass.type = wifiPass.type === 'password' ? 'text' : 'password'; });
   }
 
-  // WhatsApp
   const waCode = document.getElementById('wa-code');
   const waPhone = document.getElementById('wa-phone');
   const waMsg = document.getElementById('wa-msg');
+  if (waCode) waCode.addEventListener('change', (e) => { qrState.fields.whatsapp.countryCode = e.target.value; renderLiveQR(); });
+  if (waPhone) waPhone.addEventListener('input', (e) => { qrState.fields.whatsapp.phone = e.target.value; renderLiveQR(); });
+  if (waMsg) waMsg.addEventListener('input', (e) => { qrState.fields.whatsapp.message = e.target.value; renderLiveQR(); });
 
-  if (waCode) waCode.addEventListener('change', (e) => { state.fields.whatsapp.countryCode = e.target.value; renderLiveQR(); });
-  if (waPhone) waPhone.addEventListener('input', (e) => { state.fields.whatsapp.phone = e.target.value; renderLiveQR(); });
-  if (waMsg) waMsg.addEventListener('input', (e) => { state.fields.whatsapp.message = e.target.value; renderLiveQR(); });
-
-  // Contact (vCard)
   ['firstName', 'lastName', 'phone', 'email', 'organization', 'title', 'website'].forEach(key => {
     const el = document.getElementById(`vcard-${key}`);
-    if (el) {
-      el.addEventListener('input', (e) => {
-        state.fields.vcard[key] = e.target.value;
-        renderLiveQR();
-      });
-    }
+    if (el) el.addEventListener('input', (e) => { qrState.fields.vcard[key] = e.target.value; renderLiveQR(); });
   });
 
-  // 3. Customization Controls
-  // Pattern Buttons (Classic square, rounded, dots)
+  // QR Pattern & Colors
   document.querySelectorAll('[data-pattern]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const pat = btn.getAttribute('data-pattern');
-      state.design.pattern = pat;
-
+      qrState.design.pattern = btn.getAttribute('data-pattern');
       document.querySelectorAll('[data-pattern]').forEach(b => {
         b.className = 'pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700';
       });
       btn.className = 'pattern-btn p-3 rounded-xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer text-xs font-bold text-black shadow-xs';
-
       renderLiveQR();
     });
   });
 
-  // Colors
   const pickerFg = document.getElementById('picker-fg');
   const hexFg = document.getElementById('hex-fg');
   const pickerBg = document.getElementById('picker-bg');
@@ -544,50 +1092,30 @@ function setupEventListeners() {
   const checkTrans = document.getElementById('check-transparent');
 
   if (pickerFg && hexFg) {
-    pickerFg.addEventListener('input', (e) => {
-      state.design.fgColor = e.target.value;
-      hexFg.value = e.target.value;
-      renderLiveQR();
-    });
-    hexFg.addEventListener('input', (e) => {
-      state.design.fgColor = e.target.value;
-      pickerFg.value = e.target.value;
-      renderLiveQR();
-    });
+    pickerFg.addEventListener('input', (e) => { qrState.design.fgColor = e.target.value; hexFg.value = e.target.value; renderLiveQR(); });
+    hexFg.addEventListener('input', (e) => { qrState.design.fgColor = e.target.value; pickerFg.value = e.target.value; renderLiveQR(); });
   }
 
   if (pickerBg && hexBg) {
-    pickerBg.addEventListener('input', (e) => {
-      state.design.bgColor = e.target.value;
-      hexBg.value = e.target.value;
-      renderLiveQR();
-    });
-    hexBg.addEventListener('input', (e) => {
-      state.design.bgColor = e.target.value;
-      pickerBg.value = e.target.value;
-      renderLiveQR();
-    });
+    pickerBg.addEventListener('input', (e) => { qrState.design.bgColor = e.target.value; hexBg.value = e.target.value; renderLiveQR(); });
+    hexBg.addEventListener('input', (e) => { qrState.design.bgColor = e.target.value; pickerBg.value = e.target.value; renderLiveQR(); });
   }
 
   if (checkTrans) {
-    checkTrans.addEventListener('change', (e) => {
-      state.design.bgTransparent = e.target.checked;
-      renderLiveQR();
-    });
+    checkTrans.addEventListener('change', (e) => { qrState.design.bgTransparent = e.target.checked; renderLiveQR(); });
   }
 
-  // Quick Foreground Color Swatches
   document.querySelectorAll('[data-swatch]').forEach(btn => {
     btn.addEventListener('click', () => {
       const color = btn.getAttribute('data-swatch');
-      state.design.fgColor = color;
+      qrState.design.fgColor = color;
       if (pickerFg) pickerFg.value = color;
       if (hexFg) hexFg.value = color;
       renderLiveQR();
     });
   });
 
-  // 4. Logo Upload & Size
+  // QR Logo Upload
   const logoInput = document.getElementById('file-logo');
   const logoBox = document.getElementById('box-logo-upload');
   const logoPreview = document.getElementById('logo-preview-box');
@@ -599,26 +1127,21 @@ function setupEventListeners() {
 
   if (logoBox && logoInput) {
     logoBox.addEventListener('click', () => logoInput.click());
-
     logoInput.addEventListener('change', (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-
       if (!file.type.startsWith('image/')) {
         showToast('Please upload an image file (PNG, JPG, SVG).', 'error');
         return;
       }
-
       const reader = new FileReader();
       reader.onload = (event) => {
-        state.design.logoUrl = event.target?.result;
-        state.design.logoName = file.name;
-
+        qrState.design.logoUrl = event.target?.result;
+        qrState.design.logoName = file.name;
         if (logoThumb) logoThumb.src = event.target?.result;
         if (logoTitle) logoTitle.textContent = file.name;
         if (logoBox) logoBox.classList.add('hidden');
         if (logoPreview) logoPreview.classList.remove('hidden');
-
         renderLiveQR();
         showToast('Logo embedded with 30% error correction!');
       };
@@ -629,12 +1152,10 @@ function setupEventListeners() {
 
   if (btnRemoveLogo) {
     btnRemoveLogo.addEventListener('click', () => {
-      state.design.logoUrl = null;
-      state.design.logoName = '';
-
+      qrState.design.logoUrl = null;
+      qrState.design.logoName = '';
       if (logoBox) logoBox.classList.remove('hidden');
       if (logoPreview) logoPreview.classList.add('hidden');
-
       renderLiveQR();
       showToast('Logo removed');
     });
@@ -643,15 +1164,13 @@ function setupEventListeners() {
   if (sliderSize) {
     sliderSize.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
-      state.design.logoSize = val;
-      if (sizeValueLabel) {
-        sizeValueLabel.textContent = val <= 0.2 ? 'Small' : val <= 0.3 ? 'Medium' : 'Large';
-      }
+      qrState.design.logoSize = val;
+      if (sizeValueLabel) sizeValueLabel.textContent = val <= 0.2 ? 'Small' : val <= 0.3 ? 'Medium' : 'Large';
       renderLiveQR();
     });
   }
 
-  // 5. Download and Share Action Buttons
+  // QR Export Buttons
   const btnPng = document.getElementById('btn-download-png');
   const btnSvg = document.getElementById('btn-download-svg');
   const btnJpg = document.getElementById('btn-download-jpg');
@@ -665,11 +1184,186 @@ function setupEventListeners() {
   if (btnCopy) btnCopy.addEventListener('click', copyQR);
   if (btnShare) btnShare.addEventListener('click', shareQR);
   if (btnPrint) btnPrint.addEventListener('click', printQR);
+
+  // ==========================================
+  // BARCODE LISTENERS
+  // ==========================================
+  const barcodeInput = document.getElementById('barcode-text');
+  const barcodeFormat = document.getElementById('barcode-format');
+  const barcodeHeight = document.getElementById('barcode-height');
+  const barcodeWidth = document.getElementById('barcode-width');
+  const barcodeDisplayVal = document.getElementById('barcode-display-val');
+  const barcodeLineColor = document.getElementById('barcode-line-color');
+  const barcodeBgColor = document.getElementById('barcode-bg-color');
+
+  if (barcodeInput) {
+    barcodeInput.addEventListener('input', (e) => {
+      barcodeState.value = e.target.value;
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeFormat) {
+    barcodeFormat.addEventListener('change', (e) => {
+      barcodeState.format = e.target.value;
+      // Helpful placeholder / default value per format
+      if (e.target.value === 'EAN13' && (!barcodeState.value || barcodeState.value.length < 12 || !/^\d+$/.test(barcodeState.value))) {
+        barcodeState.value = '5901234123457';
+        if (barcodeInput) barcodeInput.value = barcodeState.value;
+      } else if (e.target.value === 'UPC' && (!barcodeState.value || barcodeState.value.length < 11 || !/^\d+$/.test(barcodeState.value))) {
+        barcodeState.value = '012345678905';
+        if (barcodeInput) barcodeInput.value = barcodeState.value;
+      } else if (e.target.value === 'CODE39' && !/^[0-9A-Z\-.$/+% ]+$/i.test(barcodeState.value)) {
+        barcodeState.value = 'CODE39-TEST';
+        if (barcodeInput) barcodeInput.value = barcodeState.value;
+      }
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeHeight) {
+    barcodeHeight.addEventListener('input', (e) => {
+      barcodeState.height = Number(e.target.value);
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeWidth) {
+    barcodeWidth.addEventListener('input', (e) => {
+      barcodeState.width = Number(e.target.value);
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeDisplayVal) {
+    barcodeDisplayVal.addEventListener('change', (e) => {
+      barcodeState.displayValue = e.target.checked;
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeLineColor) {
+    barcodeLineColor.addEventListener('input', (e) => {
+      barcodeState.lineColor = e.target.value;
+      renderLiveBarcode();
+    });
+  }
+
+  if (barcodeBgColor) {
+    barcodeBgColor.addEventListener('input', (e) => {
+      barcodeState.background = e.target.value;
+      renderLiveBarcode();
+    });
+  }
+
+  const btnBarcodeSvg = document.getElementById('btn-download-barcode-svg');
+  const btnBarcodePng = document.getElementById('btn-download-barcode-png');
+  const btnBarcodePrint = document.getElementById('btn-print-barcode');
+
+  if (btnBarcodeSvg) btnBarcodeSvg.addEventListener('click', downloadBarcodeSVG);
+  if (btnBarcodePng) btnBarcodePng.addEventListener('click', downloadBarcodePNG);
+  if (btnBarcodePrint) btnBarcodePrint.addEventListener('click', printBarcode);
+
+  // ==========================================
+  // IMAGE TO PDF LISTENERS
+  // ==========================================
+  const imgFileInput = document.getElementById('input-image-files');
+  const imgDropZone = document.getElementById('image-drop-zone');
+  const btnSelectImages = document.getElementById('btn-select-images');
+  const btnClearImages = document.getElementById('btn-clear-images');
+  const btnConvertImages = document.getElementById('btn-convert-images');
+  const selectPageSize = document.getElementById('pdf-page-size');
+  const selectOrientation = document.getElementById('pdf-orientation');
+  const selectFit = document.getElementById('pdf-fit');
+
+  if (btnSelectImages && imgFileInput) {
+    btnSelectImages.addEventListener('click', () => imgFileInput.click());
+  }
+
+  if (imgFileInput) {
+    imgFileInput.addEventListener('change', (e) => {
+      if (e.target.files) handleImageFiles(e.target.files);
+      e.target.value = '';
+    });
+  }
+
+  if (imgDropZone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      imgDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        imgDropZone.classList.add('border-black', 'bg-neutral-100');
+      });
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      imgDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        imgDropZone.classList.remove('border-black', 'bg-neutral-100');
+      });
+    });
+    imgDropZone.addEventListener('drop', (e) => {
+      if (e.dataTransfer?.files) handleImageFiles(e.dataTransfer.files);
+    });
+  }
+
+  if (btnClearImages) btnClearImages.addEventListener('click', clearAllImages);
+  if (btnConvertImages) btnConvertImages.addEventListener('click', convertImagesToPDF);
+
+  if (selectPageSize) {
+    selectPageSize.addEventListener('change', (e) => { imgToPdfState.pageSize = e.target.value; });
+  }
+  if (selectOrientation) {
+    selectOrientation.addEventListener('change', (e) => { imgToPdfState.orientation = e.target.value; });
+  }
+  if (selectFit) {
+    selectFit.addEventListener('change', (e) => { imgToPdfState.fit = e.target.value; });
+  }
+
+  // ==========================================
+  // MERGE PDF LISTENERS
+  // ==========================================
+  const pdfFileInput = document.getElementById('input-pdf-files');
+  const pdfDropZone = document.getElementById('pdf-drop-zone');
+  const btnSelectPdfs = document.getElementById('btn-select-pdfs');
+  const btnClearPdfs = document.getElementById('btn-clear-pdfs');
+  const btnMergePdfs = document.getElementById('btn-merge-pdfs');
+
+  if (btnSelectPdfs && pdfFileInput) {
+    btnSelectPdfs.addEventListener('click', () => pdfFileInput.click());
+  }
+
+  if (pdfFileInput) {
+    pdfFileInput.addEventListener('change', (e) => {
+      if (e.target.files) handlePdfFiles(e.target.files);
+      e.target.value = '';
+    });
+  }
+
+  if (pdfDropZone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      pdfDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        pdfDropZone.classList.add('border-black', 'bg-neutral-100');
+      });
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      pdfDropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        pdfDropZone.classList.remove('border-black', 'bg-neutral-100');
+      });
+    });
+    pdfDropZone.addEventListener('drop', (e) => {
+      if (e.dataTransfer?.files) handlePdfFiles(e.dataTransfer.files);
+    });
+  }
+
+  if (btnClearPdfs) btnClearPdfs.addEventListener('click', clearAllPdfs);
+  if (btnMergePdfs) btnMergePdfs.addEventListener('click', mergeSelectedPDFs);
 }
 
-// Initial boot
+// Initial Boot
 window.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   renderLiveQR();
+  renderLiveBarcode();
   initVisitorCounter();
 });

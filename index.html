@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Studio — Free QR Code Generator by ANIX Software Technology</title>
-    <meta name="description" content="Create, customize and download QR codes in seconds. 100% Free, no sign-up required. Developed by ANIX Software Technology." />
-    <meta property="og:title" content="QR Studio — Free QR Code Generator" />
-    <meta property="og:description" content="Create, customize and download QR codes in seconds. Developed by ANIX Software Technology." />
+    <title>QR Studio — Free QR, Barcode & PDF Suite by ANIX Software Technology</title>
+    <meta name="description" content="Free, private browser toolkit by ANIX Software Technology. QR Code Generator, Barcode Generator, Image to PDF Converter, and Merge PDF. 100% free, no login." />
+    <meta property="og:title" content="QR Studio — Free QR, Barcode & PDF Suite" />
+    <meta property="og:description" content="Free browser tools by ANIX Software Technology. Create QR codes, barcodes, convert images to PDF, and merge PDF files in seconds." />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body class="flex flex-col min-h-screen bg-neutral-50 text-neutral-900 antialiased selection:bg-black selection:text-white">
+    
     <!-- Top Navigation Bar (Strict Black & White) -->
     <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-2xs no-print">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -35,6 +36,14 @@
           </div>
         </a>
 
+        <!-- Fast Tool Selector in Header -->
+        <nav class="hidden md:flex items-center gap-1 bg-neutral-100 p-1 rounded-xl border border-neutral-200 text-xs font-semibold">
+          <button type="button" data-switch-tool="qr" class="px-3 py-1.5 rounded-lg hover:text-black cursor-pointer">QR Code</button>
+          <button type="button" data-switch-tool="barcode" class="px-3 py-1.5 rounded-lg hover:text-black cursor-pointer">Barcode</button>
+          <button type="button" data-switch-tool="image-to-pdf" class="px-3 py-1.5 rounded-lg hover:text-black cursor-pointer">Image to PDF</button>
+          <button type="button" data-switch-tool="merge-pdf" class="px-3 py-1.5 rounded-lg hover:text-black cursor-pointer">Merge PDF</button>
+        </nav>
+
         <!-- 100% Free Badge -->
         <div class="flex items-center gap-2">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-900 text-xs font-bold tracking-wide">
@@ -45,351 +54,261 @@
       </div>
     </header>
 
-    <!-- Main Studio Workspace -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 no-print">
-      <!-- Section Heading -->
-      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
-          Create Your QR Code for Free
-        </h1>
-        <p class="mt-2 text-sm sm:text-base text-neutral-600">
-          Create, customize and download QR codes in seconds.
-        </p>
-      </div>
+    <!-- Main Workspace Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 no-print">
+      
+      <!-- TOOLS DASHBOARD CARDS (Top Section) -->
+      <section class="mb-10">
+        <div class="flex items-center justify-between mb-3.5">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+            Select Utility Tool
+          </h2>
+          <span class="text-xs text-neutral-400">4 Free Tools · Client-Side Execution</span>
+        </div>
 
-      <!-- Main Layout: Form & Customizer (Left) + Live Preview & Actions (Right) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        <!-- LEFT COLUMN: Type Selection, Data Form & Customization (7 cols) -->
-        <div class="lg:col-span-7 space-y-6">
-          
-          <!-- 1. Easy QR Type Selection (Monochrome) -->
-          <div class="bg-white rounded-2xl border border-neutral-200 p-2 shadow-xs">
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
-              <!-- URL -->
-              <button
-                type="button"
-                data-type="url"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs"
-              >
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                <span>URL</span>
-              </button>
-
-              <!-- Text -->
-              <button
-                type="button"
-                data-type="text"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
-              >
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
-                <span>Text</span>
-              </button>
-
-              <!-- Wi-Fi -->
-              <button
-                type="button"
-                data-type="wifi"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
-              >
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>
-                <span>Wi-Fi</span>
-              </button>
-
-              <!-- WhatsApp -->
-              <button
-                type="button"
-                data-type="whatsapp"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
-              >
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                <span>WhatsApp</span>
-              </button>
-
-              <!-- Contact -->
-              <button
-                type="button"
-                data-type="vcard"
-                class="type-tab flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100"
-              >
-                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 2v2"/><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/><circle cx="9" cy="11" r="2"/><path d="M15 18a3 3 0 0 0-6 0"/><path d="M18 18h4"/><path d="M20 16v4"/></svg>
-                <span>Contact</span>
-              </button>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <!-- 1. QR Code Card -->
+          <button
+            type="button"
+            data-switch-tool="qr"
+            class="tool-card p-4 rounded-2xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer shadow-xs"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="6" height="6" x="3" y="3" rx="1"/><rect width="6" height="6" x="15" y="3" rx="1"/><rect width="6" height="6" x="3" y="15" rx="1"/><path d="M15 15h3a1 1 0 0 1 1 1v3"/></svg>
+              </div>
+              <span class="tool-indicator text-[10px] font-bold px-2 py-0.5 rounded-full bg-black text-white">Active</span>
             </div>
-          </div>
+            <div class="font-extrabold text-sm text-black">QR Code Generator</div>
+            <div class="text-[11px] text-neutral-500 mt-0.5">URL, Wi-Fi, WhatsApp & vCard</div>
+          </button>
 
-          <!-- 2. Simple Form Card -->
-          <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-4">
-            
-            <!-- URL FORM -->
-            <div id="form-url" class="space-y-3">
-              <label for="field-url" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Website or Link URL
-              </label>
-              <input
-                type="url"
-                id="field-url"
-                value="https://example.com"
-                placeholder="https://yourwebsite.com"
-                class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono transition-colors"
-              />
-              <p class="text-xs text-neutral-500">
-                Enter your website, portfolio, social profile, or file download link.
-              </p>
+          <!-- 2. Barcode Card -->
+          <button
+            type="button"
+            data-switch-tool="barcode"
+            class="tool-card p-4 rounded-2xl border border-neutral-200 bg-white hover:border-neutral-400 hover:bg-neutral-50 text-left transition-all cursor-pointer"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-8 h-8 rounded-lg bg-neutral-100 text-black flex items-center justify-center border border-neutral-300">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5v14"/><path d="M8 5v14"/><path d="M12 5v14"/><path d="M17 5v14"/><path d="M21 5v14"/></svg>
+              </div>
+              <span class="tool-indicator text-[10px] font-bold px-2 py-0.5 rounded-full bg-black text-white hidden">Active</span>
             </div>
+            <div class="font-extrabold text-sm text-black">Barcode Generator</div>
+            <div class="text-[11px] text-neutral-500 mt-0.5">CODE 128, EAN-13, UPC & 39</div>
+          </button>
 
-            <!-- TEXT FORM -->
-            <div id="form-text" class="space-y-3 hidden">
-              <label for="field-text" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Plain Text or Message
-              </label>
-              <textarea
-                id="field-text"
-                rows="4"
-                placeholder="Type your message, notes, or instructions here..."
-                class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black transition-colors"
-              >Welcome to QR Studio!</textarea>
-              <p class="text-xs text-neutral-500">
-                Works offline without internet. Scanning phones display this text immediately.
-              </p>
+          <!-- 3. Image to PDF Card -->
+          <button
+            type="button"
+            data-switch-tool="image-to-pdf"
+            class="tool-card p-4 rounded-2xl border border-neutral-200 bg-white hover:border-neutral-400 hover:bg-neutral-50 text-left transition-all cursor-pointer"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-8 h-8 rounded-lg bg-neutral-100 text-black flex items-center justify-center border border-neutral-300">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              </div>
+              <span class="tool-indicator text-[10px] font-bold px-2 py-0.5 rounded-full bg-black text-white hidden">Active</span>
+            </div>
+            <div class="font-extrabold text-sm text-black">Image to PDF</div>
+            <div class="text-[11px] text-neutral-500 mt-0.5">Convert photos to single PDF</div>
+          </button>
+
+          <!-- 4. Merge PDF Card -->
+          <button
+            type="button"
+            data-switch-tool="merge-pdf"
+            class="tool-card p-4 rounded-2xl border border-neutral-200 bg-white hover:border-neutral-400 hover:bg-neutral-50 text-left transition-all cursor-pointer"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-8 h-8 rounded-lg bg-neutral-100 text-black flex items-center justify-center border border-neutral-300">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="12" y2="18"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+              </div>
+              <span class="tool-indicator text-[10px] font-bold px-2 py-0.5 rounded-full bg-black text-white hidden">Active</span>
+            </div>
+            <div class="font-extrabold text-sm text-black">Merge PDF</div>
+            <div class="text-[11px] text-neutral-500 mt-0.5">Combine multiple PDF files</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 1: QR CODE GENERATOR SECTION -->
+      <!-- ======================================================== -->
+      <section id="tool-section-qr" class="space-y-8">
+        <!-- Section Heading -->
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
+            Create Your QR Code for Free
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-neutral-600">
+            Create, customize and download QR codes in seconds.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- LEFT COLUMN: Forms & Customization (7 cols) -->
+          <div class="lg:col-span-7 space-y-6">
+            <!-- QR Type Tabs -->
+            <div class="bg-white rounded-2xl border border-neutral-200 p-2 shadow-xs">
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+                <button type="button" data-type="url" class="type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer bg-black text-white shadow-xs">URL</button>
+                <button type="button" data-type="text" class="type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100">Text</button>
+                <button type="button" data-type="wifi" class="type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100">Wi-Fi</button>
+                <button type="button" data-type="whatsapp" class="type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100">WhatsApp</button>
+                <button type="button" data-type="vcard" class="type-tab flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer text-neutral-600 hover:text-black hover:bg-neutral-100">Contact</button>
+              </div>
             </div>
 
-            <!-- WI-FI FORM -->
-            <div id="form-wifi" class="space-y-4 hidden">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label for="wifi-ssid" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Network Name (SSID)
-                  </label>
-                  <input
-                    type="text"
-                    id="wifi-ssid"
-                    value="My_WiFi_Network"
-                    placeholder="e.g. Office_Guest"
-                    class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black"
-                  />
+            <!-- Simple Form Card -->
+            <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-4">
+              <!-- URL Form -->
+              <div id="form-url" class="space-y-3">
+                <label for="field-url" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">Website or Link URL</label>
+                <input type="url" id="field-url" value="https://example.com" placeholder="https://yourwebsite.com" class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono transition-colors" />
+                <p class="text-xs text-neutral-500">Enter your website, portfolio, social profile, or file download link.</p>
+              </div>
+
+              <!-- Text Form -->
+              <div id="form-text" class="space-y-3 hidden">
+                <label for="field-text" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">Plain Text or Message</label>
+                <textarea id="field-text" rows="4" placeholder="Type your message, notes, or instructions here..." class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black transition-colors">Welcome to QR Studio!</textarea>
+                <p class="text-xs text-neutral-500">Works offline without internet. Scanning phones display this text immediately.</p>
+              </div>
+
+              <!-- Wi-Fi Form -->
+              <div id="form-wifi" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="wifi-ssid" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Network Name (SSID)</label>
+                    <input type="text" id="wifi-ssid" value="My_WiFi_Network" placeholder="e.g. Office_Guest" class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                  <div>
+                    <label for="wifi-enc" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Security Type</label>
+                    <select id="wifi-enc" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer">
+                      <option value="WPA">WPA / WPA2 / WPA3 (Standard)</option>
+                      <option value="WEP">WEP</option>
+                      <option value="nopass">No Password (Open Network)</option>
+                    </select>
+                  </div>
                 </div>
-
                 <div>
-                  <label for="wifi-enc" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Security Type
-                  </label>
-                  <select
-                    id="wifi-enc"
-                    class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer"
-                  >
-                    <option value="WPA">WPA / WPA2 / WPA3 (Standard)</option>
-                    <option value="WEP">WEP</option>
-                    <option value="nopass">No Password (Open Network)</option>
-                  </select>
+                  <label for="wifi-pass" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Password</label>
+                  <div class="relative">
+                    <input type="password" id="wifi-pass" placeholder="Enter network password" class="w-full px-4 py-2.5 pr-11 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono" />
+                    <button type="button" id="btn-toggle-pass" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black cursor-pointer p-1" title="Toggle password view">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input id="wifi-hidden" type="checkbox" class="rounded border-neutral-300 text-black cursor-pointer w-4 h-4" />
+                  <label for="wifi-hidden" class="text-xs text-neutral-700 cursor-pointer">Hidden Network</label>
                 </div>
               </div>
 
+              <!-- WhatsApp Form -->
+              <div id="form-whatsapp" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label for="wa-code" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Country Code</label>
+                    <select id="wa-code" class="w-full px-3 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer">
+                      <option value="+1">+1 (US/CA)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      <option value="+880">+880 (BD)</option>
+                      <option value="+971">+971 (UAE)</option>
+                      <option value="+966">+966 (Saudi)</option>
+                      <option value="+61">+61 (Australia)</option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="wa-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">WhatsApp Phone Number</label>
+                    <input type="tel" id="wa-phone" placeholder="e.g. 5551234567" class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono" />
+                  </div>
+                </div>
+                <div>
+                  <label for="wa-msg" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Prefilled Message</label>
+                  <textarea id="wa-msg" rows="2" class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black">Hello! I am contacting you via QR Studio.</textarea>
+                </div>
+              </div>
+
+              <!-- Contact Form -->
+              <div id="form-vcard" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="vcard-firstName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">First Name *</label>
+                    <input type="text" id="vcard-firstName" value="Alex" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                  <div>
+                    <label for="vcard-lastName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Last Name</label>
+                    <input type="text" id="vcard-lastName" value="Morgan" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                  <div>
+                    <label for="vcard-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Phone *</label>
+                    <input type="tel" id="vcard-phone" value="+1 555 123 4567" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono" />
+                  </div>
+                  <div>
+                    <label for="vcard-email" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Email</label>
+                    <input type="email" id="vcard-email" value="alex@example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                  <div>
+                    <label for="vcard-organization" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Company</label>
+                    <input type="text" id="vcard-organization" value="Tech Innovations Ltd" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                  <div>
+                    <label for="vcard-title" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Job Title</label>
+                    <input type="text" id="vcard-title" value="Product Director" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                  </div>
+                </div>
+                <div>
+                  <label for="vcard-website" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Website</label>
+                  <input type="text" id="vcard-website" value="https://example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Customization Panel -->
+            <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-6">
+              <h3 class="text-sm font-extrabold text-black uppercase tracking-wider">Customize QR Code</h3>
+              
+              <!-- Patterns -->
               <div>
-                <label for="wifi-pass" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                  Password
-                </label>
-                <div class="relative">
-                  <input
-                    type="password"
-                    id="wifi-pass"
-                    placeholder="Enter network password"
-                    class="w-full px-4 py-2.5 pr-11 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono"
-                  />
-                  <button
-                    type="button"
-                    id="btn-toggle-pass"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black cursor-pointer p-1"
-                    title="Toggle password view"
-                  >
-                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2">Pattern Style</label>
+                <div class="grid grid-cols-3 gap-2.5">
+                  <button type="button" data-pattern="rounded" class="pattern-btn p-3 rounded-xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer text-xs font-bold text-black shadow-xs">
+                    <div class="text-sm font-bold">Rounded</div>
+                    <div class="text-[11px] text-neutral-600 mt-0.5">Smooth curves</div>
+                  </button>
+                  <button type="button" data-pattern="dots" class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700">
+                    <div class="text-sm font-bold">Dots</div>
+                    <div class="text-[11px] text-neutral-500 mt-0.5">Circular minimal</div>
+                  </button>
+                  <button type="button" data-pattern="square" class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700">
+                    <div class="text-sm font-bold">Classic</div>
+                    <div class="text-[11px] text-neutral-500 mt-0.5">Square industrial</div>
                   </button>
                 </div>
               </div>
 
-              <div class="flex items-center gap-2">
-                <input id="wifi-hidden" type="checkbox" class="rounded border-neutral-300 text-black focus:ring-black cursor-pointer w-4 h-4" />
-                <label for="wifi-hidden" class="text-xs text-neutral-700 cursor-pointer">
-                  Hidden Network (SSID is not publicly broadcasted)
-                </label>
-              </div>
-
-              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
-                Guests point their camera at the QR code and tap <strong>"Join Wi-Fi"</strong> to connect instantly without typing any password.
-              </div>
-            </div>
-
-            <!-- WHATSAPP FORM -->
-            <div id="form-whatsapp" class="space-y-4 hidden">
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="sm:col-span-1">
-                  <label for="wa-code" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Country Code
-                  </label>
-                  <select id="wa-code" class="w-full px-3 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer">
-                    <option value="+1">+1 (US/CA)</option>
-                    <option value="+44">+44 (UK)</option>
-                    <option value="+91">+91 (India)</option>
-                    <option value="+880">+880 (BD)</option>
-                    <option value="+971">+971 (UAE)</option>
-                    <option value="+966">+966 (Saudi)</option>
-                    <option value="+61">+61 (Australia)</option>
-                    <option value="+49">+49 (Germany)</option>
-                  </select>
-                </div>
-
-                <div class="sm:col-span-2">
-                  <label for="wa-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    WhatsApp Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="wa-phone"
-                    placeholder="e.g. 5551234567"
-                    class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label for="wa-msg" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                  Prefilled Message (Optional)
-                </label>
-                <textarea
-                  id="wa-msg"
-                  rows="2"
-                  placeholder="Hello! I would like more information."
-                  class="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black"
-                >Hello! I am contacting you via QR Studio.</textarea>
-              </div>
-
-              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
-                Scanning immediately launches WhatsApp directly into the chat with your prefilled greeting.
-              </div>
-            </div>
-
-            <!-- CONTACT (vCard) FORM -->
-            <div id="form-vcard" class="space-y-4 hidden">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label for="vcard-firstName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    First Name *
-                  </label>
-                  <input type="text" id="vcard-firstName" value="Alex" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-                </div>
-                <div>
-                  <label for="vcard-lastName" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Last Name
-                  </label>
-                  <input type="text" id="vcard-lastName" value="Morgan" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-                </div>
-                <div>
-                  <label for="vcard-phone" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Phone Number *
-                  </label>
-                  <input type="tel" id="vcard-phone" value="+1 555 123 4567" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono" />
-                </div>
-                <div>
-                  <label for="vcard-email" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Email Address
-                  </label>
-                  <input type="email" id="vcard-email" value="alex@example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-                </div>
-                <div>
-                  <label for="vcard-organization" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Company / Organization
-                  </label>
-                  <input type="text" id="vcard-organization" value="Tech Innovations Ltd" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-                </div>
-                <div>
-                  <label for="vcard-title" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                    Job Title
-                  </label>
-                  <input type="text" id="vcard-title" value="Product Director" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-                </div>
-              </div>
-
-              <div>
-                <label for="vcard-website" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
-                  Website
-                </label>
-                <input type="text" id="vcard-website" value="https://example.com" class="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black" />
-              </div>
-
-              <div class="p-3 bg-neutral-100 rounded-xl border border-neutral-200 text-xs text-neutral-800 leading-relaxed">
-                Standard vCard format. When scanned on iPhone or Android, prompts "Add to Contacts" with one tap.
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Customization Panel (Monochrome Style) -->
-          <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-6">
-            <h2 class="text-sm font-extrabold text-black uppercase tracking-wider flex items-center gap-2">
-              <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span>Personalize Your QR Code</span>
-            </h2>
-
-            <!-- A. Patterns: Classic square, rounded and dot -->
-            <div class="space-y-2.5">
-              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Pattern Style
-              </label>
-              <div class="grid grid-cols-3 gap-2.5">
-                <button
-                  type="button"
-                  data-pattern="rounded"
-                  class="pattern-btn p-3 rounded-xl border-2 border-black bg-neutral-100 text-left transition-all cursor-pointer text-xs font-bold text-black shadow-xs"
-                >
-                  <div class="text-sm font-bold">Rounded</div>
-                  <div class="text-[11px] text-neutral-600 mt-0.5">Smooth curves</div>
-                </button>
-
-                <button
-                  type="button"
-                  data-pattern="dots"
-                  class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700"
-                >
-                  <div class="text-sm font-bold">Dots</div>
-                  <div class="text-[11px] text-neutral-500 mt-0.5">Circular minimal</div>
-                </button>
-
-                <button
-                  type="button"
-                  data-pattern="square"
-                  class="pattern-btn p-3 rounded-xl border border-neutral-200 hover:border-black hover:bg-neutral-50 text-left transition-all cursor-pointer text-xs font-medium text-neutral-700"
-                >
-                  <div class="text-sm font-bold">Classic</div>
-                  <div class="text-[11px] text-neutral-500 mt-0.5">Square industrial</div>
-                </button>
-              </div>
-            </div>
-
-            <!-- B. Colors: Foreground & Background -->
-            <div class="space-y-3 pt-4 border-t border-neutral-100">
-              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Colors
-              </label>
-              
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Foreground Color -->
+              <!-- Colors -->
+              <div class="pt-4 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                   <span class="block text-xs font-semibold text-neutral-800">QR Code Color</span>
                   <div class="flex items-center gap-2">
                     <input type="color" id="picker-fg" value="#000000" class="w-8 h-8 rounded-lg border border-neutral-300 cursor-pointer p-0 shrink-0" />
                     <input type="text" id="hex-fg" value="#000000" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-black font-semibold" />
                   </div>
-                  <!-- Black and white swatches -->
                   <div class="flex items-center gap-1.5 pt-1">
-                    <button type="button" data-swatch="#000000" class="w-5 h-5 rounded-md bg-black border border-black/20 cursor-pointer" title="Pure Black"></button>
-                    <button type="button" data-swatch="#18181b" class="w-5 h-5 rounded-md bg-zinc-900 border border-black/20 cursor-pointer" title="Zinc Dark"></button>
-                    <button type="button" data-swatch="#27272a" class="w-5 h-5 rounded-md bg-zinc-800 border border-black/20 cursor-pointer" title="Charcoal"></button>
-                    <button type="button" data-swatch="#3f3f46" class="w-5 h-5 rounded-md bg-zinc-700 border border-black/20 cursor-pointer" title="Slate Gray"></button>
-                    <button type="button" data-swatch="#52525b" class="w-5 h-5 rounded-md bg-zinc-600 border border-black/20 cursor-pointer" title="Medium Gray"></button>
-                    <button type="button" data-swatch="#71717a" class="w-5 h-5 rounded-md bg-zinc-500 border border-black/20 cursor-pointer" title="Light Slate"></button>
+                    <button type="button" data-swatch="#000000" class="w-5 h-5 rounded-md bg-black border border-black/20 cursor-pointer"></button>
+                    <button type="button" data-swatch="#18181b" class="w-5 h-5 rounded-md bg-zinc-900 border border-black/20 cursor-pointer"></button>
+                    <button type="button" data-swatch="#27272a" class="w-5 h-5 rounded-md bg-zinc-800 border border-black/20 cursor-pointer"></button>
+                    <button type="button" data-swatch="#3f3f46" class="w-5 h-5 rounded-md bg-zinc-700 border border-black/20 cursor-pointer"></button>
+                    <button type="button" data-swatch="#52525b" class="w-5 h-5 rounded-md bg-zinc-600 border border-black/20 cursor-pointer"></button>
                   </div>
                 </div>
 
-                <!-- Background Color -->
                 <div class="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-neutral-800">Background</span>
@@ -402,189 +321,419 @@
                     <input type="color" id="picker-bg" value="#ffffff" class="w-8 h-8 rounded-lg border border-neutral-300 cursor-pointer p-0 shrink-0" />
                     <input type="text" id="hex-bg" value="#ffffff" class="text-xs font-mono uppercase bg-transparent outline-none flex-1 text-black font-semibold" />
                   </div>
-                  <div class="text-[11px] text-neutral-500">Pure white (#ffffff) ensures maximum camera read speed.</div>
+                </div>
+              </div>
+
+              <!-- Center Logo Upload -->
+              <div class="pt-4 border-t border-neutral-100 space-y-3">
+                <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">Optional Center Logo</label>
+                <div id="box-logo-upload" class="border-2 border-dashed border-neutral-300 hover:border-black rounded-2xl p-4 text-center bg-neutral-50 hover:bg-neutral-100 transition-all cursor-pointer">
+                  <input type="file" id="file-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" />
+                  <div class="text-xs font-semibold text-neutral-900">Click to upload your logo (PNG, JPG, SVG)</div>
+                  <div class="text-[11px] text-neutral-500 mt-0.5">Auto 30% Error Correction enabled when logo is attached</div>
+                </div>
+
+                <div id="logo-preview-box" class="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 hidden space-y-3">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <img id="logo-thumb" src="" alt="Logo" class="w-8 h-8 rounded-lg object-contain bg-white p-1 border border-neutral-200" />
+                      <div id="logo-title" class="text-xs font-bold text-black truncate max-w-[180px]">Logo</div>
+                    </div>
+                    <button type="button" id="btn-remove-logo" class="text-xs font-medium text-neutral-700 hover:text-black p-1 cursor-pointer underline">Remove</button>
+                  </div>
+                  <div class="pt-2 border-t border-neutral-200">
+                    <div class="flex items-center justify-between text-xs text-neutral-800 mb-1">
+                      <span class="font-semibold">Logo Size</span>
+                      <span id="logo-size-label" class="font-mono text-black font-bold">Medium</span>
+                    </div>
+                    <input type="range" id="slider-logo-size" min="0.18" max="0.36" step="0.02" value="0.28" class="w-full accent-black cursor-pointer" />
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- C. Optional Center Logo Upload & Size -->
-            <div class="space-y-3 pt-4 border-t border-neutral-100">
-              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Optional Center Logo
-              </label>
+          <!-- RIGHT COLUMN: QR Preview & Actions (5 cols) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
+              <div class="flex items-center justify-between border-b border-neutral-100 pb-3">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-black">Live QR Preview</span>
+                <span class="text-xs text-black font-semibold bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">Live</span>
+              </div>
 
-              <!-- Upload Drag & Drop Box -->
-              <div
-                id="box-logo-upload"
-                class="border-2 border-dashed border-neutral-300 hover:border-black rounded-2xl p-5 text-center bg-neutral-50 hover:bg-neutral-100 transition-all cursor-pointer group"
-              >
-                <input type="file" id="file-logo" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" />
-                <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-xs border border-neutral-200 flex items-center justify-center text-black mb-2 group-hover:scale-105 transition-transform">
-                  <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                </div>
-                <div class="text-xs font-semibold text-neutral-900">
-                  Click to upload your logo or icon
-                </div>
-                <div class="text-[11px] text-neutral-500 mt-0.5">
-                  Supports PNG, JPG, or SVG
+              <!-- Canvas Container -->
+              <div class="flex flex-col items-center justify-center">
+                <div id="qr-canvas-target" class="qr-preview-box relative p-4 rounded-2xl border border-neutral-200 bg-white shadow-2xs max-w-[300px] w-full flex items-center justify-center min-h-[300px]"></div>
+                <div id="contrast-notice" class="mt-3.5 text-center">
+                  <span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Optimal contrast (Instant camera read)
+                  </span>
                 </div>
               </div>
 
-              <!-- Active Logo Display & Controls -->
-              <div id="logo-preview-box" class="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 hidden space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3">
-                    <img id="logo-thumb" src="" alt="Logo" class="w-8 h-8 rounded-lg object-contain bg-white p-1 border border-neutral-200 shadow-2xs" />
-                    <div>
-                      <div id="logo-title" class="text-xs font-bold text-black truncate max-w-[180px]">Logo</div>
-                      <div class="text-[10px] text-neutral-600 font-medium">Automatic 30% Error Correction enabled</div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    id="btn-remove-logo"
-                    class="text-xs font-medium text-neutral-700 hover:text-black p-1 cursor-pointer underline"
-                  >
-                    Remove Logo
+              <!-- Download Action Buttons -->
+              <div class="space-y-2.5 pt-2 border-t border-neutral-100">
+                <span class="block text-xs font-bold text-neutral-800 uppercase tracking-wider text-center">Download High-Resolution Files</span>
+                <div class="grid grid-cols-3 gap-2">
+                  <button type="button" id="btn-download-png" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    <span>PNG</span>
+                  </button>
+                  <button type="button" id="btn-download-svg" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span>SVG</span>
+                  </button>
+                  <button type="button" id="btn-download-jpg" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/></svg>
+                    <span>JPG</span>
                   </button>
                 </div>
 
-                <!-- Logo Size Slider -->
-                <div class="pt-2 border-t border-neutral-200">
-                  <div class="flex items-center justify-between text-xs text-neutral-800 mb-1">
-                    <span class="font-semibold">Logo Size</span>
-                    <span id="logo-size-label" class="font-mono text-black font-bold">Medium</span>
-                  </div>
-                  <input
-                    type="range"
-                    id="slider-logo-size"
-                    min="0.18"
-                    max="0.36"
-                    step="0.02"
-                    value="0.28"
-                    class="w-full accent-black cursor-pointer"
-                  />
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                  <button type="button" id="btn-copy" class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold cursor-pointer">Copy</button>
+                  <button type="button" id="btn-share" class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold cursor-pointer">Share</button>
+                  <button type="button" id="btn-print" class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold cursor-pointer">Print</button>
                 </div>
               </div>
-            </div>
 
+              <div class="text-center pt-2">
+                <span class="text-[11px] text-neutral-500 font-medium">100% Client-Side · No Data Stored · Never Expires</span>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- RIGHT COLUMN: Instant Live Preview, Downloads & Sharing (5 cols, Sticky) -->
-        <div class="lg:col-span-5">
-          <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
-            
-            <div class="flex items-center justify-between border-b border-neutral-100 pb-3">
-              <span class="text-xs font-extrabold uppercase tracking-wider text-black">
-                Instant QR Preview
-              </span>
-              <span class="text-xs text-black font-semibold bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">
-                Live
-              </span>
+      <!-- ======================================================== -->
+      <!-- TOOL 2: BARCODE GENERATOR SECTION -->
+      <!-- ======================================================== -->
+      <section id="tool-section-barcode" class="space-y-8 hidden">
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
+            Free Barcode Generator
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-neutral-600">
+            Generate high-resolution barcodes for products, retail, inventory and logistics.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- LEFT: Barcode Settings (7 cols) -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-white rounded-2xl border border-neutral-200 p-6 shadow-xs space-y-5">
+              
+              <!-- Format Selector -->
+              <div>
+                <label for="barcode-format" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2">
+                  Barcode Format
+                </label>
+                <select id="barcode-format" class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer font-medium">
+                  <option value="CODE128">CODE 128 (Standard / Alphanumeric & Symbols)</option>
+                  <option value="EAN13">EAN-13 (European / Global Retail Products - 12/13 digits)</option>
+                  <option value="UPC">UPC-A (US & Canada Retail Products - 11/12 digits)</option>
+                  <option value="CODE39">CODE 39 (Inventory & Warehouse - A-Z, 0-9, -.$/+%)</option>
+                </select>
+              </div>
+
+              <!-- Barcode Value Input -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label for="barcode-text" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider">
+                    Barcode Data / Code Value
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  id="barcode-text"
+                  value="ANIX-2026-STUDIO"
+                  placeholder="Enter barcode text or product code..."
+                  class="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black font-mono"
+                />
+                <!-- Error banner -->
+                <div id="barcode-error" class="hidden mt-2 p-3 bg-neutral-100 rounded-xl border border-neutral-300 text-xs font-semibold text-black"></div>
+              </div>
+
+              <!-- Dimensions & Display Controls -->
+              <div class="pt-4 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <div class="flex items-center justify-between text-xs text-neutral-800 mb-1 font-semibold">
+                    <span>Height</span>
+                    <span id="barcode-height-label" class="font-mono">100 px</span>
+                  </div>
+                  <input type="range" id="barcode-height" min="40" max="180" step="5" value="100" class="w-full accent-black cursor-pointer" />
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between text-xs text-neutral-800 mb-1 font-semibold">
+                    <span>Bar Width</span>
+                    <span id="barcode-width-label" class="font-mono">2 px</span>
+                  </div>
+                  <input type="range" id="barcode-width" min="1" max="4" step="0.5" value="2" class="w-full accent-black cursor-pointer" />
+                </div>
+              </div>
+
+              <!-- Human Readable Text Toggle & Colors -->
+              <div class="pt-4 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                <div class="flex items-center gap-2">
+                  <input type="checkbox" id="barcode-display-val" checked class="rounded border-neutral-300 text-black cursor-pointer w-4 h-4" />
+                  <label for="barcode-display-val" class="text-xs font-bold text-neutral-800 cursor-pointer">Show Text</label>
+                </div>
+
+                <div>
+                  <span class="block text-[11px] font-semibold text-neutral-600 mb-1">Bar Color</span>
+                  <div class="flex items-center gap-2">
+                    <input type="color" id="barcode-line-color" value="#000000" class="w-7 h-7 rounded border border-neutral-300 cursor-pointer p-0" />
+                    <span class="text-xs font-mono">#000000</span>
+                  </div>
+                </div>
+
+                <div>
+                  <span class="block text-[11px] font-semibold text-neutral-600 mb-1">Background</span>
+                  <div class="flex items-center gap-2">
+                    <input type="color" id="barcode-bg-color" value="#ffffff" class="w-7 h-7 rounded border border-neutral-300 cursor-pointer p-0" />
+                    <span class="text-xs font-mono">#FFFFFF</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
+          </div>
 
-            <!-- Canvas Container -->
-            <div class="flex flex-col items-center justify-center">
-              <div
-                id="qr-canvas-target"
-                class="qr-preview-box relative p-4 rounded-2xl border border-neutral-200 bg-white shadow-2xs max-w-[300px] w-full flex items-center justify-center min-h-[300px]"
+          <!-- RIGHT: Barcode Live Preview & Actions (5 cols) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
+              <div class="flex items-center justify-between border-b border-neutral-100 pb-3">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-black">Live Barcode Preview</span>
+                <span class="text-xs text-black font-semibold bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">Vector SVG</span>
+              </div>
+
+              <!-- Barcode SVG Render Frame -->
+              <div class="p-4 bg-white rounded-2xl border border-neutral-200 flex items-center justify-center min-h-[180px] overflow-x-auto shadow-2xs">
+                <svg id="barcode-svg" class="max-w-full h-auto transition-opacity"></svg>
+              </div>
+
+              <!-- Barcode Export Actions -->
+              <div class="space-y-2.5 pt-2 border-t border-neutral-100">
+                <span class="block text-xs font-bold text-neutral-800 uppercase tracking-wider text-center">Export Options</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" id="btn-download-barcode-png" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    <span>Download PNG</span>
+                  </button>
+                  <button type="button" id="btn-download-barcode-svg" class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span>Download SVG</span>
+                  </button>
+                </div>
+                <button type="button" id="btn-print-barcode" class="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold cursor-pointer">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                  <span>Print Barcode Label</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TOOL 3: IMAGE TO PDF CONVERTER SECTION -->
+      <!-- ======================================================== -->
+      <section id="tool-section-image-to-pdf" class="space-y-8 hidden">
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
+            Image to PDF Converter
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-neutral-600">
+            Convert JPG, PNG and WebP images into a single clean PDF document.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- LEFT: Upload & Reorder List (7 cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            <!-- Drag & Drop Zone -->
+            <div
+              id="image-drop-zone"
+              class="border-2 border-dashed border-neutral-300 hover:border-black rounded-3xl p-8 text-center bg-white transition-all cursor-pointer"
+            >
+              <input type="file" id="input-image-files" multiple accept="image/jpeg,image/png,image/webp,image/jpg" class="hidden" />
+              <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black mb-3">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              </div>
+              <h3 class="text-sm font-bold text-black mb-1">Select or drag & drop images here</h3>
+              <p class="text-xs text-neutral-500 mb-4">Supports multiple JPG, PNG, and WebP files</p>
+              <button
+                type="button"
+                id="btn-select-images"
+                class="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer"
               >
-                <!-- Rendered dynamically -->
-              </div>
-
-              <!-- Contrast health check -->
-              <div id="contrast-notice" class="mt-3.5 text-center">
-                <span class="inline-flex items-center gap-1.5 text-xs text-neutral-900 font-semibold">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  Optimal contrast (Instant camera read)
-                </span>
-              </div>
+                Choose Image Files
+              </button>
             </div>
 
-            <!-- Download Action Buttons (PNG, SVG, JPG) -->
-            <div class="space-y-2.5 pt-2 border-t border-neutral-100">
-              <span class="block text-xs font-bold text-neutral-800 uppercase tracking-wider text-center">
-                Download High-Resolution Files
+            <!-- Image Files List Header -->
+            <div class="flex items-center justify-between px-1">
+              <span id="image-count-label" class="text-xs font-bold text-neutral-800 uppercase tracking-wider">0 images added</span>
+              <button type="button" id="btn-clear-images" class="text-xs text-rose-600 hover:text-rose-800 font-semibold cursor-pointer">Clear All</button>
+            </div>
+
+            <!-- Empty State -->
+            <div id="image-empty-state" class="p-8 text-center bg-white rounded-2xl border border-neutral-200 text-xs text-neutral-500">
+              No images selected yet. Add images above to convert them into a PDF.
+            </div>
+
+            <!-- Dynamic Images List with Reordering -->
+            <div id="image-files-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- RIGHT: Page Options & PDF Download (5 cols) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-6">
+              <span class="block text-xs font-extrabold uppercase tracking-wider text-black border-b border-neutral-100 pb-3">
+                PDF Layout Settings
               </span>
 
-              <div class="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  id="btn-download-png"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-                  title="Download standard high-res PNG image"
-                >
-                  <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                  <span>PNG</span>
-                </button>
+              <div class="space-y-4">
+                <div>
+                  <label for="pdf-page-size" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Page Size</label>
+                  <select id="pdf-page-size" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer font-medium">
+                    <option value="a4">A4 (Standard document)</option>
+                    <option value="letter">US Letter</option>
+                    <option value="original">Original Image Dimensions</option>
+                  </select>
+                </div>
 
-                <button
-                  type="button"
-                  id="btn-download-svg"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold transition-all cursor-pointer"
-                  title="Download scalable vector file (infinite resolution for Figma/Illustrator/Print)"
-                >
-                  <svg class="w-4 h-4 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                  <span>SVG</span>
-                </button>
+                <div>
+                  <label for="pdf-orientation" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Orientation</label>
+                  <select id="pdf-orientation" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer font-medium">
+                    <option value="auto">Auto (Match image aspect ratio)</option>
+                    <option value="portrait">Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
 
+                <div>
+                  <label for="pdf-fit" class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">Image Fit</label>
+                  <select id="pdf-fit" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-black cursor-pointer font-medium">
+                    <option value="fit">Fit to page with clean margin</option>
+                    <option value="fill">Fill entire page (Edge-to-edge)</option>
+                    <option value="stretch">Stretch to fill page</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Conversion Action Area -->
+              <div id="image-convert-actions" class="pt-4 border-t border-neutral-100 space-y-3 hidden">
+                <div id="image-progress-bar" class="hidden p-2.5 bg-neutral-100 rounded-xl text-xs font-medium text-center text-neutral-800 animate-pulse">
+                  Converting images...
+                </div>
                 <button
                   type="button"
-                  id="btn-download-jpg"
-                  class="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 text-xs font-bold transition-all cursor-pointer"
-                  title="Download JPG image"
+                  id="btn-convert-images"
+                  class="w-full py-3.5 px-4 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer transition-all"
                 >
-                  <svg class="w-4 h-4 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                  <span>JPG</span>
+                  Download Converted PDF
                 </button>
               </div>
 
-              <!-- Quick Utility Actions: Copy, Share, Print -->
-              <div class="grid grid-cols-3 gap-2 pt-1">
-                <button
-                  type="button"
-                  id="btn-copy"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
-                  title="Copy QR image to clipboard"
-                >
-                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                  <span>Copy</span>
-                </button>
-
-                <button
-                  type="button"
-                  id="btn-share"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
-                  title="Share using native device menu"
-                >
-                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
-                  <span>Share</span>
-                </button>
-
-                <button
-                  type="button"
-                  id="btn-print"
-                  class="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-neutral-300 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors cursor-pointer"
-                  title="Print clean A4/label format"
-                >
-                  <svg class="w-3.5 h-3.5 text-neutral-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-                  <span>Print</span>
-                </button>
+              <div class="text-center pt-2">
+                <span class="text-[11px] text-neutral-500 font-medium">100% Private · Converted directly in your browser</span>
               </div>
             </div>
-
-            <!-- Trust badge footer -->
-            <div class="text-center pt-2">
-              <span class="text-[11px] text-neutral-500 font-medium">
-                100% Client-Side · No Data Stored · Never Expires
-              </span>
-            </div>
-
           </div>
         </div>
+      </section>
 
-      </div>
+      <!-- ======================================================== -->
+      <!-- TOOL 4: MERGE PDF SECTION -->
+      <!-- ======================================================== -->
+      <section id="tool-section-merge-pdf" class="space-y-8 hidden">
+        <div class="text-center max-w-2xl mx-auto mb-6">
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
+            Merge PDF Files
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-neutral-600">
+            Combine multiple PDF files into one complete document in your chosen order.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- LEFT: Upload & Reorder List (7 cols) -->
+          <div class="lg:col-span-7 space-y-4">
+            <!-- Drag & Drop Zone -->
+            <div
+              id="pdf-drop-zone"
+              class="border-2 border-dashed border-neutral-300 hover:border-black rounded-3xl p-8 text-center bg-white transition-all cursor-pointer"
+            >
+              <input type="file" id="input-pdf-files" multiple accept="application/pdf" class="hidden" />
+              <div class="w-12 h-12 mx-auto rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black mb-3">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="12" y2="18"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+              </div>
+              <h3 class="text-sm font-bold text-black mb-1">Select or drag & drop PDF files here</h3>
+              <p class="text-xs text-neutral-500 mb-4">Add 2 or more PDF files to combine them</p>
+              <button
+                type="button"
+                id="btn-select-pdfs"
+                class="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer"
+              >
+                Choose PDF Files
+              </button>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="merge-error-msg" class="hidden p-3.5 bg-neutral-100 rounded-xl border border-neutral-300 text-xs font-semibold text-black"></div>
+
+            <!-- PDF Files List Header -->
+            <div class="flex items-center justify-between px-1">
+              <span id="pdf-count-label" class="text-xs font-bold text-neutral-800 uppercase tracking-wider">0 files added</span>
+              <button type="button" id="btn-clear-pdfs" class="text-xs text-rose-600 hover:text-rose-800 font-semibold cursor-pointer">Clear All</button>
+            </div>
+
+            <!-- Empty State -->
+            <div id="pdf-empty-state" class="p-8 text-center bg-white rounded-2xl border border-neutral-200 text-xs text-neutral-500">
+              No PDF files added yet. Select at least two PDF documents above to combine them.
+            </div>
+
+            <!-- Dynamic PDF List with Reordering -->
+            <div id="pdf-files-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- RIGHT: Merge Actions & Instructions (5 cols) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-7 shadow-sm sticky top-24 space-y-5">
+              <span class="block text-xs font-extrabold uppercase tracking-wider text-black border-b border-neutral-100 pb-3">
+                Combine PDF Documents
+              </span>
+
+              <div class="p-4 bg-neutral-50 rounded-2xl border border-neutral-200 text-xs text-neutral-600 space-y-2">
+                <div class="font-bold text-black">How it works:</div>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>Documents will be joined exactly in the order shown on the left.</li>
+                  <li>Use the <strong>Up/Down</strong> arrows to arrange page sequences.</li>
+                  <li>All processing happens directly in your browser without uploading to any server.</li>
+                </ul>
+              </div>
+
+              <!-- Merge Action Area -->
+              <div id="pdf-merge-actions" class="pt-2 border-t border-neutral-100 hidden">
+                <button
+                  type="button"
+                  id="btn-merge-pdfs"
+                  class="w-full py-3.5 px-4 rounded-xl bg-black hover:bg-neutral-800 text-white text-xs font-bold shadow-xs cursor-pointer transition-all"
+                >
+                  Merge and Download Combined PDF
+                </button>
+              </div>
+
+              <div class="text-center pt-2">
+                <span class="text-[11px] text-neutral-500 font-medium">100% Private · Zero file storage</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
 
     <!-- Footer with Brand & Live Visitor Counter -->
@@ -605,7 +754,7 @@
             © 2026 QR Studio. Developed by ANIX Software Technology.
           </p>
           <p class="text-[11px] text-neutral-500 mt-1">
-            Free, simple and private QR code generator.
+            Free, simple and private utility toolkit for QR codes, barcodes and PDF documents.
           </p>
         </div>
       </div>
@@ -616,17 +765,17 @@
       Message
     </div>
 
-    <!-- Print Card Template (Only visible when printing) -->
+    <!-- Print Template -->
     <div class="print-only print-card">
       <h2 id="print-title" class="text-2xl font-black text-black mb-2">
-        Scan QR Code
+        Generated with QR Studio
       </h2>
       <p id="print-info" class="text-sm font-medium text-neutral-800 mb-6 break-all">
-        Point your smartphone camera to scan
+        Point your smartphone camera or scanner to read
       </p>
       <div class="p-4 bg-neutral-50 border-2 border-dashed border-neutral-400 rounded-xl my-4 text-xs text-neutral-700">
         <p class="font-bold text-black mb-1">Instructions:</p>
-        <p>Open your mobile camera app and point it at the code. Tap the notification banner to open.</p>
+        <p>Open your mobile camera or barcode scanner and point it at the code above.</p>
       </div>
       <div class="pt-4 mt-6 border-t border-neutral-300 text-[10px] text-neutral-500">
         © 2026 QR Studio. Developed by ANIX Software Technology.

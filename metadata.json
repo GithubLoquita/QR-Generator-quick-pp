@@ -1,6 +1,6 @@
 {
-  "name": "QR Studio by ANIX Software Technology",
-  "description": "Create, customize and download QR codes in seconds. 100% free, private, and client-side browser tool by ANIX Software Technology.",
+  "name": "QR Studio — QR, Barcode & PDF Suite by ANIX Software Technology",
+  "description": "Free, browser-based utility suite by ANIX Software Technology. Includes QR Code Generator, Barcode Generator, Image to PDF Converter, and Merge PDF. 100% free, private, and client-side.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
