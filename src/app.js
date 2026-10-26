@@ -1,5 +1,5 @@
 /**
- * QR Studio — Developed by ANIX Software Technology
+ * QR Studio — Developed by Sandip Hembram (System Software Engineer)
  * Production-ready Utility Toolkit:
  * 1. QR Code Generator
  * 2. Barcode Generator
@@ -339,7 +339,7 @@ function printQR() {
 // ==========================================
 const barcodeState = {
   format: 'CODE128', // 'CODE128' | 'EAN13' | 'UPC' | 'CODE39'
-  value: 'ANIX-2026-STUDIO',
+  value: 'STUDIO-2026-SANDIP',
   height: 100,
   width: 2,
   displayValue: true,
